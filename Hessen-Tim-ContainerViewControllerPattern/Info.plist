@@ -43,5 +43,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Allows the App to use the camera</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Allows the App to save photos</string>
 </dict>
 </plist>
