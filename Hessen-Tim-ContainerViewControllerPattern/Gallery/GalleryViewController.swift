@@ -104,6 +104,10 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         return CGSize(width: collectionView.frame.height-10, height: collectionView.frame.height-10)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
+    }
+    
     func insertItemTest(imageName: String){
         /*
          //Update DataSource
@@ -122,7 +126,11 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
             let indexPath = IndexPath(row: self.items.count, section: 0)
             items.append(imageName) //add your object to data source first
             self.collectionView?.insertItems(at: [indexPath])
-        }, completion: nil)
+        }, completion: { (result) in
+            if result {
+                self.collectionView?.scrollToItem(at: IndexPath(row: self.items.count - 1, section: 0), at: UICollectionView.ScrollPosition.right, animated: true)
+            }
+        })
     }
     
     func getImage(imageName: String) -> UIImage?{
