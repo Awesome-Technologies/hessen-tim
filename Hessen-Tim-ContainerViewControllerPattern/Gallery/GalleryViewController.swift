@@ -15,7 +15,8 @@ import UIKit
  */
 
 class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+    //Delegate
+    weak var delegate:CameraPictureDelegate?
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -74,6 +75,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        delegate?.didSelectImage(photoName: items[indexPath.row])
     }
  
     /*

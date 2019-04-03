@@ -13,13 +13,14 @@ import AVFoundation
  //Camera View tutorial from here: https://guides.codepath.com/ios/Creating-a-Custom-Camera-View
  */
 
-class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDelegate{
+class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDelegate , CameraPictureDelegate {
 
     //Delegate
     weak var delegate:GalleryDelegate?
     
     //Outlets
     @IBOutlet weak var previewView: UIView!
+    @IBOutlet weak var savedImagePreviewView: UIImageView!
     //@IBOutlet weak var captureImageView: UIImageView!
     
     //instance variables
@@ -32,8 +33,6 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     /*
     @IBAction func didTakePhoto(_ sender: Any) {
@@ -186,6 +185,27 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         } catch {
             print("Could not clear temp folder: \(error)")
         }
+    }
+    
+    func didSelectImage(photoName: String) {
+        let fileManager = FileManager.default
+        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(photoName)
+        if fileManager.fileExists(atPath: imagePath){
+            do {
+                let imageData = try Data(contentsOf: URL(fileURLWithPath: imagePath))
+            
+                savedImagePreviewView.isHidden = false
+                savedImagePreviewView.image = UIImage(data: imageData)
+            } catch {
+                print("Error loading image!")
+            }
+        }else{
+            print("Panic! No Image!")
+        }
+    }
+    
+    @IBAction func hideSaveImagePreviewView() {
+        savedImagePreviewView.isHidden = true
     }
     
     /*

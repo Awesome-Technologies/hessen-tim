@@ -30,6 +30,7 @@ class BaseViewController: UIViewController {
         
         if let vc = segue.destination as? GalleryViewController {
             galleryVC = vc
+            galleryVC?.delegate = cameraVC
             
         }
         
