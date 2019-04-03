@@ -26,6 +26,7 @@ class BaseViewController: UIViewController {
     var cameraVC:CameraPictureViewController?
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
         
         if let vc = segue.destination as? GalleryViewController {
             galleryVC = vc
