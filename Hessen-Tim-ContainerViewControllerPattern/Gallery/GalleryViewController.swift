@@ -24,8 +24,9 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
 
         // Do any additional setup after loading the view.
         
-        collectionView.layer.borderWidth = 2.0
-        collectionView.layer.borderColor = UIColor.black.cgColor
+        collectionView.layer.borderWidth = 1.0
+        collectionView.layer.borderColor = UIColor.lightGray.cgColor
+        collectionView.layer.backgroundColor = UIColor.init(red: 65/255, green: 81/255, blue: 124/255, alpha: 1).cgColor
         
     }
     
@@ -55,7 +56,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         //loads The Image, that was saved when the Photo was taken
         cell.galleryImage.image = getImage(imageName: self.items[indexPath.item])
         
-        cell.backgroundColor = UIColor.cyan // make cell more visible in our example project
+        cell.backgroundColor = UIColor.white // make cell more visible in our example project
         print("we have the index: \(indexPath)")
         //collectionView.reloadData()
         //collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
@@ -87,13 +88,13 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     // change background color when user touches cell
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = UIColor.red
+        cell?.backgroundColor = UIColor.init(white: 1, alpha: 0.6)
     }
     
     // change background color back when user releases touch
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = UIColor.cyan
+        cell?.backgroundColor = UIColor.white
     }
     
     //change the width and Hight of the cells to the hight of the collectionView
