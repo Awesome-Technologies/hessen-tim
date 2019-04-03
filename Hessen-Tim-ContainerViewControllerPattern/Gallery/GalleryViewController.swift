@@ -50,7 +50,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! GalleryPictureCollectionViewCell
         
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        cell.myLabel.text = self.items[indexPath.item]
+        cell.myLabel.text = self.items[indexPath.item].replacingOccurrences(of: ".jpg", with: "")
         
         //loads The Image, that was saved when the Photo was taken
         cell.galleryImage.image = getImage(imageName: self.items[indexPath.item])
@@ -61,9 +61,9 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         //collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
         
         //--makes the cell round
-        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 1
-        cell.layer.cornerRadius = 8
+        cell.layer.cornerRadius = 4
 
         return cell
     }
