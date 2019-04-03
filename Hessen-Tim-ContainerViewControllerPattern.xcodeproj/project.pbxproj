@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8F4A8C2D223A4DC800F9B407 /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A8C2C223A4DC800F9B407 /* GalleryPictureCollectionViewCell.swift */; };
-		8F4A8C2F223A5E0400F9B407 /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A8C2E223A5E0400F9B407 /* GalleryDelegate.swift */; };
 		8F5233D9223949D50020292F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233D8223949D50020292F /* AppDelegate.swift */; };
 		8F5233DB223949D50020292F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233DA223949D50020292F /* BaseViewController.swift */; };
 		8F5233DE223949D50020292F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F5233DC223949D50020292F /* Main.storyboard */; };
@@ -17,7 +15,9 @@
 		8F5233EE223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233ED223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift */; };
 		8F5233F9223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */; };
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
-		8F523409223955800020292F /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523408223955800020292F /* GalleryViewController.swift */; };
+		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
+		97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */; };
+		97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8062254C63B0055EBCE /* GalleryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +38,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8F4A8C2C223A4DC800F9B407 /* GalleryPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPictureCollectionViewCell.swift; sourceTree = "<group>"; };
-		8F4A8C2E223A5E0400F9B407 /* GalleryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryDelegate.swift; sourceTree = "<group>"; };
 		8F5233D5223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hessen-Tim-ContainerViewControllerPattern.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F5233D8223949D50020292F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F5233DA223949D50020292F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -54,7 +52,9 @@
 		8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hessen_Tim_ContainerViewControllerPatternUITests.swift; sourceTree = "<group>"; };
 		8F5233FA223949D70020292F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
-		8F523408223955800020292F /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDelegate.swift; sourceTree = "<group>"; };
+		97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		97BDA8062254C63B0055EBCE /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +108,7 @@
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
 				8F5233DC223949D50020292F /* Main.storyboard */,
-				8F523408223955800020292F /* GalleryViewController.swift */,
-				8F4A8C2E223A5E0400F9B407 /* GalleryDelegate.swift */,
-				8F4A8C2C223A4DC800F9B407 /* GalleryPictureCollectionViewCell.swift */,
+				97BDA80A2254C6460055EBCE /* Gallery */,
 				8F523406223951800020292F /* CameraPictureViewController.swift */,
 				8F5233DF223949D70020292F /* Assets.xcassets */,
 				8F5233E1223949D70020292F /* LaunchScreen.storyboard */,
@@ -135,6 +133,16 @@
 				8F5233FA223949D70020292F /* Info.plist */,
 			);
 			path = "Hessen-Tim-ContainerViewControllerPatternUITests";
+			sourceTree = "<group>";
+		};
+		97BDA80A2254C6460055EBCE /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */,
+				97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */,
+				97BDA8062254C63B0055EBCE /* GalleryViewController.swift */,
+			);
+			path = Gallery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,11 +277,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F5233DB223949D50020292F /* BaseViewController.swift in Sources */,
-				8F523409223955800020292F /* GalleryViewController.swift in Sources */,
+				97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */,
 				8F5233D9223949D50020292F /* AppDelegate.swift in Sources */,
+				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
 				8F523407223951800020292F /* CameraPictureViewController.swift in Sources */,
-				8F4A8C2D223A4DC800F9B407 /* GalleryPictureCollectionViewCell.swift in Sources */,
-				8F4A8C2F223A5E0400F9B407 /* GalleryDelegate.swift in Sources */,
+				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
