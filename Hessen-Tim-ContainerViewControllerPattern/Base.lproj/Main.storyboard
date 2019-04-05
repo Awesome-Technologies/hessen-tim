@@ -30,25 +30,43 @@
                                     <segue destination="zs7-9o-Z6h" kind="embed" id="i1U-OW-gjF"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5K-cd-KZu">
-                                <rect key="frame" x="1146" y="775" width="200" height="200"/>
-                                <color key="backgroundColor" red="0.58560686579999999" green="1" blue="0.52748666160000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="Take Picture"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5K-cd-KZu">
+                                <rect key="frame" x="1138" y="847" width="168" height="157"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="168" id="FIw-Gj-GQx"/>
+                                    <constraint firstAttribute="height" constant="157" id="zcP-Yg-xYB"/>
+                                </constraints>
+                                <state key="normal" title="Take Picture" image="foto-Button"/>
                                 <connections>
                                     <action selector="takePicture:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xpc-1D-dSH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCf-8f-1sE">
+                                <rect key="frame" x="1217" y="40" width="89" height="84"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="89" id="GA2-BV-Bbq"/>
+                                    <constraint firstAttribute="height" constant="84" id="H4X-Qg-0iT"/>
+                                </constraints>
+                                <state key="normal" title="Go Back" image="close-Button"/>
+                                <connections>
+                                    <action selector="toPrevScreen:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fi6-cb-EhB"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v5K-cd-KZu" secondAttribute="trailing" constant="60" id="9EV-Lp-bi3"/>
                             <constraint firstItem="J6E-0r-vEa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="BdF-9E-bpN"/>
+                            <constraint firstItem="OCf-8f-1sE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="COS-uO-ziC"/>
                             <constraint firstItem="ZWB-e5-Y6a" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="6:8" id="EO9-OJ-uO8"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v5K-cd-KZu" secondAttribute="trailing" constant="20" id="H7B-Fn-Idt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="v5K-cd-KZu" secondAttribute="trailing" constant="60" id="H7B-Fn-Idt"/>
                             <constraint firstItem="J6E-0r-vEa" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="2:8" id="Kzj-vk-YaU"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="v5K-cd-KZu" secondAttribute="bottom" constant="49" id="L2B-jf-SjI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OCf-8f-1sE" secondAttribute="trailing" constant="60" id="MMg-m7-dDg"/>
                             <constraint firstItem="J6E-0r-vEa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Psg-Ke-g19"/>
                             <constraint firstItem="J6E-0r-vEa" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="6:8" id="cgC-19-Qs2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="v5K-cd-KZu" secondAttribute="bottom" constant="20" id="hKa-iy-AzP"/>
                             <constraint firstItem="ZWB-e5-Y6a" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="5:8" id="nLp-xR-gFD"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ZWB-e5-Y6a" secondAttribute="bottom" constant="20" id="rH6-ad-yKK"/>
                             <constraint firstItem="ZWB-e5-Y6a" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="rco-kA-p1Z"/>
@@ -211,6 +229,7 @@
                             <constraint firstItem="ZNB-FY-KoN" firstAttribute="centerX" secondItem="sam-zd-70x" secondAttribute="centerX" id="shS-pl-ETB"/>
                             <constraint firstItem="ZNB-FY-KoN" firstAttribute="width" secondItem="sam-zd-70x" secondAttribute="width" id="wzj-g9-Hns"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="GGD-NM-arm"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="21Q-6r-D8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -291,5 +310,7 @@
     <resources>
         <image name="Screen_1" width="2418" height="1668"/>
         <image name="Screen_2" width="2418" height="1668"/>
+        <image name="close-Button" width="530" height="530"/>
+        <image name="foto-Button" width="530" height="530"/>
     </resources>
 </document>

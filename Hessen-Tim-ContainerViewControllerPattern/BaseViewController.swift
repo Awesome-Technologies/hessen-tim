@@ -22,6 +22,7 @@ class BaseViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    
     var galleryVC:GalleryViewController?
     var cameraVC:CameraPictureViewController?
     
@@ -44,6 +45,10 @@ class BaseViewController: UIViewController {
     //Action
     @IBAction func takePicture(_ sender: Any) {
         cameraVC?.makePhoto()
+    }
+    
+    @IBAction func toPrevScreen(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
 }
