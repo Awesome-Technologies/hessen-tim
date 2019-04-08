@@ -9,11 +9,28 @@
 import UIKit
 
 class SecondScreenViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    @IBOutlet weak var screen2ImageView: UIImageView!
+    @IBOutlet weak var goBackTouchAreaView: UIView!
+    @IBOutlet weak var showCameraTouchAreaView: UIView!
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Place touch area at the appropriate place on the screenshot
+        
+        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.756)
+        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.749)
+        var width = screen2ImageView.frame.width * 0.182
+        var height = screen2ImageView.frame.height * 0.189
+        
+        showCameraTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
+        
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.048)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.066)
+        width = screen2ImageView.frame.width * 0.065
+        height = width
+        
+        goBackTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
     }
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
