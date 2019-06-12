@@ -704,6 +704,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="PWD-Af-PSl"/>
+                    <connections>
+                        <segue destination="cqQ-9j-TAo" kind="showDetail" identifier="cameraData" id="EzM-g7-taV"/>
+                        <segue destination="eeY-cm-khO" kind="showDetail" identifier="patientData" id="GfF-9q-Zga"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SrE-z9-ptQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -714,7 +718,7 @@
             <objects>
                 <viewController id="hMi-gv-oXW" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="w9A-4D-mmJ">
-                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="990.5" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="KameraDaten" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qiP-93-rik">
@@ -866,7 +870,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cqQ-9j-TAo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eSb-Pc-cGa">
-                        <rect key="frame" x="0.0" y="24" width="1366" height="50"/>
+                        <rect key="frame" x="0.0" y="24" width="990.5" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -904,4 +908,7 @@
         <image name="close-Button" width="530" height="530"/>
         <image name="foto-Button" width="530" height="530"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="GfF-9q-Zga"/>
+    </inferredMetricsTieBreakers>
 </document>
