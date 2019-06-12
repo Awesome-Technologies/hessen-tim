@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F4E063E22B1058E002CBC95 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4E063D22B1058E002CBC95 /* MasterViewController.swift */; };
+		8F4E064022B10BCE002CBC95 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */; };
 		8F5233D9223949D50020292F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233D8223949D50020292F /* AppDelegate.swift */; };
 		8F5233DB223949D50020292F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233DA223949D50020292F /* BaseViewController.swift */; };
 		8F5233DE223949D50020292F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F5233DC223949D50020292F /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F4E063D22B1058E002CBC95 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		8F5233D5223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hessen-Tim-ContainerViewControllerPattern.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F5233D8223949D50020292F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8F5233DA223949D50020292F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -113,9 +117,11 @@
 		8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */ = {
 			isa = PBXGroup;
 			children = (
+				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
 				8F5233DC223949D50020292F /* Main.storyboard */,
+				8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */,
 				9724C7DE2256E26E006A67DF /* Fake Screens */,
 				97BDA80A2254C6460055EBCE /* Gallery */,
 				9724C7D92254D73D006A67DF /* Camera Picture View */,
@@ -306,6 +312,7 @@
 			files = (
 				8F5233DB223949D50020292F /* BaseViewController.swift in Sources */,
 				97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */,
+				8F4E063E22B1058E002CBC95 /* MasterViewController.swift in Sources */,
 				8F5233D9223949D50020292F /* AppDelegate.swift in Sources */,
 				9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */,
 				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
@@ -314,6 +321,7 @@
 				8F523407223951800020292F /* CameraPictureViewController.swift in Sources */,
 				9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */,
 				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,
+				8F4E064022B10BCE002CBC95 /* SplitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
