@@ -14,6 +14,9 @@ class SplitViewController: UISplitViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // Put the Master View on the left side
+        self.primaryEdge = .trailing
     }
     
 
