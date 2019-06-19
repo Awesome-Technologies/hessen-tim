@@ -20,11 +20,16 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        collapseMaster = UIBarButtonItem(title: "Collapse", style: .done, target: self, action: #selector(collapse))
+        self.navigationItem.rightBarButtonItem = collapseMaster
+      
     }
     
     
     var galleryVC:GalleryViewController?
     var cameraVC:CameraPictureViewController?
+    var collapseMaster:UIBarButtonItem!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
@@ -51,9 +56,11 @@ class BaseViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func collapse(){
+        //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
+        UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
+    }
 }
-
-
 
 
 
@@ -61,5 +68,13 @@ extension BaseViewController: GalleryDelegate {
     func addGalleryImage(imageName: String) {
         //print("added an Image")
         galleryVC?.insertItemTest(imageName: imageName)
+    }
+}
+
+
+extension BaseViewController {
+    func toggleMasterView() {
+        let barButtonItem = self.collapseMaster
+        UIApplication.shared.sendAction(barButtonItem!.action!, to: barButtonItem!.target, from: nil, for: nil)
     }
 }
