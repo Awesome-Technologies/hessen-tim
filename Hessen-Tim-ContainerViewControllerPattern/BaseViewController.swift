@@ -59,6 +59,7 @@ class BaseViewController: UIViewController {
     @objc func collapse(){
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
 }
 

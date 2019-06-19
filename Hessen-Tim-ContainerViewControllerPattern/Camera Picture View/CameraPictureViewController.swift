@@ -33,7 +33,16 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reload), name: NSNotification.Name(rawValue: "load"), object: nil)
     }
+    
+    @objc func reload() {
+        print("Reload Camera")
+        self.captureSession.stopRunning()
+        self.setupLivePreview()
+    }
+
     /*
     @IBAction func didTakePhoto(_ sender: Any) {
         
