@@ -1077,6 +1077,7 @@
         <!--Base View Controller-->
         <scene sceneID="SwF-Wk-sOD">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BeF-Ax-tQ3" sceneMemberID="firstResponder"/>
                 <viewController id="18V-gH-ShB" customClass="BaseViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sxb-nu-Kc7">
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
@@ -1144,26 +1145,29 @@
                         <viewLayoutGuide key="safeArea" id="4MB-BB-0eS"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BeF-Ax-tQ3" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3151" y="166"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="sBK-TE-3rp">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f6d-Vc-0qz" sceneMemberID="firstResponder"/>
                 <viewController id="N3B-2z-UoZ" customClass="BaseViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nzn-rV-JEJ">
                         <rect key="frame" x="0.0" y="0.0" width="990.5" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Wp-rj-6vV">
-                                <rect key="frame" x="20" y="344" width="743" height="640"/>
+                                <rect key="frame" x="20" y="269.5" width="950.5" height="535"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="8Wp-rj-6vV" secondAttribute="height" multiplier="16:9" priority="251" id="RIR-Q1-fpS"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="wBE-yI-50N" kind="embed" id="40c-QQ-fBu"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fMe-Ha-el9">
-                                <rect key="frame" x="20" y="94" width="743" height="256"/>
+                                <rect key="frame" x="20" y="84" width="743" height="170.5"/>
                                 <connections>
                                     <segue destination="kny-1j-E65" kind="embed" id="Uig-Zd-X5S"/>
                                 </connections>
@@ -1183,13 +1187,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZ6-gl-Cbf">
-                                <rect key="frame" x="762.5" y="816" width="168" height="168"/>
+                                <rect key="frame" x="30" y="904" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="aZ6-gl-Cbf" secondAttribute="height" multiplier="1:1" id="rzf-z2-Cju">
                                         <variation key="heightClass=compact" constant="0.0"/>
                                     </constraint>
-                                    <constraint firstAttribute="width" constant="168" id="yMG-HM-ZrF">
+                                    <constraint firstAttribute="width" constant="80" id="yMG-HM-ZrF">
                                         <variation key="heightClass=compact" constant="90"/>
                                     </constraint>
                                 </constraints>
@@ -1201,48 +1205,43 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="aZ6-gl-Cbf" secondAttribute="trailing" constant="60" id="0VN-Tc-XwN">
-                                <variation key="heightClass=compact" constant="21"/>
-                            </constraint>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="width" secondItem="Nzn-rV-JEJ" secondAttribute="width" multiplier="6:8" id="5xR-NT-6pc"/>
                             <constraint firstItem="8Wp-rj-6vV" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="20" id="9dj-k0-U6Q"/>
                             <constraint firstItem="BzN-tj-mnb" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="20" id="FSS-0t-kxR"/>
-                            <constraint firstItem="8Wp-rj-6vV" firstAttribute="height" secondItem="Nzn-rV-JEJ" secondAttribute="height" multiplier="5:8" id="GCd-IH-JFA"/>
-                            <constraint firstItem="fMe-Ha-el9" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="20" id="JaP-eM-Mkw"/>
+                            <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="8Wp-rj-6vV" secondAttribute="trailing" constant="20" id="Fmc-Zs-ehZ"/>
+                            <constraint firstItem="fMe-Ha-el9" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="10" id="JaP-eM-Mkw"/>
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="BzN-tj-mnb" secondAttribute="trailing" constant="60" id="QIc-Kl-1Nu">
                                 <variation key="heightClass=compact" constant="21"/>
                             </constraint>
-                            <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="aZ6-gl-Cbf" secondAttribute="trailing" constant="60" id="Ycx-wt-UvV">
+                            <constraint firstItem="GeI-aU-i3u" firstAttribute="leading" secondItem="aZ6-gl-Cbf" secondAttribute="trailing" constant="-110" id="Ycx-wt-UvV">
                                 <variation key="heightClass=compact" constant="21"/>
                             </constraint>
-                            <constraint firstItem="GeI-aU-i3u" firstAttribute="bottom" secondItem="8Wp-rj-6vV" secondAttribute="bottom" constant="20" id="cb1-G6-rz4"/>
-                            <constraint firstItem="fMe-Ha-el9" firstAttribute="height" secondItem="Nzn-rV-JEJ" secondAttribute="height" multiplier="2:8" id="gVl-5E-rOP"/>
+                            <constraint firstItem="fMe-Ha-el9" firstAttribute="height" secondItem="Nzn-rV-JEJ" secondAttribute="height" multiplier="1:6" id="gVl-5E-rOP"/>
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="bottom" secondItem="aZ6-gl-Cbf" secondAttribute="bottom" constant="20" id="sNN-FO-OTI"/>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="20" id="uWb-ne-GPw"/>
-                            <constraint firstItem="8Wp-rj-6vV" firstAttribute="width" secondItem="Nzn-rV-JEJ" secondAttribute="width" multiplier="6:8" id="xsm-Ti-U0u"/>
+                            <constraint firstItem="8Wp-rj-6vV" firstAttribute="top" secondItem="fMe-Ha-el9" secondAttribute="bottom" constant="15" id="w1B-Pi-Wl0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GeI-aU-i3u"/>
                     </view>
                     <navigationItem key="navigationItem" id="8II-My-rmP"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="f6d-Vc-0qz" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3151" y="166"/>
+            <point key="canvasLocation" x="3150.658857979502" y="165.8203125"/>
         </scene>
         <!--Camera Picture View Controller-->
         <scene sceneID="sZr-mA-5Ck">
             <objects>
                 <viewController id="wBE-yI-50N" customClass="CameraPictureViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Lt-8W-KOq">
-                        <rect key="frame" x="0.0" y="0.0" width="743" height="640"/>
+                        <rect key="frame" x="0.0" y="0.0" width="950.5" height="535"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wch-fB-x2B" userLabel="previewView">
-                                <rect key="frame" x="0.0" y="24" width="743" height="640"/>
+                                <rect key="frame" x="0.0" y="24" width="950.5" height="535"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xnx-NS-dCI">
-                                <rect key="frame" x="0.0" y="24" width="743" height="640"/>
+                                <rect key="frame" x="0.0" y="24" width="950.5" height="535"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="1N1-rd-G4a" appends="YES" id="FdG-B0-FJE"/>
@@ -1281,11 +1280,11 @@
             <objects>
                 <viewController id="kny-1j-E65" customClass="GalleryViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gnE-LL-p9t">
-                        <rect key="frame" x="0.0" y="0.0" width="743" height="256"/>
+                        <rect key="frame" x="0.0" y="0.0" width="743" height="170.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="llN-Hx-cs9">
-                                <rect key="frame" x="0.0" y="0.0" width="743" height="236"/>
+                                <rect key="frame" x="0.0" y="0.0" width="743" height="150.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Ci-cl-VFq">
                                     <size key="itemSize" width="50" height="50"/>

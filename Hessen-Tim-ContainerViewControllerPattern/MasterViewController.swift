@@ -18,6 +18,9 @@ class MasterViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        let addButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(collapse))
+        navigationItem.leftBarButtonItem = addButton
     }
 
     // MARK: - Table view data source
@@ -43,6 +46,12 @@ class MasterViewController: UITableViewController {
         } else if indexPath.row == 1 {
             self.performSegue(withIdentifier: "cameraData", sender: self)
         }
+    }
+    
+    @objc func collapse(){
+        //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
+        UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
 
     /*

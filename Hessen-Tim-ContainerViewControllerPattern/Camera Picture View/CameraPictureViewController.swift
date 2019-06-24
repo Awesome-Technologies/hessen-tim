@@ -39,8 +39,6 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     
     @objc func reload() {
         print("Reload Camera")
-        self.captureSession.stopRunning()
-        self.setupLivePreview()
     }
 
     /*
