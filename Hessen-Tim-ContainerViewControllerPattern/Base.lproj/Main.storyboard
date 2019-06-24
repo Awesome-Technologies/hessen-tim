@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -319,7 +319,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_2" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>

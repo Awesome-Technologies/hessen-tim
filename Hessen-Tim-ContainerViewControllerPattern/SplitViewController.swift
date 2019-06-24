@@ -17,6 +17,7 @@ class SplitViewController: UISplitViewController {
         
         // Put the Master View on the left side
         self.primaryEdge = .trailing
+        self.presentsWithGesture = false
         self.preferredDisplayMode = UISplitViewController.DisplayMode.primaryOverlay
     }
     
