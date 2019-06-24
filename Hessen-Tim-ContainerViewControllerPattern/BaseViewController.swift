@@ -23,6 +23,9 @@ class BaseViewController: UIViewController {
         
         collapseMaster = UIBarButtonItem(title: "Information", style: .done, target: self, action: #selector(collapse))
         self.navigationItem.rightBarButtonItem = collapseMaster
+        
+        self.navigationItem.leftItemsSupplementBackButton = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
       
     }
     

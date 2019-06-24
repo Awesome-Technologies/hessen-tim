@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -319,7 +319,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_2" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>
@@ -1089,20 +1089,6 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjG-cp-qlC">
                                 <rect key="frame" x="20" y="44" width="1024.5" height="256"/>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yIf-9e-BEJ">
-                                <rect key="frame" x="1217" y="44" width="89" height="89"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="89" id="ibF-uR-ifQ">
-                                        <variation key="heightClass=compact" constant="40"/>
-                                    </constraint>
-                                    <constraint firstAttribute="width" secondItem="yIf-9e-BEJ" secondAttribute="height" multiplier="1:1" id="mv7-L4-3Mc"/>
-                                </constraints>
-                                <state key="normal" title="Go Back" image="close-Button"/>
-                                <connections>
-                                    <action selector="toPrevScreen:" destination="18V-gH-ShB" eventType="touchUpInside" id="ubC-JC-QJO"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DsW-Zc-fzr">
                                 <rect key="frame" x="1138" y="816" width="168" height="168"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1127,9 +1113,6 @@
                                 <variation key="heightClass=compact" constant="21"/>
                             </constraint>
                             <constraint firstItem="j5Q-dx-7NW" firstAttribute="height" secondItem="sxb-nu-Kc7" secondAttribute="height" multiplier="5:8" id="8BI-XT-DpF"/>
-                            <constraint firstItem="4MB-BB-0eS" firstAttribute="trailing" secondItem="yIf-9e-BEJ" secondAttribute="trailing" constant="60" id="8DC-2D-WlI">
-                                <variation key="heightClass=compact" constant="21"/>
-                            </constraint>
                             <constraint firstItem="rjG-cp-qlC" firstAttribute="height" secondItem="sxb-nu-Kc7" secondAttribute="height" multiplier="2:8" id="9Y5-b6-bEi"/>
                             <constraint firstItem="4MB-BB-0eS" firstAttribute="trailing" secondItem="DsW-Zc-fzr" secondAttribute="trailing" constant="60" id="CWN-Cy-WC6">
                                 <variation key="heightClass=compact" constant="21"/>
@@ -1138,7 +1121,6 @@
                             <constraint firstItem="j5Q-dx-7NW" firstAttribute="leading" secondItem="4MB-BB-0eS" secondAttribute="leading" constant="20" id="fYx-aW-MED"/>
                             <constraint firstItem="j5Q-dx-7NW" firstAttribute="width" secondItem="sxb-nu-Kc7" secondAttribute="width" multiplier="6:8" id="g53-Fs-XXA"/>
                             <constraint firstItem="4MB-BB-0eS" firstAttribute="bottom" secondItem="DsW-Zc-fzr" secondAttribute="bottom" constant="20" id="h2G-DU-Ru8"/>
-                            <constraint firstItem="yIf-9e-BEJ" firstAttribute="top" secondItem="4MB-BB-0eS" secondAttribute="top" constant="20" id="nLO-iQ-ASS"/>
                             <constraint firstItem="rjG-cp-qlC" firstAttribute="width" secondItem="sxb-nu-Kc7" secondAttribute="width" multiplier="6:8" id="nu6-sd-xCw"/>
                             <constraint firstItem="4MB-BB-0eS" firstAttribute="bottom" secondItem="j5Q-dx-7NW" secondAttribute="bottom" constant="20" id="sa1-E9-GvE"/>
                         </constraints>
@@ -1167,25 +1149,11 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fMe-Ha-el9">
-                                <rect key="frame" x="20" y="84" width="743" height="170.5"/>
+                                <rect key="frame" x="20" y="84" width="950.5" height="170.5"/>
                                 <connections>
                                     <segue destination="kny-1j-E65" kind="embed" id="Uig-Zd-X5S"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BzN-tj-mnb">
-                                <rect key="frame" x="841.5" y="94" width="89" height="89"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="BzN-tj-mnb" secondAttribute="height" multiplier="1:1" id="kio-Kg-r3t"/>
-                                    <constraint firstAttribute="width" constant="89" id="sjV-Pu-qxa">
-                                        <variation key="heightClass=compact" constant="40"/>
-                                    </constraint>
-                                </constraints>
-                                <state key="normal" title="Go Back" image="close-Button"/>
-                                <connections>
-                                    <action selector="toPrevScreen:" destination="N3B-2z-UoZ" eventType="touchUpInside" id="EMy-R4-AhM"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZ6-gl-Cbf">
                                 <rect key="frame" x="30" y="904" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1205,14 +1173,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="fMe-Ha-el9" firstAttribute="width" secondItem="Nzn-rV-JEJ" secondAttribute="width" multiplier="6:8" id="5xR-NT-6pc"/>
                             <constraint firstItem="8Wp-rj-6vV" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="20" id="9dj-k0-U6Q"/>
-                            <constraint firstItem="BzN-tj-mnb" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="20" id="FSS-0t-kxR"/>
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="8Wp-rj-6vV" secondAttribute="trailing" constant="20" id="Fmc-Zs-ehZ"/>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="10" id="JaP-eM-Mkw"/>
-                            <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="BzN-tj-mnb" secondAttribute="trailing" constant="60" id="QIc-Kl-1Nu">
-                                <variation key="heightClass=compact" constant="21"/>
-                            </constraint>
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="leading" secondItem="aZ6-gl-Cbf" secondAttribute="trailing" constant="-110" id="Ycx-wt-UvV">
                                 <variation key="heightClass=compact" constant="21"/>
                             </constraint>
@@ -1220,6 +1183,7 @@
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="bottom" secondItem="aZ6-gl-Cbf" secondAttribute="bottom" constant="20" id="sNN-FO-OTI"/>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="20" id="uWb-ne-GPw"/>
                             <constraint firstItem="8Wp-rj-6vV" firstAttribute="top" secondItem="fMe-Ha-el9" secondAttribute="bottom" constant="15" id="w1B-Pi-Wl0"/>
+                            <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="fMe-Ha-el9" secondAttribute="trailing" constant="20" id="yzt-Dm-mS3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GeI-aU-i3u"/>
                     </view>
@@ -1280,11 +1244,11 @@
             <objects>
                 <viewController id="kny-1j-E65" customClass="GalleryViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gnE-LL-p9t">
-                        <rect key="frame" x="0.0" y="0.0" width="743" height="170.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="950.5" height="170.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="llN-Hx-cs9">
-                                <rect key="frame" x="0.0" y="0.0" width="743" height="150.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="950.5" height="150.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Ci-cl-VFq">
                                     <size key="itemSize" width="50" height="50"/>
