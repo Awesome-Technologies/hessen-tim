@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -319,7 +319,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_2" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>
@@ -1170,13 +1170,32 @@
                                     <action selector="takePicture:" destination="N3B-2z-UoZ" eventType="touchUpInside" id="lAG-kB-Qop"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aVK-jf-hRP">
+                                <rect key="frame" x="30" y="816" width="80" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="EsO-QO-trE">
+                                        <variation key="heightClass=compact" constant="90"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" secondItem="aVK-jf-hRP" secondAttribute="height" multiplier="1:1" id="uLA-Hg-8lt">
+                                        <variation key="heightClass=compact" constant="0.0"/>
+                                    </constraint>
+                                </constraints>
+                                <state key="normal" title="Write Comment" image="comment-Button"/>
+                                <connections>
+                                    <action selector="showComments:" destination="N3B-2z-UoZ" eventType="touchUpInside" id="mls-D9-VOz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="aVK-jf-hRP" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="30" id="0Cb-TN-n21"/>
+                            <constraint firstItem="aVK-jf-hRP" firstAttribute="width" secondItem="aVK-jf-hRP" secondAttribute="height" multiplier="1:1" id="702-4f-aJh"/>
                             <constraint firstItem="8Wp-rj-6vV" firstAttribute="leading" secondItem="GeI-aU-i3u" secondAttribute="leading" constant="20" id="9dj-k0-U6Q"/>
                             <constraint firstItem="GeI-aU-i3u" firstAttribute="trailing" secondItem="8Wp-rj-6vV" secondAttribute="trailing" constant="20" id="Fmc-Zs-ehZ"/>
+                            <constraint firstItem="aZ6-gl-Cbf" firstAttribute="top" secondItem="aVK-jf-hRP" secondAttribute="bottom" constant="8" id="J9o-Xd-bxe"/>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="top" secondItem="GeI-aU-i3u" secondAttribute="top" constant="10" id="JaP-eM-Mkw"/>
-                            <constraint firstItem="GeI-aU-i3u" firstAttribute="leading" secondItem="aZ6-gl-Cbf" secondAttribute="trailing" constant="-110" id="Ycx-wt-UvV">
+                            <constraint firstItem="GeI-aU-i3u" firstAttribute="leading" secondItem="aZ6-gl-Cbf" secondAttribute="leading" constant="-30" id="Ycx-wt-UvV">
                                 <variation key="heightClass=compact" constant="21"/>
                             </constraint>
                             <constraint firstItem="fMe-Ha-el9" firstAttribute="height" secondItem="Nzn-rV-JEJ" secondAttribute="height" multiplier="1:6" id="gVl-5E-rOP"/>
@@ -1317,6 +1336,7 @@
         <image name="Screen_1" width="2418" height="1668"/>
         <image name="Screen_2" width="2418" height="1668"/>
         <image name="close-Button" width="530" height="530"/>
+        <image name="comment-Button" width="530" height="530"/>
         <image name="foto-Button" width="530" height="530"/>
     </resources>
     <inferredMetricsTieBreakers>
