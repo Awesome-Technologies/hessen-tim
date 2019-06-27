@@ -11,7 +11,10 @@ import UIKit
 class PatientendatenViewController: UIViewController {
     
     var collapseMaster:UIBarButtonItem!
-
+    
+    //https://github.com/jriosdev/iOSDropDown
+    @IBOutlet weak var patientDataDropdown: DropDown!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +24,19 @@ class PatientendatenViewController: UIViewController {
         
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
+        
+        
+        // The list of array to display. Can be changed dynamically
+        patientDataDropdown.optionArray = ["Max Müller", "Paul Pantzer", "Betina Bauer"]
+        //Its Id Values and its optional
+        patientDataDropdown.optionIds = [1,23,54,22]
+        
+        // Image Array its optional
+        //bisherigePatienten.ImageArray = [👩🏻‍🦳,🙊,🥞]
+        // The the Closure returns Selected Index and String
+        patientDataDropdown.didSelect{(selectedText , index ,id) in
+            print("Selected String: \(selectedText) \n index: \(index)")
+        }
 
     }
     

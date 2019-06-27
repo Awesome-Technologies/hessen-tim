@@ -744,11 +744,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dmT-ff-Cvu" customClass="DropDown" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target">
+                                <rect key="frame" x="20" y="102" width="951" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="rM7-Kb-pSh"/>
                     </view>
                     <navigationItem key="navigationItem" id="2R5-F0-SeT"/>
+                    <connections>
+                        <outlet property="bisherigePatienten" destination="dmT-ff-Cvu" id="QJ0-Yu-rF8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PnT-bs-3Wb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
