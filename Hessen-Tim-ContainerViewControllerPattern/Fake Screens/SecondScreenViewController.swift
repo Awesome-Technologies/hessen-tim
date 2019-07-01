@@ -12,6 +12,8 @@ class SecondScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var goBackTouchAreaView: UIView!
     @IBOutlet weak var showCameraTouchAreaView: UIView!
+    @IBOutlet weak var patientListView: UIView!
+    @IBOutlet weak var orderListView: UIView!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -25,12 +27,26 @@ class SecondScreenViewController: UIViewController {
         
         showCameraTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
         
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.048)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.066)
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0)
         width = screen2ImageView.frame.width * 0.065
         height = width
         
         goBackTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
+        
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.037)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.095)
+        width = screen2ImageView.frame.width * 0.14
+        height = screen2ImageView.frame.height * 0.08
+        
+        patientListView.frame = CGRect(x: x, y: y, width: width, height: height)
+        
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.037)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.2)
+        width = screen2ImageView.frame.width * 0.14
+        height = screen2ImageView.frame.height * 0.09
+        
+        orderListView.frame = CGRect(x: x, y: y, width: width, height: height)
     }
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
