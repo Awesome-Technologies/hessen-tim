@@ -424,7 +424,11 @@
                         <segue destination="BRP-Dz-pYi" kind="show" id="bXX-Mn-IRh"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="h9s-6F-1j7" userLabel="Show PatientList"/>
+                <tapGestureRecognizer id="h9s-6F-1j7" userLabel="Show PatientList">
+                    <connections>
+                        <segue destination="ETs-MS-wP6" kind="show" id="Ph3-eK-d00"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-626.35431918008783" y="141.796875"/>
         </scene>
@@ -1430,7 +1434,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Patienten_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="q6A-Ue-T5O">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Fall_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="q6A-Ue-T5O">
                                 <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -1486,8 +1490,73 @@
             </objects>
             <point key="canvasLocation" x="-1326" y="142"/>
         </scene>
+        <!--Patient List View Controller-->
+        <scene sceneID="g3v-kK-Kb6">
+            <objects>
+                <viewController id="ETs-MS-wP6" customClass="PatientListViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4Qe-2R-9wW">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Patienten_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="7QD-bw-vhE">
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="7QD-bw-vhE" secondAttribute="height" multiplier="1.44964:1" id="Ei4-cX-xiH"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9WR-4M-veg" userLabel="back">
+                                <rect key="frame" x="131" y="94" width="148" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.15285209759999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="rfB-1W-GKi" appends="YES" id="aBl-Ar-Nfm"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FiX-iF-81r" userLabel="patient1">
+                                <rect key="frame" x="131" y="260" width="148" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.15285209759999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="g8h-vO-HYu" appends="YES" id="DUK-Xm-Vik"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="7QD-bw-vhE" firstAttribute="top" secondItem="nJ2-PF-I2T" secondAttribute="top" constant="20" id="0PR-ke-t3e"/>
+                            <constraint firstItem="7QD-bw-vhE" firstAttribute="centerX" secondItem="nJ2-PF-I2T" secondAttribute="centerX" id="TQs-UR-p2b"/>
+                            <constraint firstItem="7QD-bw-vhE" firstAttribute="bottom" secondItem="nJ2-PF-I2T" secondAttribute="bottom" constant="-20" id="zsG-1Q-YPC"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="nJ2-PF-I2T"/>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="9WR-4M-veg" id="0oA-Sn-eGh"/>
+                        <outlet property="backgroundImage" destination="7QD-bw-vhE" id="5WU-uJ-Hrh"/>
+                        <outlet property="patient1" destination="FiX-iF-81r" id="hwI-pD-gXr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31E-aH-y7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0PQ-2k-ajT" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="rfB-1W-GKi" userLabel="goToMainScreen">
+                    <connections>
+                        <action selector="goBackToRootTapped:" destination="ETs-MS-wP6" id="sOR-xr-jJ9"/>
+                        <segue destination="0PQ-2k-ajT" kind="unwind" unwindAction="exitViewToRootViewWithSegue:" id="smc-fI-Y5C"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="g8h-vO-HYu" userLabel="goToSplitView">
+                    <connections>
+                        <segue destination="UNo-Bw-Gvo" kind="show" id="cXy-La-cyz"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-1326" y="1080"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Fall_Liste" width="1189" height="790"/>
         <image name="Login_Screen" width="1189" height="790"/>
         <image name="Main_Screen" width="1189" height="790"/>
         <image name="Patienten_Liste" width="1189" height="790"/>
@@ -1499,7 +1568,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="GfF-9q-Zga"/>
-        <segue reference="5IH-4e-339"/>
+        <segue reference="HO4-os-tAZ"/>
         <segue reference="BHA-SK-YWl"/>
     </inferredMetricsTieBreakers>
 </document>
