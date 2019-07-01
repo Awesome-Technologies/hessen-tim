@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GOq-f9-cpI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tQb-Xs-GmT">
     <device id="ipad12_9rounded" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -318,8 +318,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_2" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Main_Screen" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>
@@ -343,22 +343,22 @@
                                     <outletCollection property="gestureRecognizers" destination="o92-9J-6dN" appends="YES" id="fgY-P9-MHp"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwS-je-Kc8" userLabel="Touch Area PatienData">
-                                <rect key="frame" x="754" y="237" width="361" height="164"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="o2N-1h-eQW" appends="YES" id="6Kh-yO-Q3f"/>
-                                </connections>
-                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vlx-Td-nOX">
-                                <rect key="frame" x="814" y="409" width="336" height="128"/>
+                                <rect key="frame" x="902" y="438" width="336" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.67000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="oYd-70-H1E" appends="YES" id="ekz-uL-anE"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwS-je-Kc8" userLabel="Touch Area PatienData">
+                                <rect key="frame" x="864" y="266" width="361" height="164"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="o2N-1h-eQW" appends="YES" id="6Kh-yO-Q3f"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -1340,16 +1340,74 @@
             </objects>
             <point key="canvasLocation" x="3013" y="-279"/>
         </scene>
+        <!--Login Screen View Controller-->
+        <scene sceneID="TQg-vc-U3L">
+            <objects>
+                <viewController id="tQb-Xs-GmT" userLabel="Login Screen View Controller" customClass="LoginScreenViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DIU-U9-3aL">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Login_Screen" translatesAutoresizingMaskIntoConstraints="NO" id="o67-yy-abj">
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="o67-yy-abj" secondAttribute="height" multiplier="1.44964:1" id="7sP-RN-kPF"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-3V-SGZ">
+                                <rect key="frame" x="902" y="438" width="336" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="vHl-uN-kYO" appends="YES" id="5B2-gW-yEv"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="o67-yy-abj" firstAttribute="top" secondItem="vGj-Rl-Qbz" secondAttribute="top" constant="20" id="0oF-14-379"/>
+                            <constraint firstItem="o67-yy-abj" firstAttribute="centerX" secondItem="vGj-Rl-Qbz" secondAttribute="centerX" id="8PK-9Y-kFP"/>
+                            <constraint firstItem="o67-yy-abj" firstAttribute="bottom" secondItem="vGj-Rl-Qbz" secondAttribute="bottom" constant="-20" id="k3p-Df-Dfx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vGj-Rl-Qbz"/>
+                    </view>
+                    <connections>
+                        <outlet property="screen2ImageView" destination="o67-yy-abj" id="CAT-Mx-aWC"/>
+                        <outlet property="showMainScreen" destination="3bV-3V-SGZ" id="Tvv-tu-oty"/>
+                        <segue destination="zzg-gO-SCa" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="ije-lE-hxo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1EZ-Jb-rIv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="zzg-gO-SCa" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="xU7-kU-SFu" userLabel="Show Camera Segue"/>
+                <tapGestureRecognizer id="Yqe-Sq-2PN" userLabel="Show First Screen Segue">
+                    <connections>
+                        <action selector="goBackToRootTapped:" destination="tQb-Xs-GmT" id="Ita-MP-nIZ"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="XGe-vs-7yc" userLabel="Show PatientData Segue"/>
+                <tapGestureRecognizer id="vHl-uN-kYO" userLabel="Show MainScreen">
+                    <connections>
+                        <segue destination="SU6-Eh-hR5" kind="show" id="GDq-BJ-4tA"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-626" y="-627"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Login_Screen" width="1189" height="790"/>
+        <image name="Main_Screen" width="1189" height="790"/>
         <image name="Patientendaten" width="1482" height="1031"/>
         <image name="Screen_1" width="2418" height="1668"/>
-        <image name="Screen_2" width="2418" height="1668"/>
         <image name="close-Button" width="530" height="530"/>
         <image name="comment-Button" width="530" height="530"/>
         <image name="foto-Button" width="530" height="530"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="8Li-y3-TZ2"/>
+        <segue reference="GDq-BJ-4tA"/>
     </inferredMetricsTieBreakers>
 </document>
