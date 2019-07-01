@@ -52,4 +52,7 @@ class SecondScreenViewController: UIViewController {
     @IBAction func goBackToRootTapped(_ sender: Any) {
         performSegue(withIdentifier: "exitToRoot", sender: self)
     }
+    
+    
+    @IBAction func exitViewToRootView(segue:UIStoryboardSegue) {}
 }
