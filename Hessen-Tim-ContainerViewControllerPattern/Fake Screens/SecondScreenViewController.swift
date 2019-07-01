@@ -18,7 +18,7 @@ class SecondScreenViewController: UIViewController {
         
         // Place touch area at the appropriate place on the screenshot
         
-        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.756)
+        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.78)
         var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.749)
         var width = screen2ImageView.frame.width * 0.182
         var height = screen2ImageView.frame.height * 0.189
