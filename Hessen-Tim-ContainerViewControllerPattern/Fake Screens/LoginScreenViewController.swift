@@ -13,8 +13,8 @@ class LoginScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var showMainScreen: UIView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         // Do any additional setup after loading the view.
         

@@ -14,8 +14,8 @@ class OrderListViewController: UIViewController {
     
     @IBOutlet weak var patient1: UIView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
 
         // Do any additional setup after loading the view.
         
