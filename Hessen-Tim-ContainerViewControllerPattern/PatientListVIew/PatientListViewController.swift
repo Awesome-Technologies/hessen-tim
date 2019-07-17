@@ -8,6 +8,13 @@
 
 import UIKit
 
+struct PatientSection {
+    
+    var nachname : String
+    var patienten : [Patient]
+    
+}
+
 struct Patient {
     var nachname : String
     var vorname : String
@@ -39,12 +46,14 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
 
 
 
-    @IBOutlet weak var backButton: UIView!
     @IBOutlet weak var patient1: UIView!
     @IBOutlet weak var tableView: UITableView!
+    var sections = [PatientSection]()
+    var sortNachnameUp = false
     
     var patienten = [
         Patient(nachname: "Müller", vorname: "Hans", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Maier", vorname: "Georg", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
         Patient(nachname: "Kachelman", vorname: "Jörg", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
         Patient(nachname: "Panzer", vorname: "Paul", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
         Patient(nachname: "Geiger", vorname: "Sabine", geschlecht: "W", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "48kg", klinik: "Kassel", kostentraeger: "Allianz"),
@@ -56,7 +65,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func sortNachname(_ sender: Any) {
-        patienten.sort { $0.nachname < $1.nachname }
+        sortNachname()
         self.tableView.reloadData()
     }
     
@@ -65,6 +74,44 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        sortNachname()
+    }
+    
+    func sortNachname(){
+        var dict = Dictionary(grouping: self.patienten) { (patient) in
+            return getNachname(name: patient.nachname)
+        }
+        
+        for (key, value) in dict
+        {
+            dict[key] = value.sorted(by: { $0.nachname < $1.nachname })
+        }
+        
+        if(sortNachnameUp){
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key > bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(nachname: key, patienten: values)
+            }
+            sortNachnameUp = false
+            
+        }else{
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key < bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(nachname: key, patienten: values)
+            }
+            sortNachnameUp = true
+        }
+        
+        
     }
 
     
@@ -76,15 +123,8 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         var x = UIScreen.main.bounds.minX + (UIScreen.main.bounds.width * 0.02)
         var y = UIScreen.main.bounds.minY + (UIScreen.main.bounds.height * 0.035)
         var width = UIScreen.main.bounds.width * 0.055
-
+        
         var height = width
-        
-        backButton.frame = CGRect(x: x, y: y, width: width, height: height)
-        
-        x = UIScreen.main.bounds.minX + (UIScreen.main.bounds.width * 0.07)
-        y = UIScreen.main.bounds.minY + (UIScreen.main.bounds.height * 0.22)
-        width = UIScreen.main.bounds.width * 0.85
-        height = UIScreen.main.bounds.height * 0.1
 
         
         patient1.frame = CGRect(x: x, y: y, width: width, height: height)
@@ -100,23 +140,31 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func getNachname(name : String) -> String {
+        return String(name.first!)
+    }
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return self.sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let section = self.sections[section]
+        return section.nachname
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        print(patienten.count)
-        return patienten.count
+        let section = self.sections[section]
+        return section.patienten.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
         
-        let patient = patienten[indexPath.row]
+        let section = self.sections[indexPath.section]
+        let patient = section.patienten[indexPath.row]
         cell.nachnameLabel?.text = patient.nachname
         cell.vornameLabel?.text = patient.vorname
         cell.geschlechtLabel?.text = patient.geschlecht
@@ -132,6 +180,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
 
-
+    
     
 }
