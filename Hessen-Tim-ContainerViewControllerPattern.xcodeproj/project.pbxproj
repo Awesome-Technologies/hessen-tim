@@ -173,6 +173,7 @@
 				8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */,
 				8F4B241022C500D100A8E678 /* Patientendaten */,
 				9724C7DE2256E26E006A67DF /* Fake Screens */,
+				8F5BBDA122DF02BF0020A0C5 /* PatientListVIew */,
 				97BDA80A2254C6460055EBCE /* Gallery */,
 				9724C7D92254D73D006A67DF /* Camera Picture View */,
 				8F5233DF223949D70020292F /* Assets.xcassets */,
@@ -200,6 +201,14 @@
 			path = "Hessen-Tim-ContainerViewControllerPatternUITests";
 			sourceTree = "<group>";
 		};
+		8F5BBDA122DF02BF0020A0C5 /* PatientListVIew */ = {
+			isa = PBXGroup;
+			children = (
+				8FDE86A922CA3F210034A913 /* PatientListViewController.swift */,
+			);
+			path = PatientListVIew;
+			sourceTree = "<group>";
+		};
 		9724C7D92254D73D006A67DF /* Camera Picture View */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,7 +226,6 @@
 				8FEB9B092264B24C00DD45CF /* PatientDataViewController.swift */,
 				8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */,
 				8FDE86A722CA181E0034A913 /* OrderListViewController.swift */,
-				8FDE86A922CA3F210034A913 /* PatientListViewController.swift */,
 			);
 			path = "Fake Screens";
 			sourceTree = "<group>";
