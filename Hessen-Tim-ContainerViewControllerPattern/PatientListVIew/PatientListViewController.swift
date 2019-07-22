@@ -10,7 +10,7 @@ import UIKit
 
 struct PatientSection {
     
-    var nachname : String
+    var gruppenname : String
     var patienten : [Patient]
     
 }
@@ -19,7 +19,7 @@ struct Patient {
     var nachname : String
     var vorname : String
     var geschlecht : String
-    var geburtsdatum : String
+    var geburtsdatum : Date
     var groeße : String
     var gewicht : String
     var klinik : String
@@ -40,6 +40,18 @@ class PatientTableViewCell: UITableViewCell {
     
 }
 
+fileprivate func parseDate(_ str : String) -> Date {
+    let dateFormat = DateFormatter()
+    dateFormat.dateFormat = "yyyy-MM-dd"
+    return dateFormat.date(from: str)!
+}
+
+fileprivate func firstDayOfMonth(date : Date) -> Date {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.year, .month], from: date)
+    return calendar.date(from: components)!
+}
+
 
 
 class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -50,14 +62,15 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     var sections = [PatientSection]()
     var sortNachnameUp = false
+    var sortGeburtsdatumUp = false
     
     var patienten = [
-        Patient(nachname: "Müller", vorname: "Hans", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Maier", vorname: "Georg", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Kachelman", vorname: "Jörg", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Panzer", vorname: "Paul", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Geiger", vorname: "Sabine", geschlecht: "W", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "48kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Bauer", vorname: "Heiko", geschlecht: "M", geburtsdatum: "25.03.1948 (70)", groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Müller", vorname: "Hans", geschlecht: "M", geburtsdatum: parseDate("1950-02-15"), groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Maier", vorname: "Georg", geschlecht: "M", geburtsdatum: parseDate("1951-06-04"), groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Kachelman", vorname: "Jörg", geschlecht: "M", geburtsdatum: parseDate("1953-05-01"), groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Panzer", vorname: "Paul", geschlecht: "M", geburtsdatum: parseDate("1950-02-18"), groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Geiger", vorname: "Sabine", geschlecht: "W", geburtsdatum: parseDate("1951-06-15"), groeße: "169cm", gewicht: "48kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Bauer", vorname: "Heiko", geschlecht: "M", geburtsdatum: parseDate("1962-06-28"), groeße: "169cm", gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
     ]
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
@@ -69,6 +82,10 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.reloadData()
     }
     
+    @IBAction func sortGeburtsdatum(_ sender: Any) {
+        sortBirthday()
+        self.tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +112,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             self.sections = sortedDic.map { (arg) -> PatientSection in
                 
                 let (key, values) = arg
-                return PatientSection(nachname: key, patienten: values)
+                return PatientSection(gruppenname: key, patienten: values)
             }
             sortNachnameUp = false
             
@@ -106,12 +123,63 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             self.sections = sortedDic.map { (arg) -> PatientSection in
                 
                 let (key, values) = arg
-                return PatientSection(nachname: key, patienten: values)
+                return PatientSection(gruppenname: key, patienten: values)
             }
             sortNachnameUp = true
         }
+    }
+    
+    func sortBirthday(){
+        
+        var dict = Dictionary(grouping: self.patienten) { (patient) in
+            return firstDayOfMonth(date: patient.geburtsdatum)
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        
+        if sortGeburtsdatumUp {
+            
+            for (key, value) in dict
+            {
+                dict[key] = value.sorted(by: { $0.geburtsdatum > $1.geburtsdatum })
+            }
+            
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key > bDic.key
+            }
+            
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: dateFormatter.string(from: key), patienten: values)
+            }
+            
+            sortGeburtsdatumUp = false
+            
+        }else{
+            
+            for (key, value) in dict
+            {
+                dict[key] = value.sorted(by: { $0.geburtsdatum < $1.geburtsdatum })
+            }
+            
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key < bDic.key
+            }
+            
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: dateFormatter.string(from: key), patienten: values)
+            }
+            
+            sortGeburtsdatumUp = true
+            
+        }
         
         
+    
     }
 
     
@@ -152,7 +220,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = self.sections[section]
-        return section.nachname
+        return section.gruppenname
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,18 +233,17 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         
         let section = self.sections[indexPath.section]
         let patient = section.patienten[indexPath.row]
+        let date = patient.geburtsdatum
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yyyy"
         cell.nachnameLabel?.text = patient.nachname
         cell.vornameLabel?.text = patient.vorname
         cell.geschlechtLabel?.text = patient.geschlecht
-        cell.geburtsdatumLabel?.text = patient.geburtsdatum
+        cell.geburtsdatumLabel?.text = dateFormatter.string(from: date)
         cell.groeßeLabel?.text = patient.groeße
         cell.gewichtLabel?.text = patient.gewicht
         cell.klinikLabel?.text = patient.klinik
         cell.kostentraegerLabel?.text = patient.kostentraeger
-        
-        print(indexPath.row)
-        print(cell.nachnameLabel?.text)
-        
         return cell
     }
 
