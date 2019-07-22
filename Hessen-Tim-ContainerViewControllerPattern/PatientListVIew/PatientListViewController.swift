@@ -82,9 +82,27 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.reloadData()
     }
     
+    @IBAction func sortVorname(_ sender: Any) {
+    }
+    
+    @IBAction func sortGeschlecht(_ sender: Any) {
+    }
+    
     @IBAction func sortGeburtsdatum(_ sender: Any) {
         sortBirthday()
         self.tableView.reloadData()
+    }
+    
+    @IBAction func sortGroeße(_ sender: Any) {
+    }
+    
+    @IBAction func sortGewicht(_ sender: Any) {
+    }
+    
+    @IBAction func sortKlinik(_ sender: Any) {
+    }
+    
+    @IBAction func sortVersicherung(_ sender: Any) {
     }
     
     override func viewDidLoad() {
