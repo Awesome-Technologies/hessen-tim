@@ -21,7 +21,7 @@ struct Patient {
     var geschlecht : String
     var geburtsdatum : Date
     var groeße : Int
-    var gewicht : String
+    var gewicht : Int
     var klinik : String
     var kostentraeger : String
     
@@ -73,12 +73,12 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     var sortVersicherungUp = false
     
     var patienten = [
-        Patient(nachname: "Müller", vorname: "Hans", geschlecht: "M", geburtsdatum: parseDate("1950-02-15"), groeße: 180, gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Maier", vorname: "Georg", geschlecht: "M", geburtsdatum: parseDate("1951-06-04"), groeße: 152, gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Kachelman", vorname: "Jörg", geschlecht: "M", geburtsdatum: parseDate("1953-05-01"), groeße: 169, gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Panzer", vorname: "Paul", geschlecht: "M", geburtsdatum: parseDate("1950-02-18"), groeße: 180, gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Geiger", vorname: "Sabine", geschlecht: "W", geburtsdatum: parseDate("1951-06-15"), groeße: 154, gewicht: "48kg", klinik: "Kassel", kostentraeger: "Allianz"),
-        Patient(nachname: "Bauer", vorname: "Heiko", geschlecht: "M", geburtsdatum: parseDate("1962-06-28"), groeße: 208, gewicht: "71kg", klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Müller", vorname: "Hans", geschlecht: "M", geburtsdatum: parseDate("1950-02-15"), groeße: 180, gewicht: 71, klinik: "Kassel", kostentraeger: "Allianz"),
+        Patient(nachname: "Maier", vorname: "Georg", geschlecht: "M", geburtsdatum: parseDate("1951-06-04"), groeße: 152, gewicht: 69, klinik: "Frankfurt", kostentraeger: "AOK"),
+        Patient(nachname: "Kachelman", vorname: "Jörg", geschlecht: "M", geburtsdatum: parseDate("1953-05-01"), groeße: 169, gewicht: 87, klinik: "Frankfurt", kostentraeger: "Allianz"),
+        Patient(nachname: "Panzer", vorname: "Paul", geschlecht: "M", geburtsdatum: parseDate("1950-02-18"), groeße: 180, gewicht: 81, klinik: "Frankfurt", kostentraeger: "TK"),
+        Patient(nachname: "Geiger", vorname: "Sabine", geschlecht: "W", geburtsdatum: parseDate("1951-06-15"), groeße: 154, gewicht: 53, klinik: "Kassel", kostentraeger: "HUK"),
+        Patient(nachname: "Bauer", vorname: "Heiko", geschlecht: "M", geburtsdatum: parseDate("1962-06-28"), groeße: 208, gewicht: 96, klinik: "Kassel", kostentraeger: "AOK"),
     ]
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
@@ -111,12 +111,18 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func sortGewicht(_ sender: Any) {
+        sortGewicht()
+        self.tableView.reloadData()
     }
     
     @IBAction func sortKlinik(_ sender: Any) {
+        sortKlinik()
+        self.tableView.reloadData()
     }
     
     @IBAction func sortVersicherung(_ sender: Any) {
+        sortVersicherung()
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -323,6 +329,113 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func sortGewicht(){
+        var dict = Dictionary(grouping: self.patienten) { (patient) in
+            return patient.gewicht
+        }
+        
+        if(sortGewichtUp) {
+            for (key, value) in dict
+            {
+                dict[key] = value.sorted(by: { $0.nachname < $1.nachname })
+            }
+            
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key < bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: String(key), patienten: values)
+            }
+            sortGewichtUp = false
+            
+        } else {
+            for (key, value) in dict
+            {
+                dict[key] = value.sorted(by: { $0.nachname < $1.nachname })
+            }
+            
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key > bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: String(key), patienten: values)
+            }
+            sortGewichtUp = true
+        }
+    }
+    
+    func sortKlinik(){
+        var dict = Dictionary(grouping: self.patienten) { (patient) in
+            return patient.klinik
+        }
+        
+        for (key, value) in dict
+        {
+            dict[key] = value.sorted(by: { $0.nachname < $1.nachname })
+        }
+        
+        if(sortKlinikUp) {
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key > bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: key, patienten: values)
+            }
+            sortKlinikUp = false
+            
+        } else {
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key < bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: key, patienten: values)
+            }
+            sortKlinikUp = true
+        }
+    }
+    
+    func sortVersicherung(){
+        var dict = Dictionary(grouping: self.patienten) { (patient) in
+            return patient.kostentraeger
+        }
+        
+        for (key, value) in dict
+        {
+            dict[key] = value.sorted(by: { $0.nachname < $1.nachname })
+        }
+        
+        if(sortVersicherungUp) {
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key > bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: key, patienten: values)
+            }
+            sortVersicherungUp = false
+            
+        } else {
+            var sortedDic = dict.sorted { (aDic, bDic) -> Bool in
+                return aDic.key < bDic.key
+            }
+            self.sections = sortedDic.map { (arg) -> PatientSection in
+                
+                let (key, values) = arg
+                return PatientSection(gruppenname: key, patienten: values)
+            }
+            sortVersicherungUp = true
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -381,7 +494,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         cell.geschlechtLabel?.text = patient.geschlecht
         cell.geburtsdatumLabel?.text = dateFormatter.string(from: date)
         cell.groeßeLabel?.text = String(patient.groeße)
-        cell.gewichtLabel?.text = patient.gewicht
+        cell.gewichtLabel?.text = String(patient.gewicht)
         cell.klinikLabel?.text = patient.klinik
         cell.kostentraegerLabel?.text = patient.kostentraeger
         return cell
