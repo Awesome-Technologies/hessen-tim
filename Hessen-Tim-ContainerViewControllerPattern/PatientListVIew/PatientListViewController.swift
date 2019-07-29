@@ -132,6 +132,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         sortNachname()
         
         tableView.rowHeight = 60
+        tableView.sectionFooterHeight = 20
     }
     
     func sortNachname(){
@@ -500,6 +501,13 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
 
-    
+    func tableView(_ tableView: UITableView, titleForFooterInSection
+        section: Int) -> String? {
+        if (section == self.sections.count-1) {
+            return ""
+        } else {
+            return " "
+        }
+    }
     
 }
