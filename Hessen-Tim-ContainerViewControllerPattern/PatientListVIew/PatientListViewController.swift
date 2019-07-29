@@ -58,7 +58,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
 
 
 
-    @IBOutlet weak var patient1: UIView!
     @IBOutlet weak var tableView: UITableView!
     var sections = [PatientSection]()
     
@@ -131,6 +130,8 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.dataSource = self
         
         sortNachname()
+        
+        tableView.rowHeight = 60
     }
     
     func sortNachname(){
@@ -448,7 +449,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         var height = width
 
         
-        patient1.frame = CGRect(x: x, y: y, width: width, height: height)
     }
     
 

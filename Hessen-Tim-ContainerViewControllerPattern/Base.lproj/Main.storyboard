@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -1725,18 +1725,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FiX-iF-81r" userLabel="patient1">
-                                <rect key="frame" x="131" y="260" width="148" height="62"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.15285209759999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="g8h-vO-HYu" appends="YES" id="DUK-Xm-Vik"/>
-                                </connections>
-                            </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mG8-c5-dEQ">
-                                <rect key="frame" x="0.0" y="164" width="1366" height="860"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mG8-c5-dEQ">
+                                <rect key="frame" x="0.0" y="133.5" width="1366" height="870.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PatientCell" id="j0d-Hz-6gV" customClass="PatientTableViewCell" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target">
@@ -1746,9 +1736,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="1366" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AF0-Ik-yXj">
-                                                    <rect key="frame" x="41" y="12" width="94" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AF0-Ik-yXj">
+                                                    <rect key="frame" x="50" y="12" width="94" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1803,6 +1792,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="AF0-Ik-yXj" firstAttribute="centerY" secondItem="XME-oQ-B7o" secondAttribute="centerY" id="1Ym-qi-GWC"/>
+                                                <constraint firstItem="AF0-Ik-yXj" firstAttribute="leading" secondItem="XME-oQ-B7o" secondAttribute="leading" constant="50" id="ALC-rf-zKB"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="geburtsdatumLabel" destination="Eb7-Kv-trn" id="S8m-PW-5Zx"/>
@@ -1817,92 +1810,94 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTw-ys-TPA">
-                                <rect key="frame" x="43" y="110" width="74" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Nachname"/>
-                                <connections>
-                                    <action selector="sortNachname:" destination="ETs-MS-wP6" eventType="touchUpInside" id="36e-YA-iiK"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-25-SAu">
-                                <rect key="frame" x="586" y="110" width="99" height="30"/>
+                                <rect key="frame" x="573" y="109" width="126" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Geburtsdatum"/>
                                 <connections>
                                     <action selector="sortGeburtsdatum:" destination="ETs-MS-wP6" eventType="touchUpInside" id="Xk1-wH-2hT"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqF-UB-AKp">
-                                <rect key="frame" x="204" y="110" width="62" height="30"/>
+                                <rect key="frame" x="192" y="109" width="78" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Vorname"/>
                                 <connections>
                                     <action selector="sortVorname:" destination="ETs-MS-wP6" eventType="touchUpInside" id="rYZ-34-vib"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ArU-K5-3m3">
-                                <rect key="frame" x="365" y="110" width="78" height="30"/>
+                                <rect key="frame" x="346" y="109" width="100" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Geschlecht"/>
                                 <connections>
                                     <action selector="sortGeschlecht:" destination="ETs-MS-wP6" eventType="touchUpInside" id="4uI-uO-4YC"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1D-Nv-vmt">
-                                <rect key="frame" x="793" y="110" width="43" height="30"/>
+                                <rect key="frame" x="764" y="109" width="55" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Größe"/>
                                 <connections>
                                     <action selector="sortGroeße:" destination="ETs-MS-wP6" eventType="touchUpInside" id="buM-FJ-Zys"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkr-GS-ykm">
-                                <rect key="frame" x="1106" y="110" width="37" height="30"/>
+                                <rect key="frame" x="1089" y="109" width="47" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Klinik"/>
                                 <connections>
                                     <action selector="sortKlinik:" destination="ETs-MS-wP6" eventType="touchUpInside" id="1pO-uu-AFy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tyr-jy-OdZ">
-                                <rect key="frame" x="1221" y="110" width="91" height="30"/>
+                                <rect key="frame" x="1225" y="109" width="115" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Versicherung"/>
                                 <connections>
                                     <action selector="sortVersicherung:" destination="ETs-MS-wP6" eventType="touchUpInside" id="9e8-s2-ztR"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faj-eJ-DQV">
-                                <rect key="frame" x="943" y="110" width="57" height="30"/>
+                                <rect key="frame" x="931" y="109" width="73" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Gewicht"/>
                                 <connections>
                                     <action selector="sortGewicht:" destination="ETs-MS-wP6" eventType="touchUpInside" id="5KA-Ej-LVi"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTw-ys-TPA">
+                                <rect key="frame" x="50" y="109" width="95" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Nachname"/>
+                                <connections>
+                                    <action selector="sortNachname:" destination="ETs-MS-wP6" eventType="touchUpInside" id="36e-YA-iiK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="centerX" secondItem="nJ2-PF-I2T" secondAttribute="centerX" id="45X-fc-BK7"/>
+                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="height" secondItem="4Qe-2R-9wW" secondAttribute="height" multiplier="17/20" id="Rry-SJ-q88"/>
+                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nJ2-PF-I2T" secondAttribute="top" constant="50" id="eSD-op-E49"/>
+                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="bottom" secondItem="nJ2-PF-I2T" secondAttribute="bottom" id="fDB-uW-oiF"/>
+                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="width" secondItem="4Qe-2R-9wW" secondAttribute="width" id="wB9-kI-SGG"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="nJ2-PF-I2T"/>
                     </view>
                     <connections>
-                        <outlet property="patient1" destination="FiX-iF-81r" id="hwI-pD-gXr"/>
                         <outlet property="tableView" destination="mG8-c5-dEQ" id="47E-3k-Qgu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31E-aH-y7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="0PQ-2k-ajT" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="rfB-1W-GKi" userLabel="goToMainScreen">
-                    <connections>
-                        <action selector="goBackToRootTapped:" destination="ETs-MS-wP6" id="sOR-xr-jJ9"/>
-                        <segue destination="0PQ-2k-ajT" kind="unwind" unwindAction="exitViewToRootViewWithSegue:" id="smc-fI-Y5C"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="g8h-vO-HYu" userLabel="goToSplitView">
-                    <connections>
-                        <segue destination="UNo-Bw-Gvo" kind="show" id="cXy-La-cyz"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1326.0614934114201" y="1079.8828125"/>
         </scene>
@@ -1938,6 +1933,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="BHA-SK-YWl"/>
         <segue reference="8Li-y3-TZ2"/>
-        <segue reference="cXy-La-cyz"/>
+        <segue reference="icf-tn-bRX"/>
     </inferredMetricsTieBreakers>
 </document>
