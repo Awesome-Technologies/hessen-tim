@@ -1661,61 +1661,163 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Fall_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="q6A-Ue-T5O">
-                                <rect key="frame" x="38" y="94" width="1290" height="890"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="q6A-Ue-T5O" secondAttribute="height" multiplier="1.44964:1" id="GaZ-G8-IjJ"/>
-                                </constraints>
-                            </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9C-sH-JlS" userLabel="goToMainScreen">
-                                <rect key="frame" x="534" y="143" width="148" height="62"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.15285209759999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5Bu-1z-eOz">
+                                <rect key="frame" x="0.0" y="174" width="1366" height="730"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" red="0.14714419840000001" green="0.18062838910000001" blue="0.3299874961" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OrderCell" id="7c0-4G-4Ex" userLabel="FallCell" customClass="FallTableViewCell" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="1366" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7c0-4G-4Ex" id="LKN-Sd-sCf">
+                                            <rect key="frame" x="0.0" y="0.0" width="1366" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATUM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9rC-eH-ST7" userLabel="Datum Label">
+                                                    <rect key="frame" x="312" y="11.5" width="59" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NR" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2za-Ty-6Jx" userLabel="Nummer Label">
+                                                    <rect key="frame" x="466.5" y="11.5" width="23" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PATIENT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAD-fJ-jZD" userLabel="Patient Label">
+                                                    <rect key="frame" x="581" y="11.5" width="67" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KLINIK" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9j-fR-Z0j" userLabel="Klinik Label">
+                                                    <rect key="frame" x="725.5" y="11.5" width="52" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ABTEILUNG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zE8-lp-M1R" userLabel="Abteilung Label">
+                                                    <rect key="frame" x="842" y="11.5" width="92" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STATUS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cB7-jU-bkJ" userLabel="status Label">
+                                                    <rect key="frame" x="993.5" y="11.5" width="62.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ghz-PH-ydP">
+                                                    <rect key="frame" x="1141" y="2" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="JUD-hN-Jwa"/>
+                                                        <constraint firstAttribute="height" constant="40" id="yWk-yH-VC5"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button" image="trash"/>
+                                                    <connections>
+                                                        <action selector="deleteElement:" destination="7c0-4G-4Ex" eventType="touchUpInside" id="BfH-ke-2uE"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zE8-lp-M1R" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="2UV-WS-nHM"/>
+                                                <constraint firstItem="cB7-jU-bkJ" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="5d5-SV-cNC"/>
+                                                <constraint firstItem="zE8-lp-M1R" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="26/20" id="9Jh-UB-uBc"/>
+                                                <constraint firstItem="2za-Ty-6Jx" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="14/20" id="Y6h-dz-Nom"/>
+                                                <constraint firstItem="V9j-fR-Z0j" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="a2U-ws-U47"/>
+                                                <constraint firstItem="YAD-fJ-jZD" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="b5c-uZ-oL4"/>
+                                                <constraint firstItem="9rC-eH-ST7" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="bd2-dK-2BY"/>
+                                                <constraint firstItem="YAD-fJ-jZD" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="18/20" id="eEM-Dp-b8Z"/>
+                                                <constraint firstItem="Ghz-PH-ydP" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="f75-3m-KHf"/>
+                                                <constraint firstItem="2za-Ty-6Jx" firstAttribute="centerY" secondItem="LKN-Sd-sCf" secondAttribute="centerY" id="gIZ-JF-RiX"/>
+                                                <constraint firstItem="Ghz-PH-ydP" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="34/20" id="hDj-qg-bmL"/>
+                                                <constraint firstItem="V9j-fR-Z0j" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="22/20" id="mzD-wY-FJv"/>
+                                                <constraint firstItem="cB7-jU-bkJ" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="30/20" id="yN4-1V-raH"/>
+                                                <constraint firstItem="9rC-eH-ST7" firstAttribute="centerX" secondItem="LKN-Sd-sCf" secondAttribute="centerX" multiplier="10/20" id="zVh-EV-mey"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="abteilungLabel" destination="zE8-lp-M1R" id="j5y-bF-DaO"/>
+                                            <outlet property="datumLabel" destination="9rC-eH-ST7" id="u7l-Y8-Uee"/>
+                                            <outlet property="klinikLabel" destination="V9j-fR-Z0j" id="oiY-ha-Lv1"/>
+                                            <outlet property="nummerLabel" destination="2za-Ty-6Jx" id="cgL-jZ-zzw"/>
+                                            <outlet property="patientLabel" destination="YAD-fJ-jZD" id="lzM-yG-8pN"/>
+                                            <outlet property="statusLabel" destination="cB7-jU-bkJ" id="zAz-Th-bBR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qie-R5-UkY">
+                                <rect key="frame" x="315.5" y="134" width="52" height="30"/>
+                                <state key="normal" title="DATUM"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="en5-ya-Y0v" appends="YES" id="qOn-DY-UbV"/>
+                                    <action selector="sortDatum:" destination="BRP-Dz-pYi" eventType="touchUpInside" id="2dJ-Rk-MkG"/>
                                 </connections>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gFN-xx-khN" userLabel="patient1">
-                                <rect key="frame" x="111" y="258" width="148" height="62"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.15285209759999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRp-57-Bkb">
+                                <rect key="frame" x="847" y="134" width="82" height="30"/>
+                                <state key="normal" title="ABTEILUNG"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="yUp-74-4Ij" appends="YES" id="I7S-iZ-b4q"/>
+                                    <action selector="sortAbteilung:" destination="BRP-Dz-pYi" eventType="touchUpInside" id="noy-kq-7iK"/>
                                 </connections>
-                            </view>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iCg-Vh-Kmc">
+                                <rect key="frame" x="728" y="134" width="47" height="30"/>
+                                <state key="normal" title="KLINIK"/>
+                                <connections>
+                                    <action selector="sortKlinik:" destination="BRP-Dz-pYi" eventType="touchUpInside" id="boD-6H-FvR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZC3-ud-EA0">
+                                <rect key="frame" x="584.5" y="134" width="60" height="30"/>
+                                <state key="normal" title="PATIENT"/>
+                                <connections>
+                                    <action selector="sortPatient:" destination="BRP-Dz-pYi" eventType="touchUpInside" id="HLL-oH-6gf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0hL-LY-2Mj">
+                                <rect key="frame" x="445" y="134" width="66" height="30"/>
+                                <state key="normal" title="NUMMER"/>
+                                <connections>
+                                    <action selector="sortNummer:" destination="BRP-Dz-pYi" eventType="touchUpInside" id="KCH-sX-3ZE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Flx-x3-ZMf">
+                                <rect key="frame" x="996.5" y="134" width="56" height="30"/>
+                                <state key="normal" title="STATUS"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="q6A-Ue-T5O" firstAttribute="bottom" secondItem="fEt-nP-vRq" secondAttribute="bottom" constant="-20" id="IDS-yi-oiV"/>
-                            <constraint firstItem="q6A-Ue-T5O" firstAttribute="top" secondItem="fEt-nP-vRq" secondAttribute="top" constant="20" id="Joj-Sw-FB9"/>
-                            <constraint firstItem="q6A-Ue-T5O" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" id="imZ-FS-fbc"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="ZC3-ud-EA0" secondAttribute="bottom" constant="10" id="14I-KM-v0L"/>
+                            <constraint firstItem="fEt-nP-vRq" firstAttribute="bottom" secondItem="5Bu-1z-eOz" secondAttribute="bottom" constant="100" id="4Up-Vd-r9v"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="MRp-57-Bkb" secondAttribute="bottom" constant="10" id="7Pw-GX-650"/>
+                            <constraint firstItem="Flx-x3-ZMf" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="30/20" id="8Bs-8x-V7D"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" id="CLV-BV-aCB"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="qie-R5-UkY" secondAttribute="bottom" constant="10" id="Da5-uZ-v9g"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="width" secondItem="huN-BZ-4yu" secondAttribute="width" id="KuE-ec-RHv"/>
+                            <constraint firstItem="0hL-LY-2Mj" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="14/20" id="LYy-10-6oj"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="centerY" secondItem="fEt-nP-vRq" secondAttribute="centerY" id="NQq-6Q-ThC"/>
+                            <constraint firstItem="ZC3-ud-EA0" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="18/20" id="VCc-af-Xm5"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="iCg-Vh-Kmc" secondAttribute="bottom" constant="10" id="hB5-6y-vCl"/>
+                            <constraint firstItem="iCg-Vh-Kmc" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="22/20" id="hnn-gP-GWw"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="0hL-LY-2Mj" secondAttribute="bottom" constant="10" id="mwx-Mi-yU4"/>
+                            <constraint firstItem="qie-R5-UkY" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="10/20" id="oTN-9m-mOP"/>
+                            <constraint firstItem="5Bu-1z-eOz" firstAttribute="top" secondItem="Flx-x3-ZMf" secondAttribute="bottom" constant="10" id="ut5-te-1oN"/>
+                            <constraint firstItem="MRp-57-Bkb" firstAttribute="centerX" secondItem="fEt-nP-vRq" secondAttribute="centerX" multiplier="26/20" id="vD6-vY-poB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fEt-nP-vRq"/>
                     </view>
                     <connections>
-                        <outlet property="backButton" destination="q9C-sH-JlS" id="7Ip-QK-5hj"/>
-                        <outlet property="backgroundImage" destination="q6A-Ue-T5O" id="GRb-f2-Vm6"/>
-                        <outlet property="patient1" destination="gFN-xx-khN" id="6pw-ol-8x7"/>
+                        <outlet property="tableView" destination="5Bu-1z-eOz" id="oDY-Ds-gU5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DX2-lL-1b0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="1wd-ZD-G1A" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="en5-ya-Y0v" userLabel="goToMainScreen">
-                    <connections>
-                        <action selector="goBackToRootTapped:" destination="BRP-Dz-pYi" id="Clb-dc-lJn"/>
-                        <segue destination="1wd-ZD-G1A" kind="unwind" unwindAction="exitViewToRootViewWithSegue:" id="TPK-n2-M8f"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="yUp-74-4Ij" userLabel="goToSplitView">
-                    <connections>
-                        <segue destination="UNo-Bw-Gvo" kind="show" id="5IH-4e-339"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1326" y="142"/>
+            <point key="canvasLocation" x="-1326.0614934114201" y="141.796875"/>
         </scene>
         <!--Patient List View Controller-->
         <scene sceneID="g3v-kK-Kb6">
@@ -1938,7 +2040,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Fall_Liste" width="1189" height="790"/>
         <image name="Login_Screen" width="1189" height="790"/>
         <image name="Main_Screen" width="1189" height="790"/>
         <image name="Patientendaten" width="1482" height="1031"/>
@@ -1946,10 +2047,11 @@
         <image name="close-Button" width="530" height="530"/>
         <image name="comment-Button" width="530" height="530"/>
         <image name="foto-Button" width="530" height="530"/>
+        <image name="trash" width="400" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="BHA-SK-YWl"/>
         <segue reference="8Li-y3-TZ2"/>
-        <segue reference="5IH-4e-339"/>
+        <segue reference="Scb-gL-O7R"/>
     </inferredMetricsTieBreakers>
 </document>
