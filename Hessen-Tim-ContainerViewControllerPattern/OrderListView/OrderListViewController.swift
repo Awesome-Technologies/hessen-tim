@@ -105,7 +105,7 @@ class OrderListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         sortDatum()
         
-        tableView.rowHeight = 60
+        tableView.rowHeight = 70
         tableView.sectionHeaderHeight = 55
         tableView.sectionFooterHeight = 10
     }
@@ -331,6 +331,7 @@ class OrderListViewController: UIViewController, UITableViewDelegate, UITableVie
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy"
         
+        cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
         cell.datumLabel?.text = dateFormatter.string(from: date)
         cell.nummerLabel?.text = String(fall.nr)
         cell.patientLabel?.text = fall.patient
@@ -365,7 +366,7 @@ class OrderListViewController: UIViewController, UITableViewDelegate, UITableVie
      */
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = UIColor(red:30.0/255.0, green:37.0/255.0, blue:67.0/255.0, alpha:1.0)
+            headerView.contentView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
             headerView.backgroundView?.backgroundColor = .white
             headerView.textLabel?.textColor = .green
         }
