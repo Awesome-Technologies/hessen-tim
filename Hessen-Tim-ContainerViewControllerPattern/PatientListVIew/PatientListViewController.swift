@@ -132,9 +132,9 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         
         sortNachname()
         
-        tableView.rowHeight = 60
-        tableView.sectionHeaderHeight = 55
-        tableView.sectionFooterHeight = 10
+        tableView.rowHeight = 70
+        tableView.sectionHeaderHeight = 40
+        tableView.sectionFooterHeight = 20
     }
     
     func sortNachname(){
@@ -492,6 +492,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         let date = patient.geburtsdatum
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy"
+        cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
         cell.nachnameLabel?.text = patient.nachname
         cell.vornameLabel?.text = patient.vorname
         cell.geschlechtLabel?.text = patient.geschlecht
@@ -517,7 +518,8 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     */
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = UIColor(red:30.0/255.0, green:37.0/255.0, blue:67.0/255.0, alpha:1.0)
+            //headerView.contentView.backgroundColor = UIColor(red:30.0/255.0, green:37.0/255.0, blue:67.0/255.0, alpha:1.0)
+            headerView.contentView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
             headerView.backgroundView?.backgroundColor = .white
             headerView.textLabel?.textColor = .green
         }
