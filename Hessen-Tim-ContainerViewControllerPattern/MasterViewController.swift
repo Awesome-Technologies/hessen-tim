@@ -21,6 +21,8 @@ class MasterViewController: UITableViewController {
         
         let addButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(collapse))
         navigationItem.leftBarButtonItem = addButton
+        
+        tableView.rowHeight = 65
     }
 
     // MARK: - Table view data source
@@ -32,7 +34,7 @@ class MasterViewController: UITableViewController {
     */
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 11
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -43,9 +45,40 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             self.performSegue(withIdentifier: "patientData", sender: self)
-        } else if indexPath.row == 1 {
+            
+        } else {
             self.performSegue(withIdentifier: "cameraData", sender: self)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView,willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
+        
+        cell.contentView.alpha = 0.0
+        
+        if indexPath.row == 0 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TablePatientendaten.png")!)
+            
+        } else if indexPath.row == 1 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabAnamnese.png")!)
+        } else if indexPath.row == 2 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabArztbriefe.png")!)
+        } else if indexPath.row == 3 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabMonitoring.png")!)
+        } else if indexPath.row == 4 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabBeatmung.png")!)
+        } else if indexPath.row == 5 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabBlutgasanalyse.png")!)
+        } else if indexPath.row == 6 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabPerfusoren.png")!)
+        } else if indexPath.row == 7 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabMibi.png")!)
+        } else if indexPath.row == 8 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabRadiologie.png")!)
+        } else if indexPath.row == 9 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabLabor.png")!)
+        } else if indexPath.row == 10 {
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabSonstige.png")!)
+         }
     }
     
     @objc func collapse(){
