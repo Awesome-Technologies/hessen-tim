@@ -40,6 +40,9 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     var opacity: CGFloat = 1.0
     var swiped = false
     
+    // The previewImage, that is shown on the screen
+    var shownPreviewImageName = ""
+    
     
     var photoName = 0
     
@@ -214,6 +217,10 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             do {
                 let imageData = try Data(contentsOf: URL(fileURLWithPath: imagePath))
                 
+                //Save the name of the image, that is shown on the screen
+                shownPreviewImageName = photoName
+                print("Shown on the screen: ",shownPreviewImageName)
+                
                 //the drawing functions should only activated if the view is made visible. If it is already visible another call to the function would make the buttons invisible again
                 if(savedImagePreviewView.isHidden) {
                     //Function call to show button for drawing on the screen in the BaseViewController
@@ -222,6 +229,7 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             
                 savedImagePreviewView.isHidden = false
                 savedImagePreviewView.image = UIImage(data: imageData)
+                
             } catch {
                 print("Error loading image!")
             }

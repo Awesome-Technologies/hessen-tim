@@ -250,7 +250,12 @@ class BaseViewController: UIViewController {
     
     // Save the drawings
     @IBAction func savePaint(_ sender: Any) {
+        // Merge the drawn lines with the shown picture
         cameraVC?.savePaintedLines()
+        // The new Painted Image overwrites the old image in the file directory
+        cameraVC?.saveImage(imageName: cameraVC!.shownPreviewImageName, image: cameraVC!.savedImagePreviewView.image!)
+        // Reload the elements in the collection view to update the displayed images
+        galleryVC?.collectionView.reloadData()
     }
 }
 
