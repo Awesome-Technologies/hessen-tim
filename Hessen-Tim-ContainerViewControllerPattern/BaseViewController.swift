@@ -26,6 +26,8 @@ class BaseViewController: UIViewController {
         
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(drawButtonFunction(_:)), name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
       
     }
     
@@ -36,6 +38,20 @@ class BaseViewController: UIViewController {
     var commentWindowOpen = false
     var textView = UITextView()
 
+    @IBOutlet weak var takePictureButton: UIButton!
+    @IBOutlet weak var commentButton: UIButton!
+    
+    //Outlet of buttons for the painting
+    @IBOutlet weak var paintButton: UIButton!
+    @IBOutlet weak var redButton: UIButton!
+    @IBOutlet weak var greenButton: UIButton!
+    @IBOutlet weak var blueButton: UIButton!
+    @IBOutlet weak var blackButton: UIButton!
+    @IBOutlet weak var whiteButton: UIButton!
+    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
@@ -114,10 +130,127 @@ class BaseViewController: UIViewController {
         
         
     }
+    
+    /**
+     Gets triggered, when paint button is touched
+     Activates/deactivates the drawing functions in the cameraPictureView Controller
+     Shows/hides the buttons for the drawing functionality
+     
+    */
+    @IBAction func activateDrawing(_ sender: Any?) {
+        print("Drawing function")
+        cameraVC?.activateDrawigFunctions()
+        if(paintButton.currentImage == UIImage(named: "malen-button")) {
+            paintButton.setImage(UIImage(named: "malen-button-green"), for: .normal)
+            
+            //Shows the paint function buttons
+            redButton.isHidden = false
+            greenButton.isHidden = false
+            blueButton.isHidden = false
+            blackButton.isHidden = false
+            whiteButton.isHidden = false
+            clearButton.isHidden = false
+            saveButton.isHidden = false
+        } else {
+            paintButton.setImage(UIImage(named: "malen-button"), for: .normal)
+            
+            //hides the paint function buttons
+            redButton.isHidden = true
+            greenButton.isHidden = true
+            blueButton.isHidden = true
+            blackButton.isHidden = true
+            whiteButton.isHidden = true
+            clearButton.isHidden = true
+            saveButton.isHidden = true
+            
+        }
+    }
+    
     @objc func collapse(){
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
+    
+    @objc func drawButtonFunction(_ notification: Notification) {
+        if(paintButton.isHidden == false) {
+            //Hide pait Buttons
+            paintButton.isHidden = true
+            commentButton.isHidden = true
+            paintButton.isHidden = true
+            commentButton.isHidden = true
+            redButton.isHidden = true
+            greenButton.isHidden = true
+            blueButton.isHidden = true
+            blackButton.isHidden = true
+            whiteButton.isHidden = true
+            clearButton.isHidden = true
+            saveButton.isHidden = true
+            closeButton.isHidden = true
+            
+            //Show photo button
+            takePictureButton.isHidden = false
+            
+        } else {
+            //Show the paint buttons
+            paintButton.isHidden = false
+            commentButton.isHidden = false
+            closeButton.isHidden = false
+            
+            //Hide the photo button
+            takePictureButton.isHidden = true
+            
+        }
+    }
+    
+    // Function call when the close Button is pressed
+    @IBAction func closeImagePreview(_ sender: Any) {
+        print("I close the PreviewImageView")
+        
+        // Hide the Paint functions and change Button logo if necesr
+        if(cameraVC!.drawingActive) {
+            self.activateDrawing(nil)
+        }
+        
+        //close the previewImage View
+        cameraVC?.closeImagePreview()
+        
+        // Make the paint buttons invisible and show the take picture button
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
+    }
+    
+    // Pic red color for drawing
+    @IBAction func picRedColor(_ sender: Any) {
+        cameraVC?.color = UIColor(red: 1, green: 0, blue: 0, alpha: 1.0)
+    }
+    
+    // Pic red green for drawing
+    @IBAction func picGreenColor(_ sender: Any) {
+        cameraVC?.color = UIColor(red: 0, green: 1, blue: 0, alpha: 1.0)
+    }
+    
+    // Pic red blue for drawing
+    @IBAction func picBlueColor(_ sender: Any) {
+        cameraVC?.color = UIColor(red: 0, green: 0, blue: 1, alpha: 1.0)
+    }
+    
+    // Pic black color for drawing
+    @IBAction func picBlackColor(_ sender: Any) {
+        cameraVC?.color = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+    }
+    
+    //Pic white color
+    @IBAction func picWhiteColor(_ sender: Any) {
+        cameraVC?.color = UIColor(red: 1, green: 1, blue: 1, alpha: 1.0)
+    }
+    // Delete the drawings
+    @IBAction func clearPaint(_ sender: Any) {
+        cameraVC?.tempDrawImageView.image = nil
+    }
+    
+    // Save the drawings
+    @IBAction func savePaint(_ sender: Any) {
+        cameraVC?.savePaintedLines()
     }
 }
 
