@@ -1753,46 +1753,78 @@
                                     <constraint firstAttribute="width" secondItem="o67-yy-abj" secondAttribute="height" multiplier="1.44964:1" id="7sP-RN-kPF"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-3V-SGZ">
-                                <rect key="frame" x="902" y="438" width="336" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-NK-jub">
+                                <rect key="frame" x="373" y="389" width="620" height="70"/>
+                                <color key="backgroundColor" red="0.25201153755187988" green="0.31355282664299011" blue="0.49607431888580322" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                        <color key="value" white="0.69999999999999996" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Passwort" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="86y-JU-PC6">
+                                <rect key="frame" x="373" y="479" width="620" height="70"/>
+                                <color key="backgroundColor" red="0.2520115376" green="0.3135528266" blue="0.49607431889999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="620" id="Ryg-fo-6PQ"/>
+                                    <constraint firstAttribute="height" constant="70" id="mE4-lR-sxn"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="620" id="yM0-Jr-aYz"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                        <color key="value" white="0.69999999999999996" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJP-m8-ItA">
+                                <rect key="frame" x="373" y="574" width="620" height="70"/>
+                                <color key="backgroundColor" red="0.0" green="0.37790536880493164" blue="0.65611392259597778" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="Anmelden">
+                                    <color key="titleColor" white="0.10000000000000001" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="vHl-uN-kYO" appends="YES" id="5B2-gW-yEv"/>
+                                    <action selector="loginAction:" destination="tQb-Xs-GmT" eventType="touchUpInside" id="B9A-KA-bmy"/>
                                 </connections>
-                            </view>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="o67-yy-abj" firstAttribute="top" secondItem="vGj-Rl-Qbz" secondAttribute="top" constant="20" id="0oF-14-379"/>
+                            <constraint firstItem="MqG-NK-jub" firstAttribute="height" secondItem="86y-JU-PC6" secondAttribute="height" id="3eM-E7-XA3"/>
+                            <constraint firstItem="aJP-m8-ItA" firstAttribute="width" secondItem="86y-JU-PC6" secondAttribute="width" id="5o3-pj-9H7"/>
+                            <constraint firstItem="aJP-m8-ItA" firstAttribute="centerX" secondItem="o67-yy-abj" secondAttribute="centerX" id="7WM-8O-x6R"/>
                             <constraint firstItem="o67-yy-abj" firstAttribute="centerX" secondItem="vGj-Rl-Qbz" secondAttribute="centerX" id="8PK-9Y-kFP"/>
+                            <constraint firstItem="86y-JU-PC6" firstAttribute="centerY" secondItem="o67-yy-abj" secondAttribute="centerY" id="Sxw-JH-gVh"/>
+                            <constraint firstItem="86y-JU-PC6" firstAttribute="centerX" secondItem="o67-yy-abj" secondAttribute="centerX" id="Y3H-yK-a9h"/>
+                            <constraint firstItem="MqG-NK-jub" firstAttribute="centerX" secondItem="o67-yy-abj" secondAttribute="centerX" id="dOV-Er-U69"/>
+                            <constraint firstItem="MqG-NK-jub" firstAttribute="width" secondItem="86y-JU-PC6" secondAttribute="width" id="hE8-v4-VDF"/>
                             <constraint firstItem="o67-yy-abj" firstAttribute="bottom" secondItem="vGj-Rl-Qbz" secondAttribute="bottom" constant="-20" id="k3p-Df-Dfx"/>
+                            <constraint firstItem="aJP-m8-ItA" firstAttribute="top" secondItem="86y-JU-PC6" secondAttribute="bottom" constant="25" id="nqK-d6-OO9"/>
+                            <constraint firstItem="aJP-m8-ItA" firstAttribute="height" secondItem="86y-JU-PC6" secondAttribute="height" id="rp6-MM-b1p"/>
+                            <constraint firstItem="86y-JU-PC6" firstAttribute="top" secondItem="MqG-NK-jub" secondAttribute="bottom" constant="20" id="sFc-wC-a0F"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vGj-Rl-Qbz"/>
                     </view>
                     <connections>
+                        <outlet property="loginButton" destination="aJP-m8-ItA" id="0sN-4D-33e"/>
+                        <outlet property="loginName" destination="MqG-NK-jub" id="fre-S3-RfK"/>
+                        <outlet property="loginPw" destination="86y-JU-PC6" id="SaM-OP-WOj"/>
                         <outlet property="screen2ImageView" destination="o67-yy-abj" id="CAT-Mx-aWC"/>
-                        <outlet property="showMainScreen" destination="3bV-3V-SGZ" id="Tvv-tu-oty"/>
                         <segue destination="zzg-gO-SCa" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="ije-lE-hxo"/>
+                        <segue destination="mtu-in-WBY" kind="show" identifier="mainView" id="jmv-j2-Fyf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1EZ-Jb-rIv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zzg-gO-SCa" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="xU7-kU-SFu" userLabel="Show Camera Segue"/>
-                <tapGestureRecognizer id="Yqe-Sq-2PN" userLabel="Show First Screen Segue">
-                    <connections>
-                        <action selector="goBackToRootTapped:" destination="tQb-Xs-GmT" id="Ita-MP-nIZ"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="XGe-vs-7yc" userLabel="Show PatientData Segue"/>
-                <tapGestureRecognizer id="vHl-uN-kYO" userLabel="Show MainScreen">
-                    <connections>
-                        <segue destination="mtu-in-WBY" kind="show" id="GDq-BJ-4tA"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-626" y="-627"/>
+            <point key="canvasLocation" x="-626.35431918008783" y="-627.5390625"/>
         </scene>
         <!--Order List View Controller-->
         <scene sceneID="1Yb-mZ-jxC">
@@ -2204,7 +2236,7 @@
         <image name="trash" width="400" height="400"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BHA-SK-YWl"/>
+        <segue reference="jmv-j2-Fyf"/>
         <segue reference="8Li-y3-TZ2"/>
         <segue reference="Scb-gL-O7R"/>
     </inferredMetricsTieBreakers>

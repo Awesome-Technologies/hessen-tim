@@ -11,22 +11,48 @@ import UIKit
 class LoginScreenViewController: UIViewController {
 
     @IBOutlet weak var screen2ImageView: UIImageView!
-    @IBOutlet weak var showMainScreen: UIView!
+    @IBOutlet weak var loginName: UITextField! {
+        didSet {
+            loginName.tintColor = UIColor.lightGray
+            loginName.setIcon(UIImage(named: "login-name")!)
+        }
+    }
+    
+    @IBOutlet weak var loginPw: UITextField! {
+        didSet {
+            loginPw.tintColor = UIColor.lightGray
+            loginPw.setIcon(UIImage(named: "login-pw")!)
+        }
+    }
+
+    @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view
+        loginName.borderStyle = UITextField.BorderStyle.none
         
-        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.26)
-        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.55)
-        var width = screen2ImageView.frame.width * 0.50
-        var height = screen2ImageView.frame.height * 0.1
+        //loginName.backgroundColor = .clear
+        loginName.layer.cornerRadius = 15
+        loginName.layer.borderWidth = 0
+        loginName.layer.borderColor = UIColor.blue.cgColor
         
-        showMainScreen.frame = CGRect(x: x, y: y, width: width, height: height)
+        loginPw.borderStyle = UITextField.BorderStyle.none
+        loginPw.layer.cornerRadius = 15
+        loginPw.layer.borderWidth = 0
+        loginPw.layer.borderColor = UIColor.blue.cgColor
+        loginPw.isSecureTextEntry = true
+        
+        
+        loginButton.clipsToBounds = true;
+        loginButton.layer.cornerRadius = 15
         
     }
     
+    @IBAction func loginAction(_ sender: Any) {
+        performSegue(withIdentifier: "mainView", sender: self)
+    }
     /*
     // MARK: - Navigation
 
@@ -37,4 +63,30 @@ class LoginScreenViewController: UIViewController {
     }
     */
 
+}
+
+// https://medium.com/nyc-design/swift-4-add-icon-to-uitextfield-48f5ebf60aa1
+extension UITextField {
+    func setIcon(_ image: UIImage) {
+        let iconView = UIImageView(frame:
+            CGRect(x: 10, y: 8, width: 45, height: 45))
+        iconView.image = image
+        let iconContainerView: UIView = UIView(frame:
+            CGRect(x: 20, y: 0, width: 60, height: 60))
+        iconContainerView.addSubview(iconView)
+        leftView = iconContainerView
+        leftViewMode = .always
+    }
+}
+
+// https://www.ios-blog.com/tutorials/swift/how-to-change-the-placeholder-color-using-swift-extensions-or-user-defined-runtime-attributes/
+extension UITextField{
+    @IBInspectable var placeHolderColor: UIColor? {
+        get {
+            return self.placeHolderColor
+        }
+        set {
+            self.attributedPlaceholder = NSAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: newValue!])
+        }
+    }
 }
