@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -390,8 +390,8 @@
                     </view>
                     <connections>
                         <outlet property="goBackTouchAreaView" destination="80M-yf-mTV" id="E7D-Bb-VhI"/>
-                        <outlet property="orderListScreen" destination="OUl-5e-W0c" id="y1y-Vw-po9"/>
-                        <outlet property="patientListScreen" destination="7C7-X5-PY5" id="50R-8f-Nh3"/>
+                        <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
+                        <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
                         <outlet property="showCameraTouchAreaView" destination="9mi-9Y-5DN" id="HSJ-Xc-OUD"/>
                         <segue destination="2u6-Fy-Fpw" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="rjB-Ep-x3s"/>
@@ -913,9 +913,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="2R5-F0-SeT"/>
                     <connections>
-                        <outlet property="bisherigePatienten" destination="dmT-ff-Cvu" id="QJ0-Yu-rF8"/>
+                        <outlet property="insuranceDropdown" destination="LIx-yS-PCa" id="ENt-8D-lyH"/>
                         <outlet property="patientBirthday" destination="KAU-Uc-hFx" id="IAj-6C-fef"/>
-                        <outlet property="versicherung" destination="LIx-yS-PCa" id="Jni-Hg-jOx"/>
+                        <outlet property="patientDataDropdown" destination="dmT-ff-Cvu" id="5xm-C7-yTI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PnT-bs-3Wb" userLabel="First Responder" sceneMemberID="firstResponder"/>
