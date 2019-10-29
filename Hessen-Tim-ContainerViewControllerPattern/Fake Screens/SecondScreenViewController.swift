@@ -10,7 +10,6 @@ import UIKit
 
 class SecondScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
-    @IBOutlet weak var goBackTouchAreaView: UIView!
     @IBOutlet weak var showCameraTouchAreaView: UIView!
     @IBOutlet weak var patientListView: UIView!
     @IBOutlet weak var orderListView: UIView!
@@ -27,12 +26,6 @@ class SecondScreenViewController: UIViewController {
         
         showCameraTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
         
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0)
-        width = screen2ImageView.frame.width * 0.065
-        height = width
-        
-        goBackTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
         
         x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.037)
         y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.095)

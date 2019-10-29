@@ -25,7 +25,7 @@ class PatientendatenViewController: UIViewController {
 
         view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
 
-        collapseMaster = UIBarButtonItem(title: "Information", style: .done, target: self, action: #selector(collapse))
+        collapseMaster = UIBarButtonItem(title: "Information >", style: .done, target: self, action: #selector(collapse))
         self.navigationItem.rightBarButtonItem = collapseMaster
 
         self.navigationItem.leftItemsSupplementBackButton = true
@@ -70,7 +70,7 @@ class PatientendatenViewController: UIViewController {
         insuranceDropdown.rowHeight = 40
         insuranceDropdown.borderWidth = 2
         insuranceDropdown.borderStyle = UITextField.BorderStyle.roundedRect
-        patientDataDropdown.arrowSize = 30
+        insuranceDropdown.arrowSize = 30
 
 
         showDatePicker()
