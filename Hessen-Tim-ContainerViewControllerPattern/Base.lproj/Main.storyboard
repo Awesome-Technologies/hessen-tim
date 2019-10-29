@@ -304,7 +304,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="21Q-6r-D8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="huT-Tg-veC" userLabel="Show Second Screen Segue">
                     <connections>
-                        <segue destination="SU6-Eh-hR5" kind="showDetail" id="BHA-SK-YWl"/>
+                        <segue destination="mtu-in-WBY" kind="showDetail" id="BHA-SK-YWl"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -313,13 +313,13 @@
         <!--Second Screen View Controller-->
         <scene sceneID="CSA-zI-abF">
             <objects>
-                <viewController id="SU6-Eh-hR5" customClass="SecondScreenViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SecondScreen" id="SU6-Eh-hR5" customClass="SecondScreenViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6bH-66-Gqy">
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Main_Screen" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="38" y="94" width="1290" height="890"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>
@@ -370,6 +370,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Pd-eE-E8P"/>
                     </view>
+                    <navigationItem key="navigationItem" id="0Oj-O5-srU"/>
                     <connections>
                         <outlet property="goBackTouchAreaView" destination="80M-yf-mTV" id="E7D-Bb-VhI"/>
                         <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
@@ -378,13 +379,14 @@
                         <outlet property="showCameraTouchAreaView" destination="9mi-9Y-5DN" id="HSJ-Xc-OUD"/>
                         <outlet property="splitView" destination="vlx-Td-nOX" id="NAn-NL-vHc"/>
                         <segue destination="2u6-Fy-Fpw" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="rjB-Ep-x3s"/>
+                        <segue destination="UNo-Bw-Gvo" kind="show" id="icf-tn-bRX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHd-Sq-wqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="2u6-Fy-Fpw" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="oYd-70-H1E" userLabel="Show SplitView">
                     <connections>
-                        <segue destination="UNo-Bw-Gvo" kind="show" id="HO4-os-tAZ"/>
+                        <action selector="splitShow:" destination="SU6-Eh-hR5" id="8yu-ZR-hmY"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="zPF-1n-aFj" userLabel="ShowOrderList">
@@ -399,11 +401,11 @@
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="aeV-Mu-s1z">
                     <connections>
-                        <segue destination="UNo-Bw-Gvo" kind="show" id="Scb-gL-O7R"/>
+                        <segue destination="UNo-Bw-Gvo" kind="show" identifier="showSplitScreenVC" id="Scb-gL-O7R"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-626.35431918008783" y="141.796875"/>
+            <point key="canvasLocation" x="67.642752562225468" y="141.796875"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="uGW-Kn-PYc">
@@ -714,7 +716,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SrE-z9-ptQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1651" y="167"/>
+            <point key="canvasLocation" x="2344.6559297218155" y="166.9921875"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sYu-kr-hGF">
@@ -730,7 +732,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SXv-Y3-YFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="954" y="167"/>
+            <point key="canvasLocation" x="1647.5841874084917" y="166.9921875"/>
         </scene>
         <!--Patientendaten View Controller-->
         <scene sceneID="EnD-Lf-meL">
@@ -1031,7 +1033,7 @@
         <!--Split View Controller-->
         <scene sceneID="5AS-ks-JEi">
             <objects>
-                <splitViewController id="UNo-Bw-Gvo" customClass="SplitViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="SplitVC" id="UNo-Bw-Gvo" customClass="SplitViewController" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="Bck-Ss-wCr" kind="relationship" relationship="masterViewController" id="hDV-8o-fCS"/>
                         <segue destination="eeY-cm-khO" kind="relationship" relationship="detailViewController" id="8Li-y3-TZ2"/>
@@ -1039,7 +1041,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="78q-pI-Hy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="257" y="488"/>
+            <point key="canvasLocation" x="954" y="186"/>
         </scene>
         <!--Gallery View Controller-->
         <scene sceneID="GKB-wT-gSM">
@@ -1129,7 +1131,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fX2-u4-hut" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2400" y="166.9921875"/>
+            <point key="canvasLocation" x="3093.997071742313" y="166.9921875"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dr8-1s-1pl">
@@ -1402,7 +1404,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BeF-Ax-tQ3" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3151" y="166"/>
+            <point key="canvasLocation" x="3844.655929721815" y="165.8203125"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="sBK-TE-3rp">
@@ -1483,7 +1485,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6d-Vc-0qz" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3150.658857979502" y="165.8203125"/>
+            <point key="canvasLocation" x="3844.655929721815" y="165.8203125"/>
         </scene>
         <!--Camera Picture View Controller-->
         <scene sceneID="sZr-mA-5Ck">
@@ -1654,7 +1656,7 @@
                 <tapGestureRecognizer id="XGe-vs-7yc" userLabel="Show PatientData Segue"/>
                 <tapGestureRecognizer id="vHl-uN-kYO" userLabel="Show MainScreen">
                     <connections>
-                        <segue destination="SU6-Eh-hR5" kind="show" id="GDq-BJ-4tA"/>
+                        <segue destination="mtu-in-WBY" kind="show" id="GDq-BJ-4tA"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -1669,7 +1671,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Fall_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="q6A-Ue-T5O">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="38" y="94" width="1290" height="890"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="q6A-Ue-T5O" secondAttribute="height" multiplier="1.44964:1" id="GaZ-G8-IjJ"/>
@@ -1733,7 +1735,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Patienten_Liste" translatesAutoresizingMaskIntoConstraints="NO" id="7QD-bw-vhE">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="38" y="94" width="1290" height="890"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="7QD-bw-vhE" secondAttribute="height" multiplier="1.44964:1" id="Ei4-cX-xiH"/>
@@ -1788,6 +1790,24 @@
             </objects>
             <point key="canvasLocation" x="-1326" y="1080"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ZjG-Uq-Pfp">
+            <objects>
+                <navigationController storyboardIdentifier="sceneNavController" automaticallyAdjustsScrollViewInsets="NO" id="mtu-in-WBY" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pLV-xM-V8I">
+                        <rect key="frame" x="0.0" y="24" width="1366" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="SU6-Eh-hR5" kind="relationship" relationship="rootViewController" id="3tL-75-dZo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="czp-8q-ETC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-626.35431918008783" y="141.796875"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Fall_Liste" width="1189" height="790"/>
@@ -1801,8 +1821,8 @@
         <image name="foto-Button" width="530" height="530"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GfF-9q-Zga"/>
-        <segue reference="cXy-La-cyz"/>
-        <segue reference="GDq-BJ-4tA"/>
+        <segue reference="BHA-SK-YWl"/>
+        <segue reference="8Li-y3-TZ2"/>
+        <segue reference="Scb-gL-O7R"/>
     </inferredMetricsTieBreakers>
 </document>

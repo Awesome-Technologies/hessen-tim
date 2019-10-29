@@ -134,6 +134,9 @@ class PatientendatenViewController: UIViewController {
     }
 
     @IBAction func toPrevScreen(_ sender: Any) {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.splitView = false
+        delegate.setupRootViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
 

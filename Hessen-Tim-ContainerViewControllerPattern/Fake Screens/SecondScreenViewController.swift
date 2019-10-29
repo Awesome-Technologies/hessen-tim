@@ -56,6 +56,15 @@ class SecondScreenViewController: UIViewController {
         performSegue(withIdentifier: "exitToRoot", sender: self)
     }
 
+    @IBAction func splitShow(_ sender: Any) {
+        print("Call SplitView")
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.splitView = true
+        delegate.setupRootViewController(animated: true)
+
+        self.performSegue(withIdentifier: "showSplitScreenVC", sender: sender)
+    }
+
 
     @IBAction func exitViewToRootView(segue:UIStoryboardSegue) {}
 }
