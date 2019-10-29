@@ -21,7 +21,7 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        collapseMaster = UIBarButtonItem(title: "Information", style: .done, target: self, action: #selector(collapse))
+        collapseMaster = UIBarButtonItem(title: "Information >", style: .done, target: self, action: #selector(collapse))
         self.navigationItem.rightBarButtonItem = collapseMaster
         
         self.navigationItem.leftItemsSupplementBackButton = true

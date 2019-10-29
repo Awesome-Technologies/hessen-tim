@@ -23,6 +23,9 @@ class MasterViewController: UITableViewController {
         navigationItem.leftBarButtonItem = addButton
         
         tableView.rowHeight = 65
+        
+        self.view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1
+        )
     }
 
     // MARK: - Table view data source
@@ -39,6 +42,35 @@ class MasterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        /*
+        if cell.isSelected == true {
+            var bgColorView = UIView()
+            bgColorView.backgroundColor = UIColor.brown
+            cell.selectedBackgroundView = bgColorView
+        } else {
+            /*
+            var bgColorView = UIView()
+            bgColorView.backgroundColor = UIColor.gray
+            bgColorView.backgroundColor!.withAlphaComponent(0.3)
+            bgColorView.alpha = 0.0
+            */
+            cell.contentView.superview?.backgroundColor = UIColor.clear
+            //cell.selectedBackgroundView = bgColorView
+            
+            //cell.selectionStyle = UITableViewCell.SelectionStyle.gray
+        }
+        */
+        
+        let backgroundView = UIView()
+        /*
+        backgroundView.backgroundColor = UIColor.blue
+        backgroundView.backgroundColor!.withAlphaComponent(0.3)
+        backgroundView.alpha = 0.0
+        */
+        //backgroundView.backgroundColor = UIColor.clear
+        backgroundView.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 0.5)
+        cell.selectedBackgroundView = backgroundView
+        
         return cell
     }
 
@@ -85,6 +117,11 @@ class MasterViewController: UITableViewController {
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell  = tableView.cellForRow(at: indexPath)
+        cell!.contentView.backgroundColor = .red
     }
 
     /*
