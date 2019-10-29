@@ -10,7 +10,6 @@ import UIKit
 
 class SecondScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
-    @IBOutlet weak var showCameraTouchAreaView: UIView!
     @IBOutlet weak var patientListView: UIView!
     @IBOutlet weak var orderListView: UIView!
     @IBOutlet weak var splitView: UIView!
@@ -34,18 +33,10 @@ class SecondScreenViewController: UIViewController {
 
         // Place touch area at the appropriate place on the screenshot
 
-        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.78)
-        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.749)
-        var width = screen2ImageView.frame.width * 0.182
-        var height = screen2ImageView.frame.height * 0.189
-
-        showCameraTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
-
-
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.135)
-        width = screen2ImageView.frame.width * 0.14
-        height = screen2ImageView.frame.height * 0.08
+        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
+        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.135)
+        var width = screen2ImageView.frame.width * 0.14
+        var height = screen2ImageView.frame.height * 0.08
 
         patientListView.frame = CGRect(x: x, y: y, width: width, height: height)
 

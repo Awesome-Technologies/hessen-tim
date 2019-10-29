@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="1.5" y="44" width="1363" height="940"/>
+                                <rect key="frame" x="1.5" y="44" width="1363" height="940.00000000000045"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>
@@ -322,15 +322,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9mi-9Y-5DN" userLabel="Touch Area">
-                                <rect key="frame" x="488" y="219" width="178" height="129"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="aeV-Mu-s1z" appends="YES" id="xTk-px-bc3"/>
-                                </connections>
-                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7C7-X5-PY5" userLabel="Touch Area">
                                 <rect key="frame" x="269" y="93" width="178" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -374,10 +365,9 @@
                         <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
                         <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
-                        <outlet property="showCameraTouchAreaView" destination="9mi-9Y-5DN" id="HSJ-Xc-OUD"/>
                         <outlet property="splitView" destination="vlx-Td-nOX" id="NAn-NL-vHc"/>
                         <segue destination="2u6-Fy-Fpw" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="rjB-Ep-x3s"/>
-                        <segue destination="UNo-Bw-Gvo" kind="show" id="icf-tn-bRX"/>
+                        <segue destination="UNo-Bw-Gvo" kind="show" identifier="showSplitScreenVC" id="icf-tn-bRX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHd-Sq-wqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -395,11 +385,6 @@
                 <tapGestureRecognizer id="h9s-6F-1j7" userLabel="Show PatientList">
                     <connections>
                         <segue destination="ETs-MS-wP6" kind="show" id="Ph3-eK-d00"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="aeV-Mu-s1z">
-                    <connections>
-                        <segue destination="UNo-Bw-Gvo" kind="show" identifier="showSplitScreenVC" id="Scb-gL-O7R"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -2238,6 +2223,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
         <segue reference="8Li-y3-TZ2"/>
-        <segue reference="Scb-gL-O7R"/>
     </inferredMetricsTieBreakers>
 </document>
