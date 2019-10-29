@@ -128,11 +128,13 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
         
         sortNachname()
         
         tableView.rowHeight = 60
-        tableView.sectionFooterHeight = 20
+        tableView.sectionHeaderHeight = 55
+        tableView.sectionFooterHeight = 10
     }
     
     func sortNachname(){
@@ -500,14 +502,45 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         cell.kostentraegerLabel?.text = patient.kostentraeger
         return cell
     }
-
+    /*
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
+        returnedView.backgroundColor = .lightGray
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 7, width: view.frame.size.width, height: 25))
+        label.text = self.sections[section].gruppenname
+        label.textColor = .black
+        returnedView.addSubview(label)
+        
+        return returnedView
+    }
+    */
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.contentView.backgroundColor = UIColor(red:30.0/255.0, green:37.0/255.0, blue:67.0/255.0, alpha:1.0)
+            headerView.backgroundView?.backgroundColor = .white
+            headerView.textLabel?.textColor = .green
+        }
+    }
+    /*
     func tableView(_ tableView: UITableView, titleForFooterInSection
         section: Int) -> String? {
         if (section == self.sections.count-1) {
             return ""
         } else {
+            //tableView.backgroundColor = .green
+            //tableView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
             return " "
         }
     }
+    */
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 10))
+        returnedView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
+        
+        return returnedView
+    }
+    
     
 }
