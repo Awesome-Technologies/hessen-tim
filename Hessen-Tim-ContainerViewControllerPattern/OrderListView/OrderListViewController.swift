@@ -108,6 +108,11 @@ class OrderListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.rowHeight = 70
         tableView.sectionHeaderHeight = 55
         tableView.sectionFooterHeight = 10
+        
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Light", size: 25)!]
+        UINavigationBar.appearance().titleTextAttributes = attributes
+        
+        self.title = "Tele-Intensiv Fälle"
     }
     
     override func viewDidLayoutSubviews() {

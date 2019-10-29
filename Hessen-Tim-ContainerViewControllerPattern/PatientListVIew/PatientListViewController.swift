@@ -135,6 +135,12 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.rowHeight = 70
         tableView.sectionHeaderHeight = 40
         tableView.sectionFooterHeight = 20
+        
+        let attributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Light", size: 25)!]
+        UINavigationBar.appearance().titleTextAttributes = attributes
+        
+        self.title = "Patientenliste"
+        //self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Patientenliste", size: 20)!]
     }
     
     func sortNachname(){

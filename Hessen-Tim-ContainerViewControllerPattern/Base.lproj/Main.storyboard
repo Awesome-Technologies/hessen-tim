@@ -721,11 +721,15 @@
         <!--Navigation Controller-->
         <scene sceneID="sYu-kr-hGF">
             <objects>
-                <navigationController id="Bck-Ss-wCr" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="Bck-Ss-wCr" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Hri-8u-fIw">
                         <rect key="frame" x="0.0" y="24" width="375" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zYZ-Gt-wR5" customClass="CustomToolbar" customModule="Hessen_Tim_ContainerViewControllerPattern" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="954" width="375" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="uAL-Jz-uJz" kind="relationship" relationship="rootViewController" id="zEh-1v-xch"/>
                     </connections>
