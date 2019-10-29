@@ -319,11 +319,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Main_Screen" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-ar-H5h">
-                                <rect key="frame" x="38" y="94" width="1290" height="890"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="PTF-ar-H5h" secondAttribute="height" multiplier="1.44964:1" id="Tei-GU-pum"/>
-                                </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9mi-9Y-5DN" userLabel="Touch Area">
                                 <rect key="frame" x="488" y="219" width="178" height="129"/>
@@ -364,9 +361,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.1803921568627451" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="PTF-ar-H5h" firstAttribute="centerX" secondItem="1Pd-eE-E8P" secondAttribute="centerX" id="Sqf-Qy-VGd"/>
-                            <constraint firstItem="PTF-ar-H5h" firstAttribute="top" secondItem="1Pd-eE-E8P" secondAttribute="top" constant="20" id="eOU-qA-IUe"/>
-                            <constraint firstItem="PTF-ar-H5h" firstAttribute="bottom" secondItem="1Pd-eE-E8P" secondAttribute="bottom" constant="-20" id="oW7-zc-VOH"/>
+                            <constraint firstItem="PTF-ar-H5h" firstAttribute="width" secondItem="6bH-66-Gqy" secondAttribute="width" id="BGw-1U-uJ3"/>
+                            <constraint firstItem="PTF-ar-H5h" firstAttribute="height" secondItem="6bH-66-Gqy" secondAttribute="height" id="bMR-hF-FDL"/>
+                            <constraint firstItem="PTF-ar-H5h" firstAttribute="centerY" secondItem="6bH-66-Gqy" secondAttribute="centerY" id="f4l-ML-EVP"/>
+                            <constraint firstItem="PTF-ar-H5h" firstAttribute="centerX" secondItem="6bH-66-Gqy" secondAttribute="centerX" id="hHX-HU-aLH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Pd-eE-E8P"/>
                     </view>
@@ -2189,7 +2187,7 @@
     </scenes>
     <resources>
         <image name="Login_Screen" width="1189" height="790"/>
-        <image name="Main_Screen" width="1189" height="790"/>
+        <image name="Main_Screen" width="1083" height="781"/>
         <image name="Patientendaten" width="1482" height="1031"/>
         <image name="Screen_1" width="2418" height="1668"/>
         <image name="button-black" width="530" height="530"/>

@@ -42,24 +42,24 @@ class SecondScreenViewController: UIViewController {
         showCameraTouchAreaView.frame = CGRect(x: x, y: y, width: width, height: height)
 
 
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.037)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.095)
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.135)
         width = screen2ImageView.frame.width * 0.14
         height = screen2ImageView.frame.height * 0.08
 
         patientListView.frame = CGRect(x: x, y: y, width: width, height: height)
 
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.037)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.2)
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.235)
         width = screen2ImageView.frame.width * 0.14
         height = screen2ImageView.frame.height * 0.09
 
         orderListView.frame = CGRect(x: x, y: y, width: width, height: height)
 
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.63)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.27)
-        width = screen2ImageView.frame.width * 0.28
-        height = screen2ImageView.frame.height * 0.14
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.22)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.28)
+        width = screen2ImageView.frame.width * 0.32
+        height = screen2ImageView.frame.height * 0.3
 
         splitView.frame = CGRect(x: x, y: y, width: width, height: height)
 
