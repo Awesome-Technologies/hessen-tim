@@ -10,13 +10,29 @@ import UIKit
 
 class PatientendatenViewController: UIViewController {
 
+
+    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var verlegendeKlinik: UITextField!
+    @IBOutlet weak var groesse: UITextField!
+    @IBOutlet weak var ansprechpartner: UITextField!
+    @IBOutlet weak var geschlaecht: UITextField!
+    @IBOutlet weak var gewicht: UITextField!
+    @IBOutlet weak var rueckrufnummer: UITextField!
+
+
     var collapseMaster:UIBarButtonItem!
+
 
     //https://github.com/jriosdev/iOSDropDown
     @IBOutlet weak var patientDataDropdown: DropDown!
     @IBOutlet weak var insuranceDropdown: DropDown!
     @IBOutlet weak var patientBirthday: UITextField!
     let datePicker = UIDatePicker()
+
+    //--TableView
+    //https://stackoverflow.com/questions/24170922/creating-custom-tableview-cells-in-swift
+    let information: [String] = ["Patientendaten", "Anamnese", "Arztbrief", "Monitoring", "Beatmung", "Blutgasanalyse", "Perfusoren", "Mibi", "Radiologie", "Labor", "Sonstige"]
+    let cellReuseIdentifier = "infoCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +42,7 @@ class PatientendatenViewController: UIViewController {
         view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
 
         collapseMaster = UIBarButtonItem(title: "Information >", style: .done, target: self, action: #selector(collapse))
-        self.navigationItem.rightBarButtonItem = collapseMaster
+        self.navigationItem.rightBarButtonItem = nil
 
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
@@ -48,6 +64,8 @@ class PatientendatenViewController: UIViewController {
         patientDataDropdown.borderWidth = 2
         patientDataDropdown.borderStyle = UITextField.BorderStyle.roundedRect
         patientDataDropdown.arrowSize = 30
+        patientDataDropdown.layer.cornerRadius = 15.0
+        patientDataDropdown.layer.borderWidth = 1.0
 
 
         // The list of array to display. Can be changed dynamically
@@ -71,9 +89,31 @@ class PatientendatenViewController: UIViewController {
         insuranceDropdown.borderWidth = 2
         insuranceDropdown.borderStyle = UITextField.BorderStyle.roundedRect
         insuranceDropdown.arrowSize = 30
-
+        insuranceDropdown.layer.cornerRadius = 15.0
+        insuranceDropdown.layer.borderWidth = 1.0
 
         showDatePicker()
+
+
+        //---BorderStyle for Buttons
+        name.layer.cornerRadius = 15.0
+        name.layer.borderWidth = 1.0
+        //name.layer.borderColor = UIColor.red.cgColo
+        verlegendeKlinik.layer.cornerRadius = 15.0
+        verlegendeKlinik.layer.borderWidth = 1.0
+        groesse.layer.cornerRadius = 15.0
+        groesse.layer.borderWidth = 1.0
+        ansprechpartner.layer.cornerRadius = 15.0
+        ansprechpartner.layer.borderWidth = 1.0
+        geschlaecht.layer.cornerRadius = 15.0
+        geschlaecht.layer.borderWidth = 1.0
+        gewicht.layer.cornerRadius = 15.0
+        gewicht.layer.borderWidth = 1.0
+        rueckrufnummer.layer.cornerRadius = 15.0
+        rueckrufnummer.layer.borderWidth = 1.0
+        patientBirthday.layer.cornerRadius = 15.0
+        patientBirthday.layer.borderWidth = 1.0
+
     }
 
 

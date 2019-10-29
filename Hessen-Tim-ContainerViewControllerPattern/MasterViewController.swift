@@ -10,6 +10,8 @@ import UIKit
 
 class MasterViewController: UITableViewController {
 
+    var addButton: UIBarButtonItem!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,12 +20,12 @@ class MasterViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        let addButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(collapse))
-        navigationItem.leftBarButtonItem = addButton
-        
+
+        addButton = UIBarButtonItem(title: "close", style: .done, target: self, action: #selector(collapse))
+        navigationItem.leftBarButtonItem = nil
+
         tableView.rowHeight = 65
-        
+
         self.view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1
         )
     }
@@ -56,11 +58,11 @@ class MasterViewController: UITableViewController {
             */
             cell.contentView.superview?.backgroundColor = UIColor.clear
             //cell.selectedBackgroundView = bgColorView
-            
+
             //cell.selectionStyle = UITableViewCell.SelectionStyle.gray
         }
         */
-        
+
         let backgroundView = UIView()
         /*
         backgroundView.backgroundColor = UIColor.blue
@@ -70,26 +72,37 @@ class MasterViewController: UITableViewController {
         //backgroundView.backgroundColor = UIColor.clear
         backgroundView.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 0.5)
         cell.selectedBackgroundView = backgroundView
-        
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView,didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             self.performSegue(withIdentifier: "patientData", sender: self)
-            
-        } else {
+
+            self.splitViewController?.preferredDisplayMode = UISplitViewController.DisplayMode.allVisible
+            self.navigationItem.leftBarButtonItem = nil
+            let detailVC = self.splitViewController?.secondaryViewController
+            print(self.splitViewController?.title)
+            print(self.splitViewController?.isCollapsed)
+        }
+        else{
             self.performSegue(withIdentifier: "cameraData", sender: self)
+            self.splitViewController?.preferredDisplayMode = UISplitViewController.DisplayMode.primaryHidden
+            self.navigationItem.leftBarButtonItem = addButton
+            let detailVC = self.splitViewController?.secondaryViewController
+            print(detailVC?.title)
+            print(self.splitViewController?.isCollapsed)
         }
     }
-    
+
     override func tableView(_ tableView: UITableView,willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
-        
+
         cell.contentView.alpha = 0.0
-        
+
         if indexPath.row == 0 {
             cell.backgroundView = UIImageView(image: UIImage(named: "TablePatientendaten.png")!)
-            
+
         } else if indexPath.row == 1 {
             cell.backgroundView = UIImageView(image: UIImage(named: "TabAnamnese.png")!)
         } else if indexPath.row == 2 {
@@ -112,13 +125,13 @@ class MasterViewController: UITableViewController {
             cell.backgroundView = UIImageView(image: UIImage(named: "TabSonstige.png")!)
          }
     }
-    
+
     @objc func collapse(){
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
-    
+
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell  = tableView.cellForRow(at: indexPath)
         cell!.contentView.backgroundColor = .red
