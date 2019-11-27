@@ -361,7 +361,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="0Oj-O5-srU"/>
                     <connections>
-                        <outlet property="goBackTouchAreaView" destination="80M-yf-mTV" id="E7D-Bb-VhI"/>
                         <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
                         <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
