@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,6 +32,7 @@
 		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
 		97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */; };
 		97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8062254C63B0055EBCE /* GalleryViewController.swift */; };
+		97FA7F3A2396A37500DBBEB3 /* SMART in Frameworks */ = {isa = PBXBuildFile; productRef = 97FA7F392396A37500DBBEB3 /* SMART */; };
 		E13F8841AF06A9CCC04E9833 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97DAC4DC424232B4C9168E3 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97FA7F3A2396A37500DBBEB3 /* SMART in Frameworks */,
 				2BC97409584C0A23E0E67AAB /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +289,9 @@
 			dependencies = (
 			);
 			name = "Hessen-Tim-ContainerViewControllerPattern";
+			packageProductDependencies = (
+				97FA7F392396A37500DBBEB3 /* SMART */,
+			);
 			productName = "Hessen-Tim-ContainerViewControllerPattern";
 			productReference = 8F5233D5223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern.app */;
 			productType = "com.apple.product-type.application";
@@ -361,6 +366,9 @@
 				Base,
 			);
 			mainGroup = 8F5233CC223949D50020292F;
+			packageReferences = (
+				97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */,
+			);
 			productRefGroup = 8F5233D6223949D50020292F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -840,6 +848,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Awesome-Technologies/Swift-SMART/";
+			requirement = {
+				kind = revision;
+				revision = a1bca00b2ee1207766625106b98fd5c370227eb2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97FA7F392396A37500DBBEB3 /* SMART */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */;
+			productName = SMART;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8F5233CD223949D50020292F /* Project object */;
 }
