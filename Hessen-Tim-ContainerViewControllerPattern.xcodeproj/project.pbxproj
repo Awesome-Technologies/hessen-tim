@@ -29,6 +29,7 @@
 		9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */; };
 		9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */; };
 		9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */; };
+		97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA9E6E238EC41A00AF5DDD /* Institute.swift */; };
 		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
 		97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */; };
 		97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8062254C63B0055EBCE /* GalleryViewController.swift */; };
@@ -85,6 +86,7 @@
 		9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerPictureDelegate.swift; sourceTree = "<group>"; };
 		9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; };
 		9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondScreenViewController.swift; sourceTree = "<group>"; };
+		97BA9E6E238EC41A00AF5DDD /* Institute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institute.swift; sourceTree = "<group>"; };
 		97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDelegate.swift; sourceTree = "<group>"; };
 		97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		97BDA8062254C63B0055EBCE /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */ = {
 			isa = PBXGroup;
 			children = (
+				97BA9E6D238EC3F800AF5DDD /* SMART */,
 				8F4B241322C5020B00A8E678 /* iOSDropDown.swift */,
 				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
 				8F5F33A822F990A7007259B3 /* MasterViewToolbar */,
@@ -249,6 +252,14 @@
 				8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */,
 			);
 			path = "Fake Screens";
+			sourceTree = "<group>";
+		};
+		97BA9E6D238EC3F800AF5DDD /* SMART */ = {
+			isa = PBXGroup;
+			children = (
+				97BA9E6E238EC41A00AF5DDD /* Institute.swift */,
+			);
+			path = SMART;
 			sourceTree = "<group>";
 		};
 		97BDA80A2254C6460055EBCE /* Gallery */ = {
@@ -511,6 +522,7 @@
 				8F5F33AA22F990DE007259B3 /* CustomToolbar.swift in Sources */,
 				8F4B241222C500F000A8E678 /* PatientendatenViewController.swift in Sources */,
 				8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */,
+				97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */,
 				8F523407223951800020292F /* CameraPictureViewController.swift in Sources */,
 				9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */,
 				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,

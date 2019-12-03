@@ -51,7 +51,13 @@ class LoginScreenViewController: UIViewController {
     }
     
     @IBAction func loginAction(_ sender: Any) {
-        performSegue(withIdentifier: "mainView", sender: self)
+        Institute.shared.connect { error in
+            if error == nil {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "mainView", sender: self)
+                }
+            }
+        }
     }
     /*
     // MARK: - Navigation
