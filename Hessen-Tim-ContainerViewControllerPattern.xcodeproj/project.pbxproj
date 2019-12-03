@@ -711,6 +711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2019.12;
 				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv;
 				PRODUCT_NAME = AMP.intensiv;
 				SWIFT_VERSION = 4.2;
@@ -731,6 +732,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2019.12;
 				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv;
 				PRODUCT_NAME = AMP.intensiv;
 				SWIFT_VERSION = 4.2;
