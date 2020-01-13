@@ -16,6 +16,10 @@ import UIKit
  */
 
 class BaseViewController: UIViewController {
+    
+    //UIView that overlays the BaseView in a light gray, when splitView bar is visible
+    var customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+    let window = UIApplication.shared.keyWindow!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +31,15 @@ class BaseViewController: UIViewController {
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
         
+        //initialization information for the gray sidebar
+        customView = UIView(frame: window.bounds)
+        self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.0)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(drawButtonFunction(_:)), name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
+        
+        //Notifications to get information from the sidebar, when the gray overlay has to be turned on or off
+        NotificationCenter.default.addObserver(self, selector: #selector(addGraySubview(_:)), name: Notification.Name(rawValue: "addGraySubview"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removeGraySubview(_:)), name: Notification.Name(rawValue: "removeGraySubview"), object: nil)
       
     }
     
@@ -202,6 +214,23 @@ class BaseViewController: UIViewController {
             
         }
     }
+    
+    /**
+     Function gets trigegred by actions in sidebar, to display gray overlay
+     */
+    @objc func addGraySubview(_ notification: Notification) {
+        print("We insert gray subview")
+        self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        self.view.addSubview(customView)
+    }
+    
+    /**
+    Function gets trigegred by actions in sidebar, to remove gray overlay
+    */
+    @objc func removeGraySubview(_ notification: Notification) {
+        self.customView.removeFromSuperview()
+    }
+    
     
     // Function call when the close Button is pressed
     @IBAction func closeImagePreview(_ sender: Any) {

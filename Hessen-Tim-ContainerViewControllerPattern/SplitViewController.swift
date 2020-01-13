@@ -10,7 +10,6 @@ import UIKit
 
 class SplitViewController: UISplitViewController , UISplitViewControllerDelegate{
     
-    var customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
     var masterVisible = true
     var oldDisplayMode: UISplitViewController.DisplayMode = UISplitViewController.DisplayMode.allVisible
     
@@ -25,8 +24,6 @@ class SplitViewController: UISplitViewController , UISplitViewControllerDelegate
         self.presentsWithGesture = false
         self.preferredDisplayMode = UISplitViewController.DisplayMode.allVisible
         self.delegate = self
-        customView = UIView(frame: window.bounds)
-        self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.0)
         
     }
     
@@ -39,17 +36,10 @@ class SplitViewController: UISplitViewController , UISplitViewControllerDelegate
         
         print("some change in the master")
         if(masterVisible){
-            UIView.animate(withDuration: 0.3, animations: {
-                self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.0)
-            }, completion: { finished in
-                self.customView.removeFromSuperview()
-            })
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "removeGraySubview"), object: nil)
             masterVisible = false
         }else{
-            self.view.addSubview(self.customView)
-            UIView.animate(withDuration: 0.3, animations: {
-                self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
-            }, completion: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "addGraySubview"), object: nil)
             masterVisible = true
         }
         /*
