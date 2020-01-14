@@ -427,6 +427,66 @@
                                     <segue destination="QVj-xf-d6w" kind="show" id="rn4-vD-iUI"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FRc-Hd-CY2" userLabel="PatientDropDown" customClass="DropDown" customModule="AMP_intensiv" customModuleProvider="target">
+                                <rect key="frame" x="235" y="267" width="898" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eb4-Rl-PjC" userLabel="PatientName">
+                                <rect key="frame" x="235" y="376" width="399" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u4y-6q-ufy" userLabel="Insurance">
+                                <rect key="frame" x="753" y="376" width="380" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="joC-jC-SH0" userLabel="ClinicName">
+                                <rect key="frame" x="753" y="486" width="380" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Dh-oe-vgq" userLabel="ContactDoctor">
+                                <rect key="frame" x="753" y="597" width="380" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4va-0N-5Mv" userLabel="PatientBirthday">
+                                <rect key="frame" x="235" y="486" width="399" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dqj-D9-H2R" userLabel="PatientSize">
+                                <rect key="frame" x="235" y="597" width="399" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ALM-QH-aYI" userLabel="PatientSex">
+                                <rect key="frame" x="235" y="713" width="168" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gSD-xq-JnV" userLabel="PatientWeight">
+                                <rect key="frame" x="466" y="713" width="168" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="35u-Yk-Wyj" userLabel="ContactNumber">
+                                <rect key="frame" x="753" y="713" width="380" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -439,7 +499,17 @@
                     </view>
                     <navigationItem key="navigationItem" id="9BN-jC-vbP"/>
                     <connections>
+                        <outlet property="clinicName" destination="joC-jC-SH0" id="N4O-PO-DqZ"/>
+                        <outlet property="contactDoctor" destination="6Dh-oe-vgq" id="4ms-1N-btF"/>
+                        <outlet property="contactNumber" destination="35u-Yk-Wyj" id="HXe-Hn-RYT"/>
                         <outlet property="continueButton" destination="YvR-eM-uiN" id="Fcj-6R-DjD"/>
+                        <outlet property="insurance" destination="u4y-6q-ufy" id="GDw-Ds-aBp"/>
+                        <outlet property="patientBirthday" destination="4va-0N-5Mv" id="pew-QU-mzs"/>
+                        <outlet property="patientDropdown" destination="FRc-Hd-CY2" id="kO6-k2-T0E"/>
+                        <outlet property="patientName" destination="Eb4-Rl-PjC" id="wP1-8l-psP"/>
+                        <outlet property="patientSex" destination="ALM-QH-aYI" id="mae-kZ-vOd"/>
+                        <outlet property="patientSize" destination="dqj-D9-H2R" id="6fy-K3-v0C"/>
+                        <outlet property="patientWeight" destination="gSD-xq-JnV" id="W7u-wj-i0z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K1F-EV-FNV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
