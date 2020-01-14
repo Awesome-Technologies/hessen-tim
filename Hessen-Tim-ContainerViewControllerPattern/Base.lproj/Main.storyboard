@@ -424,6 +424,7 @@
                                 <connections>
                                     <action selector="continue:" destination="rN7-kR-hsP" eventType="touchUpInside" id="WLb-iD-hQF"/>
                                     <action selector="continue:" destination="c8d-gk-lBe" eventType="touchUpInside" id="vXX-Oh-aEe"/>
+                                    <segue destination="QVj-xf-d6w" kind="show" id="rn4-vD-iUI"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -445,6 +446,33 @@
                 <exit id="c8d-gk-lBe" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="67.642752562225468" y="1079.8828125"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="kff-ej-OmW">
+            <objects>
+                <viewController id="QVj-xf-d6w" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LS1-ak-xpu">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainDataViewFiller" translatesAutoresizingMaskIntoConstraints="NO" id="lDp-0D-gUQ">
+                                <rect key="frame" x="0.0" y="50" width="1366" height="924"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="lDp-0D-gUQ" firstAttribute="top" secondItem="iQQ-eP-NZW" secondAttribute="top" id="40I-Of-QgB"/>
+                            <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="KF8-Pn-b9b"/>
+                            <constraint firstItem="lDp-0D-gUQ" firstAttribute="leading" secondItem="iQQ-eP-NZW" secondAttribute="leading" id="Ull-bj-NC5"/>
+                            <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="spc-dw-GaS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="iQQ-eP-NZW"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ooM-gU-hfx"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MeR-3h-F5q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="67.642752562225468" y="1855.6640624999998"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="uGW-Kn-PYc">
@@ -2259,6 +2287,7 @@
     </scenes>
     <resources>
         <image name="Login_Screen" width="1189" height="790"/>
+        <image name="MainDataViewFiller" width="1061" height="741"/>
         <image name="Main_Screen" width="1083" height="781"/>
         <image name="PatientInformationFiller" width="1062" height="742"/>
         <image name="Patientendaten" width="1482" height="1031"/>
