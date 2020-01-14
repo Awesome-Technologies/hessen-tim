@@ -347,6 +347,15 @@
                                     <outletCollection property="gestureRecognizers" destination="oYd-70-H1E" appends="YES" id="ekz-uL-anE"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyq-9Q-Ez4" userLabel="InsertPatientData">
+                                <rect key="frame" x="267" y="367" width="178" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="qMG-BQ-Ska" appends="YES" id="GV4-L1-8pp"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.1803921568627451" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -359,6 +368,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="0Oj-O5-srU"/>
                     <connections>
+                        <outlet property="insertPatientData" destination="Gyq-9Q-Ez4" id="dr6-mY-331"/>
                         <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
                         <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
@@ -384,8 +394,57 @@
                         <segue destination="ETs-MS-wP6" kind="show" id="Ph3-eK-d00"/>
                     </connections>
                 </tapGestureRecognizer>
+                <tapGestureRecognizer id="qMG-BQ-Ska" userLabel="Show InsertPatientInformation">
+                    <connections>
+                        <segue destination="rN7-kR-hsP" kind="show" id="Wae-9Y-kp2"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="67.642752562225468" y="141.796875"/>
+        </scene>
+        <!--Insert Patient Data-->
+        <scene sceneID="Nr1-wY-aMY">
+            <objects>
+                <viewController id="rN7-kR-hsP" customClass="InsertPatientData" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9KS-1U-zlx">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PatientInformationFiller" translatesAutoresizingMaskIntoConstraints="NO" id="kp9-MB-hqO">
+                                <rect key="frame" x="-335.5" y="141" width="2037" height="772"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YvR-eM-uiN">
+                                <rect key="frame" x="235" y="831" width="898" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Weiter">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="continue:" destination="rN7-kR-hsP" eventType="touchUpInside" id="WLb-iD-hQF"/>
+                                    <action selector="continue:" destination="c8d-gk-lBe" eventType="touchUpInside" id="vXX-Oh-aEe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="kp9-MB-hqO" firstAttribute="centerX" secondItem="a2p-tI-9i6" secondAttribute="centerX" id="BGR-Wf-FDX"/>
+                            <constraint firstItem="kp9-MB-hqO" firstAttribute="height" secondItem="9KS-1U-zlx" secondAttribute="height" multiplier="0.754065" id="Fvk-F6-qea"/>
+                            <constraint firstItem="kp9-MB-hqO" firstAttribute="centerY" secondItem="a2p-tI-9i6" secondAttribute="centerY" id="SuR-yI-Buj"/>
+                            <constraint firstItem="kp9-MB-hqO" firstAttribute="width" secondItem="9KS-1U-zlx" secondAttribute="width" multiplier="1.49157" id="yeg-Jy-Zzi"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="a2p-tI-9i6"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="9BN-jC-vbP"/>
+                    <connections>
+                        <outlet property="continueButton" destination="YvR-eM-uiN" id="Fcj-6R-DjD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K1F-EV-FNV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="c8d-gk-lBe" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="67.642752562225468" y="1079.8828125"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="uGW-Kn-PYc">
@@ -2201,6 +2260,7 @@
     <resources>
         <image name="Login_Screen" width="1189" height="790"/>
         <image name="Main_Screen" width="1083" height="781"/>
+        <image name="PatientInformationFiller" width="1062" height="742"/>
         <image name="Patientendaten" width="1482" height="1031"/>
         <image name="Screen_1" width="2418" height="1668"/>
         <image name="button-black" width="530" height="530"/>
@@ -2218,6 +2278,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="GfF-9q-Zga"/>
+        <segue reference="8Li-y3-TZ2"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -13,7 +13,8 @@ class SecondScreenViewController: UIViewController {
     @IBOutlet weak var patientListView: UIView!
     @IBOutlet weak var orderListView: UIView!
     @IBOutlet weak var splitView: UIView!
-
+    @IBOutlet weak var insertPatientData: UIView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -53,6 +54,14 @@ class SecondScreenViewController: UIViewController {
         height = screen2ImageView.frame.height * 0.3
 
         splitView.frame = CGRect(x: x, y: y, width: width, height: height)
+        
+        
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.7)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.28)
+        width = screen2ImageView.frame.width * 0.32
+        height = screen2ImageView.frame.height * 0.3
+
+        insertPatientData.frame = CGRect(x: x, y: y, width: width, height: height)
 
 
     }
