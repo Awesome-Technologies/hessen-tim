@@ -47,6 +47,46 @@ class MedicalDataViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func anamnesePictures(_ sender: Any) {
+        openPictureView(sender: sender, category: "Anamnese")
+    }
+    @IBAction func arztbriefePictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Arztbrief")
+    }
+    @IBAction func haemodynamikPictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Haemodynamik")
+    }
+    @IBAction func beatmungPictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Beatmung")
+    }
+    @IBAction func blutgasanalysePictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Blutgasanalyse")
+    }
+    @IBAction func perfusorenPictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Perfusoren")
+    }
+    @IBAction func InfektiologiePictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Infektiologie")
+    }
+    @IBAction func radeologiePictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Radeologie")
+    }
+    @IBAction func laborPictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Labor")
+    }
+    @IBAction func sonstigePictures(_ sender: Any) {
+        openPictureView(sender: sender,category: "Sonstige")
+    }
+    
+    func openPictureView(sender: Any, category: String){
+        print("Call SplitView, from: " + category)
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.splitView = true
+        delegate.setupRootViewController(animated: true)
+
+        self.performSegue(withIdentifier: "takePicturesForCategory", sender: sender)
+    }
+    
 
     /*
     // MARK: - Navigation

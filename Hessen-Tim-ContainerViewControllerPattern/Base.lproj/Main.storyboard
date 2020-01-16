@@ -620,54 +620,81 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Anamnese"/>
+                                <connections>
+                                    <action selector="anamnesePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="BJ3-k0-j54"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-VB-nqC">
                                 <rect key="frame" x="807" y="638" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Labor"/>
+                                <connections>
+                                    <action selector="laborPictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="4OX-wJ-XEG"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YMi-tJ-eMF">
                                 <rect key="frame" x="573" y="638" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Radeologie"/>
+                                <connections>
+                                    <action selector="radeologiePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Srf-t3-CpQ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIz-zo-13h">
                                 <rect key="frame" x="334" y="638" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Infektiologie"/>
+                                <connections>
+                                    <action selector="InfektiologiePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="zzk-zM-0uA"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8fb-gV-jBD">
                                 <rect key="frame" x="98" y="638" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Perfusore"/>
+                                <connections>
+                                    <action selector="perfusorenPictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="AHv-ms-Jen"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B03-6f-M2X">
                                 <rect key="frame" x="334" y="440" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Arztbriefe"/>
+                                <connections>
+                                    <action selector="arztbriefePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="CWt-es-MCe"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uja-RA-mhb">
                                 <rect key="frame" x="573" y="440" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Haemodynamik"/>
+                                <connections>
+                                    <action selector="haemodynamikPictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="rWV-Oz-ReO"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rI4-jM-4mn">
                                 <rect key="frame" x="807" y="440" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Beatmung"/>
+                                <connections>
+                                    <action selector="beatmungPictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="QUm-Kh-XZX"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mMi-Qj-vO4">
                                 <rect key="frame" x="1054" y="444" width="177" height="136"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Blutgasanalyse"/>
+                                <connections>
+                                    <action selector="blutgasanalysePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="U5s-7e-hse"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEq-zk-LvS">
                                 <rect key="frame" x="734" y="841" width="96" height="96"/>
@@ -698,6 +725,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Sonstige"/>
+                                <connections>
+                                    <action selector="sonstigePictures:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Ofz-Sg-HqW"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -738,6 +768,7 @@
                         <outlet property="send" destination="jJ2-in-SUE" id="oid-Kg-Xxv"/>
                         <outlet property="ventilationButton" destination="rI4-jM-4mn" id="gME-1Z-fcq"/>
                         <outlet property="videoCall" destination="U5C-1O-tHM" id="QhK-gl-qhF"/>
+                        <segue destination="UNo-Bw-Gvo" kind="show" identifier="takePicturesForCategory" id="NJh-UN-1HP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MeR-3h-F5q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1364,6 +1395,7 @@
         <scene sceneID="5AS-ks-JEi">
             <objects>
                 <splitViewController storyboardIdentifier="SplitVC" id="UNo-Bw-Gvo" customClass="SplitViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="6BF-6d-yVH"/>
                     <connections>
                         <segue destination="Bck-Ss-wCr" kind="relationship" relationship="masterViewController" id="hDV-8o-fCS"/>
                         <segue destination="eeY-cm-khO" kind="relationship" relationship="detailViewController" id="8Li-y3-TZ2"/>
@@ -2581,5 +2613,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
         <segue reference="8Li-y3-TZ2"/>
+        <segue reference="NJh-UN-1HP"/>
     </inferredMetricsTieBreakers>
 </document>
