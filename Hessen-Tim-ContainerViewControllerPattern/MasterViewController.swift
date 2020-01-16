@@ -22,7 +22,7 @@ class MasterViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
         addButton = UIBarButtonItem(title: "close", style: .done, target: self, action: #selector(collapse))
-        navigationItem.leftBarButtonItem = nil
+        navigationItem.leftBarButtonItem = addButton
 
         tableView.rowHeight = 65
 

@@ -22,7 +22,7 @@ class SplitViewController: UISplitViewController , UISplitViewControllerDelegate
         // Put the Master View on the left side
         self.primaryEdge = .trailing
         self.presentsWithGesture = false
-        self.preferredDisplayMode = UISplitViewController.DisplayMode.allVisible
+        self.preferredDisplayMode = UISplitViewController.DisplayMode.primaryHidden
         self.delegate = self
         
     }
