@@ -23,6 +23,7 @@
 		8F5233F9223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */; };
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
 		8F5F33AA22F990DE007259B3 /* CustomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5F33A922F990DE007259B3 /* CustomToolbar.swift */; };
+		8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */; };
 		8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */; };
 		8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A722CA181E0034A913 /* OrderListViewController.swift */; };
 		8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A922CA3F210034A913 /* PatientListViewController.swift */; };
@@ -81,6 +82,7 @@
 		8F5233FA223949D70020292F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
 		8F5F33A922F990DE007259B3 /* CustomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbar.swift; sourceTree = "<group>"; };
+		8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataViewController.swift; sourceTree = "<group>"; };
 		8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		8FDE86A722CA181E0034A913 /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
 		8FDE86A922CA3F210034A913 /* PatientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientListViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				8FEB9B092264B24C00DD45CF /* PatientDataViewController.swift */,
 				8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */,
 				8F01870523CDE27200C9CDD6 /* InsertPatientData.swift */,
+				8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */,
 			);
 			path = "Fake Screens";
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				8F01870623CDE27200C9CDD6 /* InsertPatientData.swift in Sources */,
 				8F4E063E22B1058E002CBC95 /* MasterViewController.swift in Sources */,
 				8F5233D9223949D50020292F /* AppDelegate.swift in Sources */,
+				8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */,
 				9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */,
 				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
 				9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */,
