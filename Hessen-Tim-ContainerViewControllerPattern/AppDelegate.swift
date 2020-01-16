@@ -33,6 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 transition = .transitionFlipFromLeft
                 */
                 let loginViewController = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "sceneNavController") as! UINavigationController
+                
+                //initiate the insertPatietData and medicalData view controllers
+                let insertPatientData = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "insertPatientDataVC") as! UIViewController
+                let medicalData = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "medicalDataVC") as! UIViewController
+                
+                //Place the insertPatietData and medicalData vc on the navigation stack of the navigationController, so you will be transitioned back to the medicalDataVC
+                loginViewController.pushViewController(insertPatientData, animated: true)
+                loginViewController.pushViewController(medicalData, animated: true)
                 newRootViewController = loginViewController
                 transition = .transitionFlipFromLeft
             

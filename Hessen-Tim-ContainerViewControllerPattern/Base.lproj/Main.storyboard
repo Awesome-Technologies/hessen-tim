@@ -405,7 +405,7 @@
         <!--Insert Patient Data-->
         <scene sceneID="Nr1-wY-aMY">
             <objects>
-                <viewController id="rN7-kR-hsP" customClass="InsertPatientData" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="insertPatientDataVC" id="rN7-kR-hsP" customClass="InsertPatientData" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9KS-1U-zlx">
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -520,7 +520,7 @@
         <!--Medical Data View Controller-->
         <scene sceneID="kff-ej-OmW">
             <objects>
-                <viewController id="QVj-xf-d6w" customClass="MedicalDataViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="medicalDataVC" id="QVj-xf-d6w" customClass="MedicalDataViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LS1-ak-xpu">
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
