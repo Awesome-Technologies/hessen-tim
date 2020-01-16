@@ -1389,7 +1389,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PnT-bs-3Wb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1647.5841874084917" y="958.59374999999989"/>
+            <point key="canvasLocation" x="1648" y="2107"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="5AS-ks-JEi">
@@ -1398,7 +1398,7 @@
                     <navigationItem key="navigationItem" id="6BF-6d-yVH"/>
                     <connections>
                         <segue destination="Bck-Ss-wCr" kind="relationship" relationship="masterViewController" id="hDV-8o-fCS"/>
-                        <segue destination="eeY-cm-khO" kind="relationship" relationship="detailViewController" id="8Li-y3-TZ2"/>
+                        <segue destination="cqQ-9j-TAo" kind="relationship" relationship="detailViewController" id="nxV-jW-LDg"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="78q-pI-Hy0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1493,7 +1493,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fX2-u4-hut" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3093.997071742313" y="166.9921875"/>
+            <point key="canvasLocation" x="2345" y="1111"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dr8-1s-1pl">
@@ -1511,7 +1511,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kNR-KI-Iwa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="953.58711566617853" y="958.59374999999989"/>
+            <point key="canvasLocation" x="954" y="2107"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="tYf-pM-eZo">
@@ -1711,62 +1711,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fq-LN-KIz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-702" y="633"/>
-        </scene>
-        <!--Base View Controller-->
-        <scene sceneID="SwF-Wk-sOD">
-            <objects>
-                <viewController id="18V-gH-ShB" customClass="BaseViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="sxb-nu-Kc7">
-                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j5Q-dx-7NW">
-                                <rect key="frame" x="20" y="344" width="1024.5" height="640"/>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjG-cp-qlC">
-                                <rect key="frame" x="20" y="20" width="1024.5" height="256"/>
-                            </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DsW-Zc-fzr">
-                                <rect key="frame" x="1138" y="816" width="168" height="168"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="168" id="1gU-sd-hOv">
-                                        <variation key="heightClass=compact" constant="90"/>
-                                    </constraint>
-                                    <constraint firstAttribute="width" secondItem="DsW-Zc-fzr" secondAttribute="height" multiplier="1:1" id="F7j-5f-DSO">
-                                        <variation key="heightClass=compact" constant="0.0"/>
-                                    </constraint>
-                                </constraints>
-                                <state key="normal" title="Take Picture" image="foto-Button"/>
-                                <connections>
-                                    <action selector="takePicture:" destination="18V-gH-ShB" eventType="touchUpInside" id="3fy-cr-EtW"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="rjG-cp-qlC" firstAttribute="top" secondItem="4MB-BB-0eS" secondAttribute="top" constant="20" id="6cy-5a-4fc"/>
-                            <constraint firstItem="4MB-BB-0eS" firstAttribute="trailing" secondItem="DsW-Zc-fzr" secondAttribute="trailing" constant="60" id="821-IG-smY">
-                                <variation key="heightClass=compact" constant="21"/>
-                            </constraint>
-                            <constraint firstItem="j5Q-dx-7NW" firstAttribute="height" secondItem="sxb-nu-Kc7" secondAttribute="height" multiplier="5:8" id="8BI-XT-DpF"/>
-                            <constraint firstItem="rjG-cp-qlC" firstAttribute="height" secondItem="sxb-nu-Kc7" secondAttribute="height" multiplier="2:8" id="9Y5-b6-bEi"/>
-                            <constraint firstItem="4MB-BB-0eS" firstAttribute="trailing" secondItem="DsW-Zc-fzr" secondAttribute="trailing" constant="60" id="CWN-Cy-WC6">
-                                <variation key="heightClass=compact" constant="21"/>
-                            </constraint>
-                            <constraint firstItem="rjG-cp-qlC" firstAttribute="leading" secondItem="4MB-BB-0eS" secondAttribute="leading" constant="20" id="Dbz-jH-xKV"/>
-                            <constraint firstItem="j5Q-dx-7NW" firstAttribute="leading" secondItem="4MB-BB-0eS" secondAttribute="leading" constant="20" id="fYx-aW-MED"/>
-                            <constraint firstItem="j5Q-dx-7NW" firstAttribute="width" secondItem="sxb-nu-Kc7" secondAttribute="width" multiplier="6:8" id="g53-Fs-XXA"/>
-                            <constraint firstItem="4MB-BB-0eS" firstAttribute="bottom" secondItem="DsW-Zc-fzr" secondAttribute="bottom" constant="20" id="h2G-DU-Ru8"/>
-                            <constraint firstItem="rjG-cp-qlC" firstAttribute="width" secondItem="sxb-nu-Kc7" secondAttribute="width" multiplier="6:8" id="nu6-sd-xCw"/>
-                            <constraint firstItem="4MB-BB-0eS" firstAttribute="bottom" secondItem="j5Q-dx-7NW" secondAttribute="bottom" constant="20" id="sa1-E9-GvE"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="4MB-BB-0eS"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BeF-Ax-tQ3" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3844.655929721815" y="165.8203125"/>
         </scene>
         <!--Base View Controller-->
         <scene sceneID="sBK-TE-3rp">
@@ -1977,7 +1921,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6d-Vc-0qz" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3844.655929721815" y="165.8203125"/>
+            <point key="canvasLocation" x="3165" y="1111"/>
         </scene>
         <!--Camera Picture View Controller-->
         <scene sceneID="sZr-mA-5Ck">
@@ -2033,7 +1977,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3151" y="820"/>
+            <point key="canvasLocation" x="3772" y="1255"/>
         </scene>
         <!--Gallery View Controller-->
         <scene sceneID="kn3-OF-Gc5">
@@ -2105,7 +2049,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4P-N3-AvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3013" y="-279"/>
+            <point key="canvasLocation" x="3772" y="860"/>
         </scene>
         <!--Login Screen View Controller-->
         <scene sceneID="TQg-vc-U3L">
@@ -2612,7 +2556,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="8Li-y3-TZ2"/>
+        <segue reference="nxV-jW-LDg"/>
         <segue reference="NJh-UN-1HP"/>
     </inferredMetricsTieBreakers>
 </document>
