@@ -270,7 +270,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Screen_1" translatesAutoresizingMaskIntoConstraints="NO" id="ZNB-FY-KoN">
-                                <rect key="frame" x="-15.5" y="20" width="1397" height="964.00000000000045"/>
+                                <rect key="frame" x="-15.5" y="20" width="1397" height="964"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZNB-FY-KoN" secondAttribute="height" multiplier="1.44964:1" id="qiv-nv-QzQ"/>

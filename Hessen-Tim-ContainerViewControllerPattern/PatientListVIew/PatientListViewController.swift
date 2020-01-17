@@ -24,6 +24,8 @@ class PatientTableViewCell: UITableViewCell {
 class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var list: PatientList?
     
+    var selectedCellIndexPath: IndexPath?
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
@@ -99,6 +101,20 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         returnedView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
         
         return returnedView
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      selectedCellIndexPath = selectedCellIndexPath == indexPath ? nil : indexPath
+      tableView.beginUpdates()
+      tableView.endUpdates()
+    }
+
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+      if selectedCellIndexPath == indexPath {
+        return 250
+      }
+      return 65
     }
     
     
