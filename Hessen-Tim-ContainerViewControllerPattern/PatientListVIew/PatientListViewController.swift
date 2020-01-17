@@ -12,12 +12,26 @@ import SMART
 class PatientTableViewCell: UITableViewCell {
     @IBOutlet weak var nachnameLabel: UILabel!
     @IBOutlet weak var vornameLabel: UILabel!
-    @IBOutlet weak var geschlechtLabel: UILabel!
-    @IBOutlet weak var geburtsdatumLabel: UILabel!
-    @IBOutlet weak var groeßeLabel: UILabel!
-    @IBOutlet weak var gewichtLabel: UILabel!
-    @IBOutlet weak var klinikLabel: UILabel!
-    @IBOutlet weak var kostentraegerLabel: UILabel!
+    @IBOutlet weak var subview1: UIView!{
+    didSet {
+        subview1.isHidden = true
+        }
+    }
+    @IBOutlet weak var subview2: UIView!{
+    didSet {
+        subview2.isHidden = true
+        }
+    }
+    @IBOutlet weak var subview3: UIView!{
+    didSet {
+        subview3.isHidden = true
+        }
+    }
+    @IBOutlet weak var subview4: UIView!{
+    didSet {
+        subview4.isHidden = true
+        }
+    }
     
 }
 
@@ -41,6 +55,9 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.rowHeight = 70
         tableView.sectionHeaderHeight = 40
         tableView.sectionFooterHeight = 20
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 85
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Light", size: 25)!]
         UINavigationBar.appearance().titleTextAttributes = attributes
@@ -77,12 +94,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
                 cell.nachnameLabel?.text = name.family?.string
                 cell.vornameLabel?.text = name.given?[0].string
             }
-            if let birthDate = patient.humanBirthDateShort {
-                cell.geburtsdatumLabel?.text = birthDate
-            }
-            if let gender = patient.gender?.rawValue {
-                cell.geschlechtLabel?.text = gender
-            }
+            
         }
         return cell
     }
@@ -102,20 +114,37 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         
         return returnedView
     }
-    
+    /*
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       selectedCellIndexPath = selectedCellIndexPath == indexPath ? nil : indexPath
       tableView.beginUpdates()
       tableView.endUpdates()
     }
+    */
+    //https://www.atomicbird.com/blog/uistackview-table-cells/
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? PatientTableViewCell {
+            tableView.beginUpdates()
+            cell.subview1.isHidden = !cell.subview1.isHidden
+            cell.subview2.isHidden = !cell.subview2.isHidden
+            cell.subview3.isHidden = !cell.subview3.isHidden
+            cell.subview4.isHidden = !cell.subview4.isHidden
+            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.endUpdates()
+        }
+    }
 
-
+    /*
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
       if selectedCellIndexPath == indexPath {
         return 250
       }
       return 65
     }
+     */
     
+    @IBAction func click(_ sender: Any) {
+        print("I clicktheButton")
+    }
     
 }
