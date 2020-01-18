@@ -424,7 +424,7 @@
                                 <connections>
                                     <action selector="continue:" destination="rN7-kR-hsP" eventType="touchUpInside" id="WLb-iD-hQF"/>
                                     <action selector="continue:" destination="c8d-gk-lBe" eventType="touchUpInside" id="vXX-Oh-aEe"/>
-                                    <segue destination="QVj-xf-d6w" kind="show" id="rn4-vD-iUI"/>
+                                    <segue destination="QVj-xf-d6w" kind="show" identifier="toMedicalData" id="rn4-vD-iUI"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FRc-Hd-CY2" userLabel="PatientDropDown" customClass="DropDown" customModule="AMP_intensiv" customModuleProvider="target">
@@ -2638,6 +2638,6 @@
         <segue reference="jmv-j2-Fyf"/>
         <segue reference="nxV-jW-LDg"/>
         <segue reference="NJh-UN-1HP"/>
-        <segue reference="lIF-2e-CxI"/>
+        <segue reference="rn4-vD-iUI"/>
     </inferredMetricsTieBreakers>
 </document>

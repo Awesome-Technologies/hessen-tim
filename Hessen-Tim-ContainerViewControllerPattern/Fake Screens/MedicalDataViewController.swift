@@ -9,6 +9,17 @@
 import UIKit
 
 class MedicalDataViewController: UIViewController {
+    
+    var pName: String = ""
+    var pBirthday: String = ""
+    var pSize: String = ""
+    var pSex: String = ""
+    var pWeight: String = ""
+    var insuranceName: String = ""
+    var clinic: String = ""
+    var doctor: String = ""
+    var number: String = ""
+    
 
     @IBOutlet weak var patientName: UILabel!
     @IBOutlet weak var patientBirthday: UILabel!
@@ -43,6 +54,16 @@ class MedicalDataViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        patientName.text = pName
+        patientBirthday.text = pBirthday
+        patientSize.text = pSize
+        patientSex.text = pSex
+        patientWeight.text = pWeight
+        insurance.text = insuranceName
+        clinicName.text = clinic
+        contactDoctor.text = doctor
+        contactNumber.text = number
 
         // Do any additional setup after loading the view.
     }

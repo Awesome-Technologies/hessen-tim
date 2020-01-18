@@ -80,7 +80,8 @@ class InsertPatientData: UIViewController {
     }
     
     @IBAction func `continue`(_ sender: Any) {
-        print("continue to Main View")
+        //print("continue to Main View")
+        //print("name: " +  String(self.patientName.text!))
     }
     
     
@@ -93,5 +94,23 @@ class InsertPatientData: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toMedicalData" {
+            
+            let controller = segue.destination as! MedicalDataViewController
+            print("name: " +  String(self.patientName.text!))
+            controller.pName = self.patientName.text!
+            controller.pBirthday = self.patientBirthday.text!
+            controller.pSize = self.patientSize.text!
+            controller.pSex = self.patientSex.text!
+            controller.pWeight = self.patientWeight.text!
+            controller.insuranceName = self.insurance.text!
+            controller.clinic = self.clinicName.text!
+            controller.doctor = self.contactDoctor.text!
+            controller.number = self.contactNumber.text!
+        }
+    }
 
 }
