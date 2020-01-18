@@ -9,6 +9,18 @@
 import UIKit
 import SMART
 
+struct Patient {
+    var surename : String
+    var firstName : String
+    var sex : String
+    var birthday : Date
+    var size : Int
+    var weight : Int
+    var clinic : String
+    var insurance : String
+    
+}
+
 class PatientTableViewCell: UITableViewCell {
     @IBOutlet weak var nachnameLabel: UILabel!
     @IBOutlet weak var vornameLabel: UILabel!
@@ -35,6 +47,12 @@ class PatientTableViewCell: UITableViewCell {
     
 }
 
+fileprivate func parseDate(_ str : String) -> Date {
+    let dateFormat = DateFormatter()
+    dateFormat.dateFormat = "yyyy-MM-dd"
+    return dateFormat.date(from: str)!
+}
+
 class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var list: PatientList?
     
@@ -45,6 +63,15 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func goBackToRootTapped(_ sender: Any) {
         performSegue(withIdentifier: "exitToRoot", sender: self)
     }
+    
+    var patienten: Array<Patient> = [
+        Patient(surename: "Müller", firstName: "Hans", sex: "M", birthday: parseDate("1950-02-15"), size: 180, weight: 71, clinic: "Kassel", insurance: "Allianz"),
+        Patient(surename: "Maier", firstName: "Georg", sex: "M", birthday: parseDate("1951-06-04"), size: 152, weight: 69, clinic: "Frankfurt", insurance: "AOK"),
+        Patient(surename: "Kachelman", firstName: "Jörg", sex: "M", birthday: parseDate("1953-05-01"), size: 169, weight: 87, clinic: "Frankfurt", insurance: "Allianz"),
+        Patient(surename: "Panzer", firstName: "Paul", sex: "M", birthday: parseDate("1950-02-18"), size: 180, weight: 81, clinic: "Frankfurt", insurance: "TK"),
+        Patient(surename: "Geiger", firstName: "Sabine", sex: "W", birthday: parseDate("1951-06-15"), size: 154, weight: 53, clinic: "Kassel", insurance: "HUK"),
+        Patient(surename: "Bauer", firstName: "Heiko", sex: "M", birthday: parseDate("1962-06-28"), size: 208, weight: 96, clinic: "Kassel", insurance: "AOK"),
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,23 +106,19 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = list?.patients?.count {
-            return count
-        }
-        return 0
+       return patienten.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
         
+        let patient = patienten[indexPath.row]
+        let date = patient.birthday
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yyyy"
         cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
-        if let patient = list?.patients?[indexPath.row] {
-            if let name = patient.name?[0] {
-                cell.nachnameLabel?.text = name.family?.string
-                cell.vornameLabel?.text = name.given?[0].string
-            }
-            
-        }
+        cell.nachnameLabel?.text = patient.surename
+        cell.vornameLabel?.text = patient.firstName
         return cell
     }
     

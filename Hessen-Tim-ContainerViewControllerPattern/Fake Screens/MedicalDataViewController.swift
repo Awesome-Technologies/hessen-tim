@@ -50,6 +50,8 @@ class MedicalDataViewController: UIViewController {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var normalCall: UIButton!
     @IBOutlet weak var videoCall: UIButton!
+    @IBOutlet weak var grayOverlay: UIView!
+    @IBOutlet weak var dataSendView: UIView!
     
     
     override func viewDidLoad() {
@@ -98,6 +100,13 @@ class MedicalDataViewController: UIViewController {
     @IBAction func sonstigePictures(_ sender: Any) {
         openPictureView(sender: sender,category: "Sonstige")
     }
+    
+    @IBAction func send(_ sender: Any) {
+        view.bringSubviewToFront(grayOverlay)
+        view.bringSubviewToFront(dataSendView)
+        
+    }
+    
     
     func openPictureView(sender: Any, category: String){
         print("Call SplitView, from: " + category)
