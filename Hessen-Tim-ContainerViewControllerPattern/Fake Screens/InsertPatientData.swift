@@ -40,6 +40,8 @@ class InsertPatientData: UIViewController {
         patientDropdown.didSelect{(selectedText , index ,id) in
             print("Selected String: \(selectedText) \n index: \(index)")
         }
+        
+        showDatePicker()
     }
     
     @IBAction func toPrevScreen(_ sender: Any) {
