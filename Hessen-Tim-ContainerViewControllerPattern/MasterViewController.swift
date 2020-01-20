@@ -27,50 +27,6 @@ class MasterViewController: UITableViewController {
         tableView.rowHeight = 65
 
         self.view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
-        self.navigationController?.setToolbarHidden(false, animated: true)
-
-        /**Create a UIView, that is shown in the toolbar of the navigationController
-         and that holds the buttons for saving and making calls
-         */
-        let viewFN = UIView(frame: CGRect.init(x: 0, y: 0, width: (self.navigationController?.view.frame.width)!, height: 120))
-        viewFN.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
-
-        //Some values for the button creation
-        let buttonWidth = 100
-        let buttonHight = 100
-        let rigt_left_margin = 20
-
-        //Add Button to save the order
-        let button1 = UIButton(frame: CGRect.init(x: 0 + rigt_left_margin, y: 0, width: buttonWidth, height: buttonHight))
-        button1.center.y = viewFN.center.y
-        button1.setImage(UIImage(named: "Speichern"), for: .normal)
-        button1.contentVerticalAlignment = .fill
-        button1.contentHorizontalAlignment = .fill
-        button1.addTarget(self, action: #selector(self.speichern), for: .touchUpInside)
-
-        //Add button to make a simple call
-        let button2 = UIButton(frame: CGRect.init(x: 10, y: 0, width: buttonWidth, height: buttonHight))
-        button2.center = viewFN.center
-        button2.setImage(UIImage(named: "Anruf"), for: .normal)
-        button2.contentVerticalAlignment = .fill
-        button2.contentHorizontalAlignment = .fill
-        button2.addTarget(self, action: #selector(self.anrufen), for: .touchUpInside)
-
-        //Add button to make a video call
-        let button3 = UIButton(frame: CGRect.init(x: Int(viewFN.frame.size.width) - buttonWidth - rigt_left_margin, y: 0, width: buttonWidth, height: buttonHight))
-        button3.center.y = viewFN.center.y
-        button3.setImage(UIImage(named: "Videotelefonie"), for: .normal)
-        button3.contentVerticalAlignment = .fill
-        button3.contentHorizontalAlignment = .fill
-        button3.addTarget(self, action: #selector(self.videoanruf), for: .touchUpInside)
-
-        //Add the buttons to the UIView
-        viewFN.addSubview(button1)
-        viewFN.addSubview(button2)
-        viewFN.addSubview(button3)
-
-        //Add the UIView to the toolbar
-        self.navigationController?.toolbar.addSubview(viewFN)
 
 
     }

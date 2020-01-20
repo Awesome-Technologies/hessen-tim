@@ -22,7 +22,6 @@
 		8F5233EE223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233ED223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift */; };
 		8F5233F9223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */; };
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
-		8F5F33AA22F990DE007259B3 /* CustomToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5F33A922F990DE007259B3 /* CustomToolbar.swift */; };
 		8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */; };
 		8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */; };
 		8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A722CA181E0034A913 /* OrderListViewController.swift */; };
@@ -81,7 +80,6 @@
 		8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hessen_Tim_ContainerViewControllerPatternUITests.swift; sourceTree = "<group>"; };
 		8F5233FA223949D70020292F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
-		8F5F33A922F990DE007259B3 /* CustomToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbar.swift; sourceTree = "<group>"; };
 		8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataViewController.swift; sourceTree = "<group>"; };
 		8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		8FDE86A722CA181E0034A913 /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				97BA9E6D238EC3F800AF5DDD /* SMART */,
 				8F4B241322C5020B00A8E678 /* iOSDropDown.swift */,
 				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
-				8F5F33A822F990A7007259B3 /* MasterViewToolbar */,
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
 				8F5233DC223949D50020292F /* Main.storyboard */,
@@ -220,14 +217,6 @@
 				8FDE86A922CA3F210034A913 /* PatientListViewController.swift */,
 			);
 			path = PatientListVIew;
-			sourceTree = "<group>";
-		};
-		8F5F33A822F990A7007259B3 /* MasterViewToolbar */ = {
-			isa = PBXGroup;
-			children = (
-				8F5F33A922F990DE007259B3 /* CustomToolbar.swift */,
-			);
-			path = MasterViewToolbar;
 			sourceTree = "<group>";
 		};
 		8FB9E65E22F0878000CE4FF6 /* OrderListView */ = {
@@ -527,7 +516,6 @@
 				8FEB9B0A2264B24C00DD45CF /* PatientDataViewController.swift in Sources */,
 				8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */,
 				8F4B241422C5020B00A8E678 /* iOSDropDown.swift in Sources */,
-				8F5F33AA22F990DE007259B3 /* CustomToolbar.swift in Sources */,
 				8F4B241222C500F000A8E678 /* PatientendatenViewController.swift in Sources */,
 				8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */,
 				97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */,

@@ -1455,13 +1455,12 @@
         <!--Navigation Controller-->
         <scene sceneID="sYu-kr-hGF">
             <objects>
-                <navigationController toolbarHidden="NO" id="Bck-Ss-wCr" sceneMemberID="viewController">
+                <navigationController id="Bck-Ss-wCr" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Hri-8u-fIw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zYZ-Gt-wR5" customClass="CustomToolbar" customModule="AMP_intensiv" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="954" width="375" height="50"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bz6-St-9bG">
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -3062,7 +3061,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="nxV-jW-LDg"/>
+        <segue reference="EzM-g7-taV"/>
         <segue reference="NJh-UN-1HP"/>
         <segue reference="fKo-Ba-fGo"/>
     </inferredMetricsTieBreakers>
