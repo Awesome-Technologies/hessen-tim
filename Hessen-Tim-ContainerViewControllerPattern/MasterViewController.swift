@@ -123,13 +123,10 @@ class MasterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView,didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            self.performSegue(withIdentifier: "patientData", sender: self)
-
-            self.splitViewController?.preferredDisplayMode = UISplitViewController.DisplayMode.allVisible
-            self.navigationItem.leftBarButtonItem = nil
-            let detailVC = self.splitViewController?.secondaryViewController
-            print(self.splitViewController?.title)
-            print(self.splitViewController?.isCollapsed)
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            delegate.splitView = false
+            delegate.setupRootViewController(animated: true)
+            dismiss(animated: true, completion: nil)
         }
         else{
             self.performSegue(withIdentifier: "cameraData", sender: self)
