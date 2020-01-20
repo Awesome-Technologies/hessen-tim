@@ -323,19 +323,10 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7C7-X5-PY5" userLabel="Touch Area">
                                 <rect key="frame" x="269" y="93" width="178" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="h9s-6F-1j7" appends="YES" id="8Fd-nG-Pcx"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OUl-5e-W0c" userLabel="Touch Area">
-                                <rect key="frame" x="269" y="230" width="178" height="129"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="zPF-1n-aFj" appends="YES" id="0ak-FS-JTg"/>
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vlx-Td-nOX">
@@ -350,7 +341,7 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyq-9Q-Ez4" userLabel="InsertPatientData">
                                 <rect key="frame" x="267" y="367" width="178" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="qMG-BQ-Ska" appends="YES" id="GV4-L1-8pp"/>
@@ -369,7 +360,6 @@
                     <navigationItem key="navigationItem" id="0Oj-O5-srU"/>
                     <connections>
                         <outlet property="insertPatientData" destination="Gyq-9Q-Ez4" id="dr6-mY-331"/>
-                        <outlet property="orderListView" destination="OUl-5e-W0c" id="gTn-Ug-ecO"/>
                         <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
                         <outlet property="splitView" destination="vlx-Td-nOX" id="NAn-NL-vHc"/>
@@ -382,11 +372,6 @@
                 <tapGestureRecognizer id="oYd-70-H1E" userLabel="Show SplitView">
                     <connections>
                         <action selector="splitShow:" destination="SU6-Eh-hR5" id="8yu-ZR-hmY"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="zPF-1n-aFj" userLabel="ShowOrderList">
-                    <connections>
-                        <segue destination="BRP-Dz-pYi" kind="show" id="bXX-Mn-IRh"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="h9s-6F-1j7" userLabel="Show PatientList">
@@ -630,7 +615,7 @@
                                         <rect key="frame" x="360" y="221" width="104" height="30"/>
                                         <state key="normal" title="Ok"/>
                                         <connections>
-                                            <action selector="continueNormalCall:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Gby-fs-hRN"/>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="tim-PO-pDf"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2810,7 +2795,7 @@
     <resources>
         <image name="Login_Screen" width="1189" height="790"/>
         <image name="MainDataViewFiller" width="1061" height="741"/>
-        <image name="Main_Screen" width="1083" height="781"/>
+        <image name="Main_Screen" width="899" height="676"/>
         <image name="PatientInformationFiller" width="1062" height="742"/>
         <image name="Patientendaten" width="1482" height="1031"/>
         <image name="Screen_1" width="2418" height="1668"/>
@@ -2830,7 +2815,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
         <segue reference="nxV-jW-LDg"/>
-        <segue reference="NJh-UN-1HP"/>
+        <segue reference="icf-tn-bRX"/>
         <segue reference="wWy-HY-sRE"/>
     </inferredMetricsTieBreakers>
 </document>

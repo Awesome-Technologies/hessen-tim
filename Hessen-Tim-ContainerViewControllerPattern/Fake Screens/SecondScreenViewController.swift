@@ -11,7 +11,6 @@ import UIKit
 class SecondScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var patientListView: UIView!
-    @IBOutlet weak var orderListView: UIView!
     @IBOutlet weak var splitView: UIView!
     @IBOutlet weak var insertPatientData: UIView!
     
@@ -34,30 +33,23 @@ class SecondScreenViewController: UIViewController {
 
         // Place touch area at the appropriate place on the screenshot
 
-        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
-        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.135)
+        var x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.045)
+        var y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.17)
         var width = screen2ImageView.frame.width * 0.14
         var height = screen2ImageView.frame.height * 0.08
 
         patientListView.frame = CGRect(x: x, y: y, width: width, height: height)
-
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.02)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.235)
-        width = screen2ImageView.frame.width * 0.14
-        height = screen2ImageView.frame.height * 0.09
-
-        orderListView.frame = CGRect(x: x, y: y, width: width, height: height)
 
         x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.22)
         y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.28)
         width = screen2ImageView.frame.width * 0.32
         height = screen2ImageView.frame.height * 0.3
 
-        splitView.frame = CGRect(x: x, y: y, width: width, height: height)
+        splitView.frame = CGRect(x: x, y: y, width: 0, height: 0)
         
         
-        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.7)
-        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.28)
+        x = screen2ImageView.frame.minX + (screen2ImageView.frame.width * 0.65)
+        y = screen2ImageView.frame.minY + (screen2ImageView.frame.height * 0.25)
         width = screen2ImageView.frame.width * 0.32
         height = screen2ImageView.frame.height * 0.3
 
