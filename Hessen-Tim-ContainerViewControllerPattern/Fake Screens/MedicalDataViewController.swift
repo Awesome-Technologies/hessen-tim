@@ -110,7 +110,25 @@ class MedicalDataViewController: UIViewController {
     @IBAction func send(_ sender: Any) {
         view.bringSubviewToFront(grayOverlay)
         grayOverlay.isHidden = false
-        view.bringSubviewToFront(dataSendView)
+        //view.bringSubviewToFront(dataSendView)
+        //var notificationView = MedicalDataNotificationView(frame: CGRect(x: self.view.frame.width/2, y: self.view.frame.height/2, width: self.view.frame.width/2, height: self.view.frame.height/2))
+        var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 400, height: 400))
+        notificationView.addLabel()
+        notificationView.addButtonToPatientenListe()
+        notificationView.addOKbutton()
+        notificationView.addTimelineInformation()
+        self.view.addSubview(notificationView)
+        notificationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            //notificationView.widthAnchor.constraint(equalToConstant: 64),
+            //notificationView.widthAnchor.constraint(equalTo: testView.heightAnchor),
+            notificationView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.5, constant: 1),
+            notificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4, constant: 1),
+            notificationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            notificationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+        ])
+        
+        view.bringSubviewToFront(notificationView)
         
     }
     
