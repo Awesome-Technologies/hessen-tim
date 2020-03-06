@@ -70,8 +70,10 @@ class BaseViewController: UIViewController {
                 print("some bullshit" + String(n))
             }
             */
-        }, completion: {
+        }, completion: { (imageName) in
             DispatchQueue.main.async {
+                
+                self.addGalleryImage(imageName: "\(imageName).jpg")
                 /*
                 print(Institute.shared.photoName)
                 if(Institute.shared.photoName > 0){
@@ -82,7 +84,7 @@ class BaseViewController: UIViewController {
                     }
                 }
                 */
-                
+                /*
                 
                 // Get the document directory url
                 let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -108,6 +110,7 @@ class BaseViewController: UIViewController {
                 }
                 
                 Institute.shared.photoName = 0
+                */
                 
                 //print("I start this, when all Images are loaded!")
             }

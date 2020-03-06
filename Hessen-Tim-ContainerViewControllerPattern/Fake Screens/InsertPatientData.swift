@@ -52,9 +52,12 @@ class InsertPatientData: UIViewController {
         showDatePicker()
         
         
-        //Institute.shared.deleteAllImageMedia()
+        Institute.shared.deleteAllImageMedia()
         Institute.shared.deleteAllObservations()
-        //Institute.shared.deleteAllServiceRequests()
+        Institute.shared.deleteAllServiceRequests()
+        Institute.shared.searchPatientWithID(id: "5")
+        //Institute.shared.updateServiceRequest(id: "61", status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
+        //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
     }
     
     @IBAction func toPrevScreen(_ sender: Any) {
@@ -106,6 +109,7 @@ class InsertPatientData: UIViewController {
         //Institute.shared.deleteAllObservations()
         //Institute.shared.deleteAllServiceRequests()
         //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
+        Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
        
         if(true){
             //organizationID = Institute.shared.createOrganization(organizationName: "TestKlinik", contactName: "DR.Sommer", contactNumber: "123456s")

@@ -43,6 +43,7 @@ class Institute {
     var serviceRequestID = ""
     var observationObject: Observation? = nil
     var sereviceRequestObject: ServiceRequest? = nil
+    var patientObject: Patient? = nil
     
     //let serverUrl = "http://hapi.fhir.org/baseR4"
     let serverUrl = "https://tim.amp.institute/hapi-fhir-jpaserver/fhir/"
@@ -149,60 +150,76 @@ class Institute {
     
     
     
-    func createServiceRequest(status: String, intent: String, category: String, priority: String, authoredOn: String, patientID: String, organizationID: String){
+    func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String){
         
-        var replaced = ""
-        if let filepath = Bundle.main.path(forResource: "createServiceRequest", ofType: "json") {
+        DispatchQueue.global(qos: .background).async {
+            
+            var serv = ServiceRequest()
+            serv.status = RequestStatus(rawValue: status)
+            serv.intent = RequestIntent(rawValue: intent)
+            serv.category = [CodeableConcept()]
+            
+            var cc = CodeableConcept()
+            cc.text = FHIRString(category)
+            
+            serv.category?.append(cc)
+            serv.priority = RequestPriority(rawValue: priority)
+            serv.subject = Reference()
             do {
-                let contents = try String(contentsOfFile: filepath)
-                replaced = contents.replacingOccurrences(of: "replace_status", with: status)
-                replaced = replaced.replacingOccurrences(of: "replace_intent", with: intent)
-                replaced = replaced.replacingOccurrences(of: "replace_category", with: category)
-                replaced = replaced.replacingOccurrences(of: "replace_priority", with: priority)
-                replaced = replaced.replacingOccurrences(of: "replace_authoredOn", with: authoredOn)
-                replaced = replaced.replacingOccurrences(of: "replace_patientID", with: patientID)
-                replaced = replaced.replacingOccurrences(of: "replace_organizationID", with: organizationID)
-                replaced = replaced.replacingOccurrences(of: "replace_observationID", with: "")
+                try serv.subject = serv.reference(resource: self.patientObject!)
             } catch {
-                // contents could not be loaded
+                print(error)
             }
-        } else {
-            // example.txt not found!
+            serv.authoredOn = DateTime.now
+            serv.requester = Reference()
+            serv.reasonReference = [Reference()]
+            
+            if let client = Institute.shared.client {
+                serv.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("ServiceRequestCreationSucceded")
+                        self.sereviceRequestObject = serv
+                        print("I have created the ServiceRewuest with the ID:")
+                        print(serv.id)
+                        self.serviceRequestID = serv.id?.string ?? "noID"
+                    }
+                }
+                
+                // check error
+            }
         }
-        
-        let servRequestURL = writeNewFile(replacedText: replaced, filename: "createPatient")
-        createResource(createdFile: servRequestURL, resourceType: "serviceRequest", reference: nil)
-        
-        //serviceRequestID = id
-        print("ID of created ServiceRequest:")
-        print(serviceRequestID)
-        
-        //return id
-        
     }
     
     func createObservation(category: String, completion:@escaping (() -> Void)) {
         print("createObservation")
         
         DispatchQueue.global(qos: .background).async {
-        
-        
-        var replaced = ""
-        if let filepath = Bundle.main.path(forResource: "createObservation", ofType: "json") {
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                replaced = contents.replacingOccurrences(of: "replace_category", with: category)
-            } catch {
-                // contents could not be loaded
+            
+            var obs = Observation()
+            obs.code = CodeableConcept()
+            obs.code?.text = FHIRString(category)
+            obs.status = ObservationStatus(rawValue: "final")
+            obs.derivedFrom = [Reference()]
+            
+            if let client = Institute.shared.client {
+                obs.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("ObservationCreationSucceded")
+                        self.observationObject = obs
+                        print("I have created the Observation with the ID:")
+                        print(obs.id)
+                        completion()
+                    }
+                }
+                
+                // check error
             }
-        } else {
-            // example.txt not found!
         }
         
-            let observRequestURL = self.writeNewFile(replacedText: replaced, filename: "createObservation")
-            let id = self.createResource(createdFile: observRequestURL, resourceType: "observation", reference: nil, completion: completion)
-        
-       }
     }
     
     func createAndReturnObservation(category: String) -> Observation{
@@ -251,20 +268,38 @@ class Institute {
         let servRequestURL = writeNewFile(replacedText: replaced, filename: "updateServiceRequest")
         updateResource(createdFile: servRequestURL, resourceType: "serviceRequest")
         
+        var sr = ServiceRequest()
+        sr.reasonReference = [Reference()]
+        var ref = Reference()
+        ref.reference?.string = "blablubb"
+        sr.reasonReference?.append(ref)
+        
     }
     
     func addObservationToServiceRequest(){
+        print ("addObservationToServiceRequest")
         
         
-        //print("I rty to update the servRequest")
-        //print(observationObject!.id)
-        //print(sereviceRequestObject!.id)
-        
-        do {
-            try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
-        } catch {
-            print(error)
+        if sereviceRequestObject?.reasonReference != nil {
+            print("We HAVE reasonReference and append it")
+            do {
+                try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
+            } catch {
+                print(error)
+
+            }
+        }else{
+            print("We dont have reasonReference and create it")
+            sereviceRequestObject?.reasonReference = [Reference()]
+            do {
+                try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
+            } catch {
+                print(error)
+
+            }
         }
+        
+        
         
         //print("Added the refference")
         //print(sereviceRequestObject!.reasonReference)
@@ -369,31 +404,53 @@ class Institute {
     
     func createImageMedia(imageData: Data){
         
-        print("wir speichern ein Bild")
-        
-        print("createImageMedia")
-        var replaced = ""
-        let base64Encoded = imageData.base64EncodedString()
-        //print("imageFIle")
-        //print(base64Encoded)
-        if let filepath = Bundle.main.path(forResource: "imageMedia", ofType: "json") {
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                replaced = contents.replacingOccurrences(of: "replace_data", with: base64Encoded)
-                replaced = replaced.replacingOccurrences(of: "replace_createdDateTime", with: "2020-02-23")
-            } catch {
-                // contents could not be loaded
-            }
-        } else {
-            // example.txt not found!
-        }
-        
-        let imageMediaURL = writeNewFile(replacedText: replaced, filename: "imageMedia")
-        createResource(createdFile: imageMediaURL, resourceType: "imageMedia", reference: observationObject)
-        
-        
-        //Hänge die Media Ressource der Observation als Refferenz an
+        DispatchQueue.global(qos: .background).async {
+            
+            var med = Media()
+            med.status = EventStatus(rawValue: "completed")
+            med.createdDateTime = DateTime.now
+            
+            var image = Attachment()
+            image.contentType = "image/jpeg"
+            //image.data = Base64Binary(imageData.base64EncodedString() as Base64Binary
+            //let str = String(decoding: data, as: UTF8.self)
+            let base64Encoded = imageData.base64EncodedString()
+            image.data = Base64Binary(value:base64Encoded)
+            
+            med.content = image
+            
 
+            if let client = Institute.shared.client {
+                med.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("MediaCreationSucceded")
+                        if(self.observationObject != nil){
+                            do {
+                                try self.observationObject!.derivedFrom?.append(self.observationObject!.reference(resource: med))
+                            } catch {
+                                print(error)
+                            }
+                            
+                            //print("Added the refference")
+                            //print(observation.derivedFrom)
+                            
+                            self.observationObject!.update() { error in
+                                if let error = error as? FHIRError {
+                                    print(error)
+                                } else {
+                                    print("ObservationUpdateSucceded")
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                
+                // check error
+            }
+        }
     }
     
     /**
@@ -626,7 +683,6 @@ class Institute {
     
     
     func searchAllServiceRequests(){
-        //let search = ServiceRequest.search(["subject": "3"])
         let search = ServiceRequest.search([])
         
         search.perform(client!.server) { bundle, error in
@@ -647,50 +703,19 @@ class Institute {
     }
     
     func searchServiceRequestWithID(id: String, completion:@escaping (() -> Void)) {
-    print("searchServiceRequestWithID")
-    
-    DispatchQueue.global(qos: .background).async {
-        
-        let search = ServiceRequest.search(["_id": id])
-        var sRequest = ServiceRequest()
-        
-        search.perform(self.client!.server) { bundle, error in
-            if nil != error {
-                // there was an error
-            }
-            else {
-                let servReq = bundle?.entry?
-                    .filter() { return $0.resource is ServiceRequest }
-                    .map() { return $0.resource as! ServiceRequest }
-                    
-                
-                if(!servReq!.isEmpty){
-                    sRequest =  servReq!.first!
-                    self.sereviceRequestObject = sRequest
+        print("searchServiceRequestWithID")
+            
+        DispatchQueue.global(qos: .background).async {
+            ServiceRequest.read(id, server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else if resource != nil {
+                    self.sereviceRequestObject = resource as! ServiceRequest
                     print("searchServiceRequestWithID: Wir finden den ServiceRequest mit der ID:")
                     print(self.sereviceRequestObject!.id)
                     completion()
-                    /*
-                    for ref in sRequest.reasonReference! {
-                        let obsID = ref.reference?.string.suffix(2)
-                        
-                        self.searchObservationWithID(id: String(obsID!), completion: {(value) in
-                            
-                            DispatchQueue.main.async {
-                                value
-                                //print("code Text")
-                                //print(value.code?.text)
-                            }
-                            
-                            
-                            
-                        })
-                        
-                    }
-                    */
                 }
             }
-        }
         }
     }
     
@@ -701,105 +726,28 @@ class Institute {
             
             print("In der COmpletion Methode")
             
-            for ref in self.sereviceRequestObject!.reasonReference! {
-                
-                let obsRef = ref.reference?.string
-                print("Check observation ID")
-                print(ref.reference?.string)
-                
-                
-                if let range = obsRef!.range(of: "/") {
-                    let id = obsRef![range.upperBound...]
-                    print(id) // prints "123.456.7891"
-                    if (id != "") {
-                        self.searchObservationWithIdAndType(id: String(id),type: type, completion: completion)
-                    }
+            if(self.sereviceRequestObject!.reasonReference != nil){
+                for ref in self.sereviceRequestObject!.reasonReference! {
                     
-                }
-                
-                
-                
-                
+                    let obsRef = ref.reference?.string
+                    print("Check observation ID")
+                    print(ref.reference?.string)
+                    
+                    
+                    if let range = obsRef!.range(of: "/") {
+                        let id = obsRef![range.upperBound...]
+                        print(id) // prints "123.456.7891"
+                        if (id != "") {
+                            self.searchObservationWithIdAndType(id: String(id),type: type, completion: completion)
+                        }
+                        
+                    }
+                 }
             }
+            
         })
         
-        DispatchQueue.global(qos: .background).async {
-            //let search = ServiceRequest.search(["subject": "3"])
-            let search = ServiceRequest.search(["_id": id])
-            var sRequest = ServiceRequest()
-            
-            search.perform(self.client!.server) { bundle, error in
-                if nil != error {
-                    // there was an error
-                }
-                else {
-                    let servReq = bundle?.entry?
-                        .filter() { return $0.resource is ServiceRequest }
-                        .map() { return $0.resource as! ServiceRequest }
-                        
-                        // now `bruces` holds all known Patient resources
-                        // named Bruce and born earlier than 1970
-                    //print("found service request")
-                    //print(servReq?.first)
-                    
-                    if(!servReq!.isEmpty){
-                        sRequest =  servReq!.first!
-                        //print("test um die ID auszulesen!!")
-                        //print(sRequest.id)
-                        //print(sRequest.reasonReference)
-                        
-                        
-                        
-                    }
-                }
-            }
-        }
-        
     }
-    
-    /*
-    
-    func findObservationWithTypeInServiceRequest(id: String, type: String) -> Observation?{
-        //let search = ServiceRequest.search(["subject": "3"])
-        let search = ServiceRequest.search(["_id": id])
-        var sRequest = ServiceRequest()
-        
-        search.perform(client!.server) { bundle, error in
-            if nil != error {
-                // there was an error
-            }
-            else {
-                let servReq = bundle?.entry?
-                    .filter() { return $0.resource is ServiceRequest }
-                    .map() { return $0.resource as! ServiceRequest }
-                    
-                    // now `bruces` holds all known Patient resources
-                    // named Bruce and born earlier than 1970
-                print("found service request")
-                print(servReq?.first)
-                
-                if(!servReq!.isEmpty){
-                    sRequest =  servReq!.first!
-                    print("test um die ID auszulesen!!")
-                    print(sRequest.id)
-                    
-                    if (sRequest.reasonReference == nil) {
-                        return nil
-                    }else{
-                        for reference in sRequest.reasonReference! {
-                            <#code#>
-                        }
-                    }
-                    
-                }
-            }
-        }
-        
-        print("Das gebe ich zurück!!")
-        print(sRequest.id)
-        return sRequest
-    }
-    */
     
     
     func searchObservationWithID(id: String, completion:@escaping ((Observation) -> Void)) {
@@ -836,6 +784,23 @@ class Institute {
         }
         
         //let search = ServiceRequest.search(["subject": "3"])
+        
+    }
+    
+    func searchPatientWithID(id: String) {
+        print("searchPatientWithID")
+        self.patientObject = nil
+            //self.loadAllMediaResource(completion: completion)
+        Patient.read(id, server: self.client!.server){ resource, error in
+            if let error = error as? FHIRError {
+                print(error)
+            } else if resource != nil {
+                self.patientObject = resource as! Patient
+                print("Wir finden den Patienten mit der ID")
+                print(self.patientObject?.id)
+            }
+        }
+
         
     }
     
@@ -903,7 +868,7 @@ class Institute {
         }
     }
     
-    func loadAllMediaResource(completion: (() -> Void)? = nil){
+    func loadAllMediaResource(completion: ((String) -> Void)? = nil){
         
         print("loadAllMediaResource")
         
@@ -925,178 +890,32 @@ class Institute {
         //self.recursiveMediaCall(allMedia: imageIDs, completion: completion)
         self.mediaCall(allMedia: imageIDs, completion: completion)
         
-        /*
-        if (self.observationObject != nil){
-             self.recursiveMediaCall(allMedia: self.observationObject!.derivedFrom!, completion: completion)
-        }
-        */
-        /*
-        let search = Media.search([])
-        
-        search.perform(client!.server) { bundle, error in
-            if nil != error {
-                // there was an error
-            }
-            else {
-                let allMedia = bundle?.entry?
-                    .filter() { return $0.resource is Media }
-                    .map() { return $0.resource as! Media }
-                    
-                    // now `bruces` holds all known Patient resources
-                    // named Bruce and born earlier than 1970
-                
-                print("I have folnd pictures:")
-                print(allMedia?.count)
-                
-                if allMedia != nil {
-                    
-                    self.recursiveMediaCall(allMedia: allMedia!, completion: completion)
-                    /*
-                    for imageMedia in allMedia! {
-                        print("ID of picture:")
-                        print(imageMedia.id)
-                        /*
-                         let imageData = imageMedia.content?.data
-                         //let data = Data(base64Encoded: imageData)
-                         let decodedData = Data(base64Encoded: imageData!.value)!
-                         //let data = imageData.base
-                         //let decodedData = NSData(base64EncodedString: String(imageData!), options:NSData.Base64DecodingOptions.fromRaw(0)!)
-                         //let decodedString = NSString(data: decodedData, encoding: NSUTF8StringEncoding)
-                         //print(decodedString) // my plain data
-                         //self.saveImageI(imageData: decodedData)
-                         self.safeImageInDirectory(imageData: decodedData)
-                         */
-                        /*
-                        Media.read(imageMedia.id!.string, server: self.client!.server){ resource, error in
-                            if let error = error as? FHIRError {
-                                print(error)
-                            } else if resource != nil {
-                                var testMedia:Media = resource as! Media
-                                let imageData = testMedia.content?.data
-                                let decodedData = Data(base64Encoded: imageData!.value)!
-                                self.safeImageInDirectory(imageData: decodedData)
-                                completion?()
-                            }
-                        }
-                        */
-                        
-                        
-                    }
-                    */
-                }
-                //completion?()
-                
-                /*
-                for imageItem in 0...self.photoName-1 {
-                    print("I add the image:")
-                    print(imageItem)
-                    self.delegate?.addGalleryImage(imageName: "\(imageItem).jpg")
-                }
-                */
-                
-            }
-        }
- */
-        
-    //}
-        
     }
     
-    func mediaCall(allMedia:[String],completion: (() -> Void)? = nil){
+    func mediaCall(allMedia:[String],completion: ((String) -> Void)? = nil){
         print("mediaCall")
         var mediaIDs = allMedia
-        while mediaIDs.count>1 {
-            
-            /*
-            print("verbleibende Dateien:")
-            print(allMedia.count)
-            let obsRef = allMedia.last!
-            print("Check MEDIA ID")
-            print(obsRef)
-            */
-            self.MediaRead(id: mediaIDs.last!)
-            /*
-            Media.read(String(mediaIDs.last!), server: self.client!.server){ resource, error in
-                print("readMedia")
-                print(mediaIDs.last!)
-                if let error = error as? FHIRError {
-                    print(error)
-                } else if resource != nil {
-                    var testMedia:Media = resource as! Media
-                    let imageData = testMedia.content?.data
-                    let decodedData = Data(base64Encoded: imageData!.value)!
-                    print("savveeeeeeeeee")
-                    self.safeImageInDirectory(imageData: decodedData, name:String(mediaIDs.last!))
-                    
-                    mediaIDs.removeLast()
-                    
-                    print("MediaIDS innhalt:")
-                    print(mediaIDs)
-                    print("last:")
-                    print(mediaIDs.last!)
-                }
-            }
-            */
-            
-            
-            
-        }
-        /*
-        print("Letzte Datei:: Datei:")
-        //print(allMedia.last!.id!.string)
         
-        let obsRef = allMedia.last!
-        print("Check MEDIA ID")
-        print(obsRef)
-        */
-        self.MediaRead(id: mediaIDs.last!, completion: completion)
-        /*
-        Media.read(String(mediaIDs.last!), server: self.client!.server){ resource, error in
-            print("readMedia")
-            print(mediaIDs.last!)
-            if let error = error as? FHIRError {
-                print(error)
-            } else if resource != nil {
-                var testMedia:Media = resource as! Media
-                let imageData = testMedia.content?.data
-                let decodedData = Data(base64Encoded: imageData!.value)!
-                print("savveeeeeeeeee LAST")
-                self.safeImageInDirectory(imageData: decodedData, name:String(mediaIDs.last!))
-                completion!()
-            }
-        }
-        */
-        
-        
-    }
-    
-    
-    func MediaRead (id: String,completion: (() -> Void)? = nil){
-        
-        DispatchQueue.global(qos: .background).async {
+        for id in allMedia {
             Media.read(String(id), server: self.client!.server){ resource, error in
-                print("readMedia")
-                print(id)
                 if let error = error as? FHIRError {
                     print(error)
+                    completion!(id)
                 } else if resource != nil {
                     var testMedia:Media = resource as! Media
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
-                    print("savveeeeeeeeee")
                     self.safeImageInDirectory(imageData: decodedData, name:String(id))
-                    
-                    completion?()
+                    completion!(id)
                 }
             }
             
         }
-    
+        
     }
+     
     
- 
-    
-    func recursiveMediaCall(allMedia:[String],completion: (() -> Void)? = nil){
+    func recursiveMediaCall(allMedia:[String],completion: ((String) -> Void)? = nil){
         print("recursiveMediaCall")
         if (allMedia.count == 1) {
             print("Letzte Datei:: Datei:")
@@ -1109,13 +928,13 @@ class Institute {
             Media.read(String(obsRef), server: self.client!.server){ resource, error in
                 if let error = error as? FHIRError {
                     print(error)
-                    completion!()
+                    completion!(obsRef)
                 } else if resource != nil {
                     var testMedia:Media = resource as! Media
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
                     self.safeImageInDirectory(imageData: decodedData, name:String(obsRef))
-                    completion!()
+                    completion!(obsRef)
                 }
             }
             
@@ -1139,50 +958,7 @@ class Institute {
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
                     self.safeImageInDirectory(imageData: decodedData, name:String(obsRef))
-                }
-            }
-            
-            var newMedia = allMedia
-            newMedia.removeLast()
-            self.recursiveMediaCall(allMedia: newMedia, completion: completion)
-            
-        }
-        
-    }
-    
-    
-    func recursiveMediaCall(allMedia:[Media],completion: (() -> Void)? = nil){
-        print("recursiveMediaCall")
-        if (allMedia.count == 1) {
-            print("Letzte Datei:: Datei:")
-            print(allMedia.last!.id!.string)
-            
-            Media.read(allMedia.first!.id!.string, server: self.client!.server){ resource, error in
-                if let error = error as? FHIRError {
-                    print(error)
-                } else if resource != nil {
-                    var testMedia:Media = resource as! Media
-                    let imageData = testMedia.content?.data
-                    let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:allMedia.last!.id!.string)
-                    completion?()
-                }
-            }
-            
-        }else{
-            
-            print("verbleibende Dateien:")
-            print(allMedia.count)
-            print("Ich speichere die Datei:")
-            print(allMedia.last!.id!.string)
-            Media.read(allMedia.last!.id!.string, server: self.client!.server){ resource, error in
-                if let error = error as? FHIRError {
-                    print(error)
-                } else if resource != nil {
-                    var testMedia:Media = resource as! Media
-                    let imageData = testMedia.content?.data
-                    let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:allMedia.last!.id!.string)
+                    completion!(obsRef)
                 }
             }
             
@@ -1239,16 +1015,21 @@ class Institute {
     }
     
     func deleteAllServiceRequests(){
+        print("deleteAllServiceRequests")
         let search = ServiceRequest.search([])
         
         search.perform(client!.server) { bundle, error in
             if nil != error {
-                // there was an error
+                print("Something went wrong")
+                print(error)
             }
             else {
                 let allServReq = bundle?.entry?
                     .filter() { return $0.resource is ServiceRequest }
                     .map() { return $0.resource as! ServiceRequest }
+                
+                    print("I have found count ServRequests:")
+                print(allServReq?.count)
                     
                     // now `bruces` holds all known Patient resources
                     // named Bruce and born earlier than 1970
@@ -1338,7 +1119,7 @@ class Institute {
     }
     
     
-    func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
+    func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: ((String) -> Void)? = nil) {
         print("loadImagesInBackground")
         DispatchQueue.global(qos: .background).async {
             Institute.shared.searchObservationTypeInServiceRequestWithID(id: self.serviceRequestID, type: type, completion: {
