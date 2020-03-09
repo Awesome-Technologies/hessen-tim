@@ -102,11 +102,39 @@ class MasterViewController: UITableViewController {
             dismiss(animated: true, completion: nil)
         }
         else{
+            
+            var type = ObservationType.NONE
+            switch indexPath.row {
+            case 1:
+                type = ObservationType.Anamnese
+            case 2:
+                type = ObservationType.Arztbriefe
+            case 3:
+                type = ObservationType.Haemodynamik
+            case 4:
+                type = ObservationType.Beatmung
+            case 5:
+                type = ObservationType.Blutgasanalyse
+            case 6:
+                type = ObservationType.Perfusoren
+            case 7:
+                type = ObservationType.Infektiologie
+            case 8:
+                type = ObservationType.Radiologie
+            case 9:
+                type = ObservationType.Labor
+            case 10:
+                type = ObservationType.Sonstige
+            default:
+                type = ObservationType.NONE
+            }
+            
             self.performSegue(withIdentifier: "cameraData", sender: self)
             self.splitViewController?.preferredDisplayMode = UISplitViewController.DisplayMode.primaryHidden
             self.navigationItem.leftBarButtonItem = addButton
-            let detailVC = self.splitViewController?.secondaryViewController
-            print(detailVC?.title)
+            let detailVC = (self.splitViewController?.viewControllers.last as? UINavigationController)?.topViewController as! BaseViewController
+            detailVC.observationType = type
+            print(detailVC.title)
             print(self.splitViewController?.isCollapsed)
         }
     }
