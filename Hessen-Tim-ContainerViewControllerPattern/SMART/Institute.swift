@@ -719,6 +719,39 @@ class Institute {
         }
     }
     
+    func searchAllServiceRequestsForPatientID(id: String, patient: Patient, type: String, completion: (() -> Void)? = nil) {
+        print("searchAllServiceRequestsForPatientID")
+        
+        DispatchQueue.global(qos: .background).async {
+            //self.loadAllMediaResource(completion: completion)
+            let search = ServiceRequest.search(["subject": patient.id])
+            
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let serv = bundle?.entry?
+                        .filter() { return $0.resource is ServiceRequest }
+                        .map() { return $0.resource as! ServiceRequest }
+                    
+                    if serv != nil {
+                        if(!serv!.isEmpty){
+                            for sRequest in serv! {
+                                self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
+                            }
+
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+    
+    
+    
     func searchObservationTypeInServiceRequestWithID(id: String, type: String, completion: (() -> Void)? = nil) {
         print("searchObservationTypeInServiceRequestWithID")
         
@@ -1122,7 +1155,7 @@ class Institute {
     func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: ((String) -> Void)? = nil) {
         print("loadImagesInBackground")
         DispatchQueue.global(qos: .background).async {
-            Institute.shared.searchObservationTypeInServiceRequestWithID(id: self.serviceRequestID, type: type, completion: {
+            Institute.shared.searchAllServiceRequestsForPatientID(id: self.serviceRequestID, patient: self.patientObject!, type: type, completion: {
                 self.loadAllMediaResource(completion: completion)
             })
             
