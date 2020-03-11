@@ -30,7 +30,6 @@
 		8FB03D2D2407C174007E7449 /* createOrganization.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2C2407C172007E7449 /* createOrganization.json */; };
 		8FB03D2F2407F27F007E7449 /* updateServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */; };
 		8FC274A123FD2CA400695E74 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FC274A023FD2CA300695E74 /* Patient.json */; };
-		8FC274A323FD542E00695E74 /* createPatient.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FC274A223FD542E00695E74 /* createPatient.json */; };
 		8FC39D9723D8410100FBD225 /* MedicalDataNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */; };
 		8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */; };
 		8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A722CA181E0034A913 /* OrderListViewController.swift */; };
@@ -97,7 +96,6 @@
 		8FB03D2C2407C172007E7449 /* createOrganization.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createOrganization.json; sourceTree = "<group>"; };
 		8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = updateServiceRequest.json; sourceTree = "<group>"; };
 		8FC274A023FD2CA300695E74 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
-		8FC274A223FD542E00695E74 /* createPatient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createPatient.json; sourceTree = "<group>"; };
 		8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataNotificationView.swift; sourceTree = "<group>"; };
 		8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		8FDE86A722CA181E0034A913 /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
@@ -264,7 +262,6 @@
 				8FB03D2C2407C172007E7449 /* createOrganization.json */,
 				8F94A9F12404200500E96A06 /* imageMedia.json */,
 				8F94A9EF2404024800E96A06 /* createServiceRequest.json */,
-				8FC274A223FD542E00695E74 /* createPatient.json */,
 				8FC274A023FD2CA300695E74 /* Patient.json */,
 			);
 			path = ResourceCreationFiles;
@@ -445,7 +442,6 @@
 				8F5233E3223949D70020292F /* LaunchScreen.storyboard in Resources */,
 				8F94A9F22404200600E96A06 /* imageMedia.json in Resources */,
 				8FB03D2D2407C174007E7449 /* createOrganization.json in Resources */,
-				8FC274A323FD542E00695E74 /* createPatient.json in Resources */,
 				8F94A9F02404024900E96A06 /* createServiceRequest.json in Resources */,
 				8FC274A123FD2CA400695E74 /* Patient.json in Resources */,
 				8FAFC679240D6688006A9DB1 /* createObservation.json in Resources */,

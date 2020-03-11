@@ -73,78 +73,35 @@ class Institute {
     }
     
     
-    func createPatientOnServer(firstName: String, familyName: String, gender: String, birthday: String){
+    func createPatient(firstName: String, familyName: String, gender: String, birthday: String) {
+        print("createPatient")
         
-        var replaced = ""
-        if let filepath = Bundle.main.path(forResource: "createPatient", ofType: "json") {
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                replaced = contents.replacingOccurrences(of: "replace_firstName", with: firstName)
-                replaced = replaced.replacingOccurrences(of: "replace_familyName", with: familyName)
-                replaced = replaced.replacingOccurrences(of: "replace_gender", with: gender)
-                replaced = replaced.replacingOccurrences(of: "replace_birthday", with: birthday)
-            } catch {
-                // contents could not be loaded
-            }
-        } else {
-            // example.txt not found!
-        }
-        
-        let fileName = "createPatient"
-        let dir = try? FileManager.default.url(for: .documentDirectory,
-                                               in: .userDomainMask, appropriateFor: nil, create: true)
-        
-        // If the directory was found, we write a file to it and read it back
-        if let fileURL = dir?.appendingPathComponent(fileName).appendingPathExtension("json") {
+        DispatchQueue.global(qos: .background).async {
             
-            // Write to the file named Test
-            //let outString = "Write this text to the file"
-            do {
-                try replaced.write(to: fileURL, atomically: true, encoding: .utf8)
-            } catch {
-                print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
-            }
+            var patient = Patient()
+            patient.active = true
+            patient.gender = AdministrativeGender(rawValue: gender)
             
-            // Then reading it back from the file
-            var inString = ""
-            do {
-                inString = try String(contentsOf: fileURL)
-            } catch {
-                print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
-            }
-            print("Read from the file: \(inString)")
+            var patientName = HumanName()
+            patientName.family = FHIRString(familyName)
+            patientName.given = [FHIRString(firstName)]
             
-            //let url = Bundle.main.url(forResource:"Patient2", withExtension: "json")!
-            let data = NSData(contentsOf: fileURL)!
+            patient.name = [HumanName()]
+            patient.name?.append(patientName)
+            patient.birthDate = FHIRDate(string: birthday)
             
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data as Data, options: []) as? FHIRJSON {
-                    var newPatient = try Patient(json: json)
-                    if let client = Institute.shared.client {
-                        newPatient.create(client.server) { error in
-                            if let error = error as? FHIRError {
-                                print(error)
-                            } else {
-                                print("PatientCreationSucceded")
-                            }
-                        }
-                        
-                        // check error
-                    }
-                    
-                    if let name = newPatient.name?[0] {
-                        print(name.family?.string)
-                        print(name.given?[0].string)
-                        print(newPatient.gender)
-                        print("---")
-                        
+            if let client = Institute.shared.client {
+                patient.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        self.patientObject = patient
+                        print("PatientCreationSucceded")
                     }
                 }
-            } catch{
-                print(error)
+                
             }
         }
-        
         
     }
     
@@ -1261,6 +1218,35 @@ class Institute {
                         //print(allMedia)
                         for obs in allObserv! {
                             obs.delete {error in
+                                if nil != error {
+                                    print(error)
+                                }
+                            }
+                        }
+                    }
+                    
+            }
+        }
+    }
+    
+    func deleteAllPatients(){
+        let search = Patient.search([])
+        
+        search.perform(client!.server) { bundle, error in
+            if nil != error {
+                // there was an error
+            }
+            else {
+                let allPatients = bundle?.entry?
+                    .filter() { return $0.resource is Patient }
+                    .map() { return $0.resource as! Patient }
+                    
+                    // now `bruces` holds all known Patient resources
+                    // named Bruce and born earlier than 1970
+                    if allPatients != nil {
+                        //print(allMedia)
+                        for patient in allPatients! {
+                            patient.delete {error in
                                 if nil != error {
                                     print(error)
                                 }
