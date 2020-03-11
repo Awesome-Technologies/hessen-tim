@@ -11,5 +11,5 @@ import Foundation
 //https://naveenr.net/beginning-container-views-in-ios/
 
 protocol GalleryDelegate:class {
-    func addGalleryImage(imageName: String) 
+    func addGalleryImage(imageName: String, newImage: Bool) 
 }

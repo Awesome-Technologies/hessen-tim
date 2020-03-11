@@ -20,6 +20,8 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var newPicture = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,11 +63,19 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         print("we have the index: \(indexPath)")
         //collectionView.reloadData()
         //collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+        if(newPicture){
+            print("NEWIMAGE")
+            cell.layer.borderColor = UIColor.yellow.cgColor
+            cell.layer.borderWidth = 5
+            cell.layer.cornerRadius = 4
+        } else {
+            print("OLDIMAGE")
+            //--makes the cell round
+            cell.layer.borderColor = UIColor.lightGray.cgColor
+            cell.layer.borderWidth = 1
+            cell.layer.cornerRadius = 4
+        }
         
-        //--makes the cell round
-        cell.layer.borderColor = UIColor.lightGray.cgColor
-        cell.layer.borderWidth = 1
-        cell.layer.cornerRadius = 4
 
         return cell
     }
@@ -110,7 +120,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         return UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
     }
     
-    func insertItemTest(imageName: String){
+    func insertItemTest(imageName: String, newImage: Bool){
         /*
          //Update DataSource
          let newComment = "3"
@@ -124,6 +134,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
          collectionView.insertItems(at: indexPaths)
          }, completion: nil)
          */
+        self.newPicture = newImage
         self.collectionView?.performBatchUpdates({
             let indexPath = IndexPath(row: self.items.count, section: 0)
             items.append(imageName) //add your object to data source first

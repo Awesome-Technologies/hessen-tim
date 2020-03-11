@@ -243,6 +243,136 @@ class Institute {
         
     }
     
+    
+    
+    
+    func changeAllMediaStatus(){
+        getAllObservationsForPatient(completion: { (observations) in
+            for observation in observations {
+                self.getAllImagesFromObservastion(observation: observation, completion: { (imageIDs) in
+                    self.changeMediaStatus(allMedia: imageIDs)
+                    
+                })
+            }
+        })
+    }
+    
+    func getAllObservationsForPatient(completion: @escaping (([Observation]) -> Void)) {
+        print("getAllObservationsForPatient")
+        
+        let search = Observation.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "id":self.patientObject?.id]]]  )
+        
+        search.perform(self.client!.server) { bundle, error in
+            if nil != error {
+                // there was an error
+            }
+            else {
+                let obs = bundle?.entry?
+                    .filter() { return $0.resource is Observation }
+                    .map() { return $0.resource as! Observation }
+                
+                print("We found some Observations:")
+                print(obs?.count)
+                
+                if obs != nil {
+                    if(!obs!.isEmpty){
+                        completion(obs!)
+                        for observation in obs! {
+                            print(observation.id)
+                            //self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
+                        }
+
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    
+    
+    func getAllImagesFromObservastion(observation: Observation, completion: @escaping (([String]) -> Void)) {
+        print("getAllImagesFromObservastion")
+        
+        
+        print("I have the Observation:")
+        var imageIDs = [String]()
+        for id in observation.derivedFrom! {
+            var stringReference = id.reference?.string
+            if let range = stringReference!.range(of: "/") {
+                let newID = stringReference![range.upperBound...]
+                print(newID) // prints "123.456.7891"
+                if (newID != "" && newID != "replace_mediaID") {
+                    imageIDs.append(String(newID))
+                }
+            }
+        }
+        completion(imageIDs)
+        
+    }
+    
+    
+    func changeMediaStatus(allMedia:[String]){
+        print("changeMediaStatus")
+        var mediaIDs = allMedia
+        
+        for id in allMedia {
+            Media.read(String(id), server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                    //completion!(id, true)
+                } else if resource != nil {
+                    var testMedia:Media = resource as! Media
+                    testMedia.status = EventStatus(rawValue: "preparation")
+                    
+                     testMedia.update() { error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else {
+                            print("MediaUpdateSucceded")
+                        }
+                    }
+            
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+    
+    func getAllImagesFromID(allMedia:[String],completion: ((String, Bool) -> Void)? = nil){
+        print("mediaCall")
+            var mediaIDs = allMedia
+            
+            for id in allMedia {
+                Media.read(String(id), server: self.client!.server){ resource, error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                        //completion!(id, true)
+                    } else if resource != nil {
+                        var testMedia:Media = resource as! Media
+                        let imageData = testMedia.content?.data
+                        let decodedData = Data(base64Encoded: imageData!.value)!
+                        self.safeImageInDirectory(imageData: decodedData, name:String(id))
+                        if(testMedia.status!.rawValue == "completed"){
+                            completion!(id, true)
+                        }else {
+                            completion!(id, false)
+                        }
+                        
+                    }
+                }
+                
+            }
+            
+        }
+    
+    
+    
+    
+    
     func updateServiceRequest(id: String, status: String, intent: String, category: String, priority: String, authoredOn: String, patientID: String, organizationID: String){
         
         var replaced = ""
@@ -288,11 +418,27 @@ class Institute {
                 print(error)
 
             }
+
+            do {
+                observationObject!.basedOn = [Reference()]
+                try observationObject!.basedOn?.append(observationObject!.reference(resource: sereviceRequestObject!))
+            } catch {
+                print(error)
+
+            }
         }else{
             print("We dont have reasonReference and create it")
             sereviceRequestObject?.reasonReference = [Reference()]
             do {
                 try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
+            } catch {
+                print(error)
+
+            }
+            
+            do {
+                observationObject!.basedOn = [Reference()]
+                try observationObject!.basedOn?.append(observationObject!.reference(resource: sereviceRequestObject!))
             } catch {
                 print(error)
 
@@ -309,6 +455,14 @@ class Institute {
                 print(error)
             } else {
                 print("ServiceRequestUpdateSucceded")
+            }
+        }
+        
+        observationObject!.update() { error in
+            if let error = error as? FHIRError {
+                print(error)
+            } else {
+                print("ObservationUpdateSucceded")
             }
         }
         
@@ -901,7 +1055,7 @@ class Institute {
         }
     }
     
-    func loadAllMediaResource(completion: ((String) -> Void)? = nil){
+    func loadAllMediaResource(completion: ((String, Bool) -> Void)? = nil){
         
         print("loadAllMediaResource")
         
@@ -925,7 +1079,7 @@ class Institute {
         
     }
     
-    func mediaCall(allMedia:[String],completion: ((String) -> Void)? = nil){
+    func mediaCall(allMedia:[String],completion: ((String, Bool) -> Void)? = nil){
         print("mediaCall")
         var mediaIDs = allMedia
         
@@ -933,13 +1087,18 @@ class Institute {
             Media.read(String(id), server: self.client!.server){ resource, error in
                 if let error = error as? FHIRError {
                     print(error)
-                    completion!(id)
+                    //completion!(id, true)
                 } else if resource != nil {
                     var testMedia:Media = resource as! Media
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
                     self.safeImageInDirectory(imageData: decodedData, name:String(id))
-                    completion!(id)
+                    if(testMedia.status!.rawValue == "completed"){
+                        completion!(id, true)
+                    }else {
+                        completion!(id, false)
+                    }
+                    
                 }
             }
             
@@ -1152,7 +1311,7 @@ class Institute {
     }
     
     
-    func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: ((String) -> Void)? = nil) {
+    func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: ((String, Bool) -> Void)? = nil) {
         print("loadImagesInBackground")
         DispatchQueue.global(qos: .background).async {
             Institute.shared.searchAllServiceRequestsForPatientID(id: self.serviceRequestID, patient: self.patientObject!, type: type, completion: {

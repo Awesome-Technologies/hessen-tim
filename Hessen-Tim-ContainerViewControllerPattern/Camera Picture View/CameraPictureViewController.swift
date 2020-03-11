@@ -147,7 +147,7 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             saveImage(imageName: "\(photoName).jpg", image: image)
             
             //insertItemTest()
-            delegate?.addGalleryImage(imageName: "\(photoName).jpg")
+            delegate?.addGalleryImage(imageName: "\(photoName).jpg", newImage: true)
             
             //captureImageView.image = image
             getImage(imageName: "\(photoName).jpg")

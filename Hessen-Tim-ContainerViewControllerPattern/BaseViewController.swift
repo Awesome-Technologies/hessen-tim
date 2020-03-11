@@ -70,10 +70,12 @@ class BaseViewController: UIViewController {
                 print("some bullshit" + String(n))
             }
             */
-        }, completion: { (imageName) in
+        }, completion: { (imageName, newImage) in
             DispatchQueue.main.async {
-                
-                self.addGalleryImage(imageName: "\(imageName).jpg")
+                print("I ADD THE IMAGE WITH")
+                print(imageName)
+                print(newImage)
+                self.addGalleryImage(imageName: "\(imageName).jpg", newImage: newImage)
                 /*
                 print(Institute.shared.photoName)
                 if(Institute.shared.photoName > 0){
@@ -414,10 +416,10 @@ class BaseViewController: UIViewController {
 
 
 extension BaseViewController: GalleryDelegate {
-    func addGalleryImage(imageName: String) {
+    func addGalleryImage(imageName: String, newImage: Bool) {
         //print("added an Image")
         //print(imageName)
-        galleryVC?.insertItemTest(imageName: imageName)
+        galleryVC?.insertItemTest(imageName: imageName, newImage: newImage)
     }
 }
 
