@@ -63,14 +63,7 @@ class BaseViewController: UIViewController {
         //Institute.shared.searchObservationTypeInServiceRequestWithID(id: Institute.shared.serviceRequestID, type: self.navigationItem.title!)
         
         
-        Institute.shared.loadImagesInBackground(type: self.navigationItem.title!, background: {
-            //Institute.shared.loadAllMediaResource()
-            /*
-            for n in 0...1000{
-                print("some bullshit" + String(n))
-            }
-            */
-        }, completion: { (imageName, newImage) in
+        Institute.shared.loadImagesInBackground(type: self.navigationItem.title!, completion: { (imageName, newImage) in
             DispatchQueue.main.async {
                 print("I ADD THE IMAGE WITH")
                 print(imageName)

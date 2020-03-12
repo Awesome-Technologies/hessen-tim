@@ -218,7 +218,7 @@ class Institute {
     func getAllObservationsForPatient(completion: @escaping (([Observation]) -> Void)) {
         print("getAllObservationsForPatient")
         
-        let search = Observation.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "id":self.patientObject?.id]]]  )
+        let search = Observation.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]]]  )
         
         search.perform(self.client!.server) { bundle, error in
             if nil != error {
@@ -240,6 +240,41 @@ class Institute {
                             //self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
                         }
 
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    
+    func getAllObservationsOfTypeForPatient(type: String, completion: @escaping (([Observation]) -> Void)) {
+        print("getAllObservationsOfTypeForPatient")
+    
+        let search = Observation.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "code":["$text": type]])
+        
+        search.perform(self.client!.server) { bundle, error in
+            if nil != error {
+                print("ERROR")
+                print(error)
+            }
+            else {
+                let obs = bundle?.entry?
+                    .filter() { return $0.resource is Observation }
+                    .map() { return $0.resource as! Observation }
+                
+                print("We found some Observations:")
+                print(obs?.count)
+                
+                if obs != nil {
+                    if(!obs!.isEmpty){
+                        /*
+                        for observation in obs! {
+                            print(observation.id)
+                        }
+ */
+                        completion(obs!)
+                        
                     }
                 }
                 
@@ -831,69 +866,6 @@ class Institute {
         }
     }
     
-    func searchAllServiceRequestsForPatientID(id: String, patient: Patient, type: String, completion: (() -> Void)? = nil) {
-        print("searchAllServiceRequestsForPatientID")
-        
-        DispatchQueue.global(qos: .background).async {
-            //self.loadAllMediaResource(completion: completion)
-            let search = ServiceRequest.search(["subject": patient.id])
-            
-            search.perform(self.client!.server) { bundle, error in
-                if nil != error {
-                    // there was an error
-                }
-                else {
-                    let serv = bundle?.entry?
-                        .filter() { return $0.resource is ServiceRequest }
-                        .map() { return $0.resource as! ServiceRequest }
-                    
-                    if serv != nil {
-                        if(!serv!.isEmpty){
-                            for sRequest in serv! {
-                                self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
-                            }
-
-                        }
-                    }
-                    
-                }
-            }
-        }
-        
-    }
-    
-    
-    
-    func searchObservationTypeInServiceRequestWithID(id: String, type: String, completion: (() -> Void)? = nil) {
-        print("searchObservationTypeInServiceRequestWithID")
-        
-        self.searchServiceRequestWithID(id: id, completion: {
-            
-            print("In der COmpletion Methode")
-            
-            if(self.sereviceRequestObject!.reasonReference != nil){
-                for ref in self.sereviceRequestObject!.reasonReference! {
-                    
-                    let obsRef = ref.reference?.string
-                    print("Check observation ID")
-                    print(ref.reference?.string)
-                    
-                    
-                    if let range = obsRef!.range(of: "/") {
-                        let id = obsRef![range.upperBound...]
-                        print(id) // prints "123.456.7891"
-                        if (id != "") {
-                            self.searchObservationWithIdAndType(id: String(id),type: type, completion: completion)
-                        }
-                        
-                    }
-                 }
-            }
-            
-        })
-        
-    }
-    
     
     func searchObservationWithID(id: String, completion:@escaping ((Observation) -> Void)) {
         print("searchObservationWithID:")
@@ -950,29 +922,6 @@ class Institute {
     }
     
     
-    func searchObservationWithIdAndType(id: String, type: String, completion: (() -> Void)? = nil) {
-        print("searchObservationWithIdAndType")
-        self.observationObject = nil
-            //self.loadAllMediaResource(completion: completion)
-        Observation.read(id, server: self.client!.server){ resource, error in
-            if let error = error as? FHIRError {
-                print(error)
-            } else if resource != nil {
-                var testObservation:Observation = resource as! Observation
-                print("hier testen wir die read funktion:")
-                print(testObservation.code?.text)
-                if(testObservation.code!.text! == type){
-                    print("Wir finden die Observation mit dem Typ")
-                    print(id)
-                    self.observationObject = testObservation
-                    completion!()
-                }
-            }
-        }
-
-        
-    }
-    
     func searchAllPatientRequests(){
         let search = Patient.search([])
         
@@ -1013,29 +962,6 @@ class Institute {
         }
     }
     
-    func loadAllMediaResource(completion: ((String, Bool) -> Void)? = nil){
-        
-        print("loadAllMediaResource")
-        
-        
-        print("I have the Observation:")
-        print(observationObject!.id)
-        
-        var imageIDs = [String]()
-        for id in observationObject!.derivedFrom! {
-            var stringReference = id.reference?.string
-            if let range = stringReference!.range(of: "/") {
-                let newID = stringReference![range.upperBound...]
-                print(newID) // prints "123.456.7891"
-                if (newID != "" && newID != "replace_mediaID") {
-                    imageIDs.append(String(newID))
-                }
-            }
-        }
-        //self.recursiveMediaCall(allMedia: imageIDs, completion: completion)
-        self.mediaCall(allMedia: imageIDs, completion: completion)
-        
-    }
     
     func mediaCall(allMedia:[String],completion: ((String, Bool) -> Void)? = nil){
         print("mediaCall")
@@ -1298,14 +1224,19 @@ class Institute {
     }
     
     
-    func loadImagesInBackground(type: String, background: (() -> Void)? = nil, completion: ((String, Bool) -> Void)? = nil) {
-        print("loadImagesInBackground")
-        DispatchQueue.global(qos: .background).async {
-            Institute.shared.searchAllServiceRequestsForPatientID(id: self.serviceRequestID, patient: self.patientObject!, type: type, completion: {
-                self.loadAllMediaResource(completion: completion)
-            })
-            
-        }
+    
+    func loadImagesInBackground(type: String, completion: ((String, Bool) -> Void)? = nil){
+        self.observationObject = nil
+        getAllObservationsOfTypeForPatient(type: type, completion: { (observations) in
+            for observation in observations {
+                self.getAllImagesFromObservastion(observation: observation, completion: { (imageIDs) in
+                    print("I GOT THEEE IMAGE IDD")
+                    print(imageIDs.description)
+                    self.mediaCall(allMedia: imageIDs, completion: completion)
+                    
+                })
+            }
+        })
     }
     
     
