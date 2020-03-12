@@ -409,7 +409,6 @@
                                 <connections>
                                     <action selector="continue:" destination="rN7-kR-hsP" eventType="touchUpInside" id="WLb-iD-hQF"/>
                                     <action selector="continue:" destination="c8d-gk-lBe" eventType="touchUpInside" id="vXX-Oh-aEe"/>
-                                    <segue destination="QVj-xf-d6w" kind="show" identifier="toMedicalData" id="rn4-vD-iUI"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FRc-Hd-CY2" userLabel="PatientDropDown" customClass="DropDown" customModule="AMP_intensiv" customModuleProvider="target">
@@ -596,6 +595,7 @@
                         <outlet property="patientSex" destination="ALM-QH-aYI" id="mae-kZ-vOd"/>
                         <outlet property="patientSize" destination="dqj-D9-H2R" id="6fy-K3-v0C"/>
                         <outlet property="patientWeight" destination="gSD-xq-JnV" id="W7u-wj-i0z"/>
+                        <segue destination="QVj-xf-d6w" kind="show" identifier="toMedicalData" id="x6W-Ib-cDb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K1F-EV-FNV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

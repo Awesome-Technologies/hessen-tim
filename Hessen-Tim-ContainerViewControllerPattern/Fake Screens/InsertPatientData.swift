@@ -33,20 +33,48 @@ class InsertPatientData: UIViewController {
     
     var observation = Observation()
     var serviceRequest = ServiceRequest()
+    var list: PatientList?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // The list of array to display. Can be changed dynamically
+        patientDropdown.optionArray = []
+        //Its Id Values and its optional
+        patientDropdown.optionIds = []
+        
+        if let client = Institute.shared.client {
+            list = PatientListAll()
+            list?.onPatientUpdate = {
+                self.fillPatientList()
+                    
+            }
+            list?.retrieve(fromServer: client.server)
+        }
+        
+            
+        
 
         // The list of array to display. Can be changed dynamically
-        patientDropdown.optionArray = ["Max Müller", "Paul Pantzer", "Betina Bauer"]
+        //patientDropdown.optionArray = ["Max Müller", "Paul Pantzer", "Betina Bauer"]
         //Its Id Values and its optional
-        patientDropdown.optionIds = [1,23,54,22]
+        //patientDropdown.optionIds = [1,23,54,22]
 
         // Image Array its optional
         //bisherigePatienten.ImageArray = [👩🏻‍🦳,🙊,🥞]
         // The the Closure returns Selected Index and String
+        //var id = patientDropdown.optionIds[0]
         patientDropdown.didSelect{(selectedText , index ,id) in
-            print("Selected String: \(selectedText) \n index: \(index)")
+            print("Selected String: \(selectedText) \n index: \(index) \n id: \(id)")
+            Institute.shared.getPatientByID(id: String(id), completion: { patient in
+                DispatchQueue.main.async {
+                    Institute.shared.patientObject = patient
+                    self.patientName.text = patient.name?[0].given?[0].string
+                    self.patientBirthday.text = patient.birthDate?.description
+                    self.patientSex.text = patient.gender?.rawValue
+                }
+                
+            })
         }
         
         showDatePicker()
@@ -55,7 +83,8 @@ class InsertPatientData: UIViewController {
         //Institute.shared.deleteAllImageMedia()
         //Institute.shared.deleteAllObservations()
         //Institute.shared.deleteAllServiceRequests()
-        Institute.shared.searchPatientWithID(id: "5")
+        //Institute.shared.deleteAllPatients()
+        //Institute.shared.searchPatientWithID(id: "5")
         //Institute.shared.updateServiceRequest(id: "61", status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
         //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
     }
@@ -65,6 +94,27 @@ class InsertPatientData: UIViewController {
         delegate.splitView = false
         delegate.setupRootViewController(animated: true)
         dismiss(animated: true, completion: nil)
+    }
+    
+    func fillPatientList(){
+          if list?.patients?.count != nil {
+            for patientNumber in 0...(Int(list!.patients!.count-1)) {
+                  let patient = list?.patients?[Int(patientNumber)]
+                  if let name = patient?.name?[0] {
+                      //print(name.family?.string)
+                      //print(name.given?[0].string)
+                      //print("---")
+                    print("I fill the List with the patient: \(name.family?.string) \n with the id: \(patient?.id!.description)")
+                    let patientString = name.family!.string + (name.given?[0].string)!
+                    patientDropdown.optionArray.append(patientString)
+                    let id: Int = Int((patient?.id!.description)!)!
+                    print("Found the id: \(id)")
+                    patientDropdown.optionIds?.append(id)
+    
+                  }
+                  
+              }
+          }
     }
 
     func showDatePicker(){
@@ -110,8 +160,27 @@ class InsertPatientData: UIViewController {
         //Institute.shared.deleteAllServiceRequests()
         //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
         Institute.shared.changeAllMediaStatus()
+        print("Indexxxxx:")
+        print(patientDropdown.selectedIndex)
         
-        Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
+        //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
+        if(patientDropdown.selectedIndex != nil){
+            //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
+            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
+            performSegue(withIdentifier: "toMedicalData", sender: nil)
+        }else if (patientName.text != "") {
+            Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description, completion: {
+                Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
+            })
+            performSegue(withIdentifier: "toMedicalData", sender: nil)
+        }else{
+            print("Nicht alle Felder ausgefüllt")
+        }
+        
+        //Institute.shared.searchAllPatientRequests()
+        print("NumberofPatients")
+        print(self.list?.actualNumberOfPatients)
+        
         //Institute.shared.getAllObservationsForPatient()
         if(true){
             //organizationID = Institute.shared.createOrganization(organizationName: "TestKlinik", contactName: "DR.Sommer", contactNumber: "123456s")

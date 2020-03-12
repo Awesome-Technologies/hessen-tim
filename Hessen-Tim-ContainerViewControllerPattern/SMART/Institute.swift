@@ -73,7 +73,7 @@ class Institute {
     }
     
     
-    func createPatient(firstName: String, familyName: String, gender: String, birthday: String) {
+    func createPatient(firstName: String, familyName: String, gender: String, birthday: String, completion:@escaping (() -> Void)) {
         print("createPatient")
         
         DispatchQueue.global(qos: .background).async {
@@ -97,6 +97,7 @@ class Institute {
                     } else {
                         self.patientObject = patient
                         print("PatientCreationSucceded")
+                        completion()
                     }
                 }
                 
@@ -1304,6 +1305,26 @@ class Institute {
                 self.loadAllMediaResource(completion: completion)
             })
             
+        }
+    }
+    
+    
+    func getPatientByID(id : String, completion: @escaping ((Patient) -> Void)) {
+        print("getPatientByID")
+        
+        var patient = Patient()
+            
+        DispatchQueue.global(qos: .background).async {
+            Patient.read(id, server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else if resource != nil {
+                    patient = resource as! Patient
+                    print("Found Patient with the ID")
+                    print(patient.id)
+                    completion(patient)
+                }
+            }
         }
     }
     
