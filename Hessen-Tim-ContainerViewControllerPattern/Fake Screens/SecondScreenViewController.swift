@@ -13,6 +13,8 @@ class SecondScreenViewController: UIViewController {
     @IBOutlet weak var patientListView: UIView!
     @IBOutlet weak var splitView: UIView!
     @IBOutlet weak var insertPatientData: UIView!
+    @IBOutlet weak var patientList: UIButton!
+    @IBOutlet weak var emergencyContact: UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -54,6 +56,10 @@ class SecondScreenViewController: UIViewController {
         height = screen2ImageView.frame.height * 0.3
 
         insertPatientData.frame = CGRect(x: x, y: y, width: width, height: height)
+        
+        patientList.clipsToBounds = true
+        patientList.layer.cornerRadius = 10
+        patientList.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner] // Top right corner, Top left corner respectively
 
 
     }
@@ -71,6 +77,9 @@ class SecondScreenViewController: UIViewController {
         self.performSegue(withIdentifier: "showSplitScreenVC", sender: sender)
     }
 
-
+    @IBAction func openPatientList(_ sender: Any) {
+        performSegue(withIdentifier: "toPatientListView", sender: nil)
+    }
+    
     @IBAction func exitViewToRootView(segue:UIStoryboardSegue) {}
 }
