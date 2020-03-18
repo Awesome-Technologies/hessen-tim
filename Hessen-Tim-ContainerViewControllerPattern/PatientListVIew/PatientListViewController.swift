@@ -22,8 +22,14 @@ struct Patient {
 }
 
 class PatientTableViewCell: UITableViewCell {
-    @IBOutlet weak var nachnameLabel: UILabel!
-    @IBOutlet weak var vornameLabel: UILabel!
+    @IBOutlet weak var surenameLabel: UILabel!
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var sexLabel: UILabel!
+    @IBOutlet weak var birthdayLabel: UILabel!
+    @IBOutlet weak var sizeLabel: UILabel!
+    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet weak var clinicLabel: UILabel!
+    @IBOutlet weak var insuranceLabel: UILabel!
     @IBOutlet weak var subview1: UIView!{
     didSet {
         subview1.isHidden = true
@@ -117,8 +123,14 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMMM yyyy"
         cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
-        cell.nachnameLabel?.text = patient.surename
-        cell.vornameLabel?.text = patient.firstName
+        cell.surenameLabel?.text = patient.surename
+        cell.firstNameLabel?.text = patient.firstName
+        cell.sexLabel?.text = patient.sex
+        cell.birthdayLabel?.text = dateFormatter.string(from: date)
+        cell.sizeLabel?.text = String(patient.size)
+        cell.weightLabel?.text = String(patient.weight)
+        cell.clinicLabel?.text = patient.clinic
+        cell.insuranceLabel?.text = patient.insurance
         print("Name!!!:" + patient.surename)
         return cell
     }
