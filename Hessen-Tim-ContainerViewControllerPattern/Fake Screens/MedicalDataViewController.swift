@@ -62,6 +62,7 @@ class MedicalDataViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         patientName.text = pName
         patientBirthday.text = pBirthday
         patientSize.text = pSize
@@ -71,6 +72,17 @@ class MedicalDataViewController: UIViewController {
         clinicName.text = clinic
         contactDoctor.text = doctor
         contactNumber.text = number
+        */
+        
+        patientName.text = "test"
+        patientBirthday.text = "test"
+        patientSize.text = "test"
+        patientSex.text = "test"
+        patientWeight.text = "test"
+        insurance.text = "test"
+        clinicName.text = "test"
+        contactDoctor.text = "test"
+        contactNumber.text = "test"
 
         // Do any additional setup after loading the view.
     }
@@ -108,16 +120,19 @@ class MedicalDataViewController: UIViewController {
     
     @IBAction func send(_ sender: Any) {
         view.bringSubviewToFront(grayOverlay)
+        grayOverlay.isHidden = false
         view.bringSubviewToFront(dataSendView)
         
     }
     
     @IBAction func normalCall(_ sender: Any) {
         view.bringSubviewToFront(grayOverlay)
+        grayOverlay.isHidden = false
         view.bringSubviewToFront(normalCallView)
     }
     @IBAction func continueNormalCall(_ sender: Any) {
         view.sendSubviewToBack(grayOverlay)
+        grayOverlay.isHidden = true
         view.sendSubviewToBack(normalCallView)
         view.sendSubviewToBack(save)
         view.sendSubviewToBack(send)
@@ -127,28 +142,33 @@ class MedicalDataViewController: UIViewController {
     }
     
     @IBAction func hangUp(_ sender: Any) {
-        view.bringSubviewToFront(grayOverlay)
-        view.bringSubviewToFront(hangUpView)
+        
         view.bringSubviewToFront(normalCall)
         view.bringSubviewToFront(videoCall)
         view.bringSubviewToFront(createCaseReport)
+        view.bringSubviewToFront(grayOverlay)
+        grayOverlay.isHidden = false
         view.sendSubviewToBack(hangUp)
+        view.bringSubviewToFront(hangUpView)
         
     }
     
     @IBAction func createCaseReport(_ sender: Any) {
         view.sendSubviewToBack(hangUpView)
         view.bringSubviewToFront(grayOverlay)
+        grayOverlay.isHidden = false
         view.bringSubviewToFront(caseReportView)
     }
     
     @IBAction func sendCaseReport(_ sender: Any) {
         view.sendSubviewToBack(grayOverlay)
+        grayOverlay.isHidden = true
         view.sendSubviewToBack(caseReportView)
     }
     
     @IBAction func closeNotificationWIndow(_ sender: Any) {
         view.sendSubviewToBack(grayOverlay)
+        grayOverlay.isHidden = true
         view.sendSubviewToBack(caseReportView)
         view.sendSubviewToBack(dataSendView)
         view.sendSubviewToBack(normalCallView)

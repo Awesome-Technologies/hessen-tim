@@ -119,6 +119,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
         cell.nachnameLabel?.text = patient.surename
         cell.vornameLabel?.text = patient.firstName
+        print("Name!!!:" + patient.surename)
         return cell
     }
     
