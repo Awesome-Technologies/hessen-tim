@@ -612,11 +612,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GB5-xx-w8C">
-                                <rect key="frame" x="0.0" y="50" width="1366" height="954"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1366" height="1004"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dp3-PT-osz">
-                                <rect key="frame" x="478" y="373.5" width="577" height="303"/>
+                                <rect key="frame" x="478" y="348.5" width="577" height="303"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="absendenNotificationWindow" translatesAutoresizingMaskIntoConstraints="NO" id="oll-fe-gT7">
                                         <rect key="frame" x="0.0" y="0.0" width="577" height="303"/>
@@ -627,6 +627,9 @@
                                         <state key="normal" title="Rückruf abwarten">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
+                                        <connections>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Gs4-8i-0e8"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VzE-vg-8gm">
                                         <rect key="frame" x="406.5" y="246" width="55" height="30"/>
@@ -634,6 +637,10 @@
                                         <state key="normal" title="Anrufen">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
+                                        <connections>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="XtH-fR-tEU"/>
+                                            <action selector="normalCall:" destination="QVj-xf-d6w" eventType="touchUpInside" id="W53-Uf-PuO"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -660,6 +667,9 @@
                                         <state key="normal" title="Auflegen">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="lhi-6q-nqh"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LGn-hd-2VE">
                                         <rect key="frame" x="412" y="241" width="45" height="30"/>
@@ -702,6 +712,43 @@
                                     <action selector="hangUp:" destination="QVj-xf-d6w" eventType="touchUpInside" id="z8o-bO-6iI"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0QZ-PV-wa0" userLabel="caseReportSendView">
+                                <rect key="frame" x="393" y="363.5" width="580" height="297"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="caseReportSendNotificationWindow" translatesAutoresizingMaskIntoConstraints="NO" id="lhY-RB-HmR">
+                                        <rect key="frame" x="0.0" y="-19" width="580" height="335"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8P-ZY-CML">
+                                        <rect key="frame" x="18" y="242.5" width="155" height="30"/>
+                                        <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Patientenliste aufrufen">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="goToPatientListView:" destination="QVj-xf-d6w" eventType="touchUpInside" id="NBJ-V7-oLL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEf-MP-wpV">
+                                        <rect key="frame" x="466" y="242.5" width="30" height="30"/>
+                                        <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Ok">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="zVP-qn-KGc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="L8P-ZY-CML" firstAttribute="centerY" secondItem="0QZ-PV-wa0" secondAttribute="centerY" multiplier="1.7" constant="5" id="R0C-Af-gv5"/>
+                                    <constraint firstItem="L8P-ZY-CML" firstAttribute="centerX" secondItem="0QZ-PV-wa0" secondAttribute="centerX" multiplier="0.4" constant="-20.5" id="T4Y-cH-haI"/>
+                                    <constraint firstItem="cEf-MP-wpV" firstAttribute="centerX" secondItem="0QZ-PV-wa0" secondAttribute="centerX" multiplier="1.7" constant="-12.149999999999977" id="UdH-58-8rq"/>
+                                    <constraint firstItem="lhY-RB-HmR" firstAttribute="centerY" secondItem="0QZ-PV-wa0" secondAttribute="centerY" constant="-1.5" id="W7v-M9-yu2"/>
+                                    <constraint firstItem="cEf-MP-wpV" firstAttribute="centerY" secondItem="0QZ-PV-wa0" secondAttribute="centerY" multiplier="1.7" constant="5" id="YLc-Hx-blI"/>
+                                    <constraint firstItem="lhY-RB-HmR" firstAttribute="centerX" secondItem="0QZ-PV-wa0" secondAttribute="centerX" id="vmF-uj-MYd"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFA-zh-MZ7">
                                 <rect key="frame" x="393.5" y="358.5" width="579" height="300"/>
                                 <subviews>
@@ -714,6 +761,9 @@
                                         <state key="normal" title="Patientenliste aufrufen">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="goToPatientListView:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Wn5-RD-3NT"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJd-5W-k8f">
                                         <rect key="frame" x="428" y="245" width="104" height="30"/>
@@ -751,27 +801,31 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Ta-aow">
-                                <rect key="frame" x="205" y="188.5" width="956" height="647"/>
+                                <rect key="frame" x="205" y="153.5" width="956" height="717"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Erstellen Sie einen Konsil-Bericht für den vorliegenden Fall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAg-NQ-2Os">
-                                        <rect key="frame" x="256" y="54.5" width="444.5" height="21"/>
+                                        <rect key="frame" x="256" y="61.5" width="444.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24Z-wL-zuu">
-                                        <rect key="frame" x="105.5" y="583.5" width="76" height="30"/>
+                                        <rect key="frame" x="105.5" y="648" width="76" height="30"/>
                                         <state key="normal" title="Abbrechen"/>
+                                        <connections>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="68k-gF-zXf"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E37-J9-6bN" userLabel="Absenden">
-                                        <rect key="frame" x="777.5" y="583.5" width="70" height="30"/>
+                                        <rect key="frame" x="777.5" y="648" width="70" height="30"/>
                                         <state key="normal" title="Absenden"/>
                                         <connections>
-                                            <action selector="sendCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="CX5-wQ-deU"/>
+                                            <action selector="closeNotificationWIndow:" destination="QVj-xf-d6w" eventType="touchUpInside" id="ZT5-Tf-xOo"/>
+                                            <action selector="sendCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="T69-lR-4pL"/>
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Nf-0R-8zo">
-                                        <rect key="frame" x="95.5" y="97" width="765" height="453"/>
+                                        <rect key="frame" x="95.5" y="107.5" width="765" height="502"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -793,7 +847,7 @@
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="patientDataView" translatesAutoresizingMaskIntoConstraints="NO" id="lDp-0D-gUQ">
-                                <rect key="frame" x="0.0" y="50" width="1366" height="924"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nlg-zd-B73" userLabel="PatientName">
                                 <rect key="frame" x="865" y="152" width="162" height="28"/>
@@ -1077,11 +1131,13 @@
                             <constraint firstItem="iQQ-eP-NZW" firstAttribute="bottom" secondItem="GB5-xx-w8C" secondAttribute="bottom" id="9H6-Yi-0U8"/>
                             <constraint firstItem="oo6-0G-oiE" firstAttribute="centerX" secondItem="lDp-0D-gUQ" secondAttribute="centerX" id="BwN-Mc-gNB"/>
                             <constraint firstItem="oo6-0G-oiE" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.3" constant="169.19999999999999" id="FLm-tz-6mc"/>
+                            <constraint firstItem="0QZ-PV-wa0" firstAttribute="height" secondItem="LS1-ak-xpu" secondAttribute="height" multiplier="0.29" id="G4T-SG-Siw"/>
                             <constraint firstItem="EFA-zh-MZ7" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="Him-fQ-F6e"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="KF8-Pn-b9b"/>
                             <constraint firstItem="P1v-Ta-aow" firstAttribute="height" secondItem="lDp-0D-gUQ" secondAttribute="height" multiplier="0.7" id="KaH-2H-gy8"/>
                             <constraint firstItem="EFA-zh-MZ7" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" constant="-3.5" id="M8X-SJ-R4I"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="centerY" secondItem="iQQ-eP-NZW" secondAttribute="centerY" constant="-2" id="N39-EW-8qQ"/>
+                            <constraint firstItem="0QZ-PV-wa0" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.424597" id="Plz-Tp-crp"/>
                             <constraint firstItem="P1v-Ta-aow" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="SSr-7A-EEz"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="leading" secondItem="iQQ-eP-NZW" secondAttribute="leading" id="Ull-bj-NC5"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="height" secondItem="LS1-ak-xpu" secondAttribute="height" multiplier="0.3" constant="-4.1999999999999886" id="Xrl-YP-CWG"/>
@@ -1090,19 +1146,23 @@
                             <constraint firstItem="oo6-0G-oiE" firstAttribute="height" secondItem="LS1-ak-xpu" secondAttribute="height" multiplier="0.3" constant="-6.1999999999999886" id="bXf-1t-7ys"/>
                             <constraint firstItem="P1v-Ta-aow" firstAttribute="width" secondItem="lDp-0D-gUQ" secondAttribute="width" multiplier="0.7" id="fRe-y5-EUG"/>
                             <constraint firstItem="GB5-xx-w8C" firstAttribute="width" secondItem="lDp-0D-gUQ" secondAttribute="width" id="fve-f1-qlr"/>
+                            <constraint firstItem="0QZ-PV-wa0" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="ifp-LE-8BN"/>
                             <constraint firstItem="EFA-zh-MZ7" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.35" constant="101" id="oJO-bo-4ug"/>
                             <constraint firstItem="P1v-Ta-aow" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="rWu-dd-PpW"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="spc-dw-GaS"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.3" constant="167.19999999999999" id="w45-xu-KnW"/>
                             <constraint firstItem="GB5-xx-w8C" firstAttribute="centerX" secondItem="iQQ-eP-NZW" secondAttribute="centerX" id="wo9-LH-dew"/>
+                            <constraint firstItem="0QZ-PV-wa0" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="yEn-RK-U3k"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iQQ-eP-NZW"/>
                     </view>
                     <navigationItem key="navigationItem" id="ooM-gU-hfx"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="additionalInformation" destination="AQ4-o9-ltQ" id="huo-RF-k84"/>
                         <outlet property="anamnesebutton" destination="b1u-kN-U7R" id="z8Z-oz-1gM"/>
                         <outlet property="bloodGasAnalysisButton" destination="mMi-Qj-vO4" id="ILj-2l-yqD"/>
+                        <outlet property="caseReportSendView" destination="0QZ-PV-wa0" id="fK3-00-qjY"/>
                         <outlet property="caseReportView" destination="P1v-Ta-aow" id="vt2-pg-dlF"/>
                         <outlet property="clinicName" destination="qeX-75-oFy" id="2Im-ac-mCO"/>
                         <outlet property="communicationTimeline" destination="qrT-bl-JiP" id="syU-aB-G7Z"/>
@@ -1135,6 +1195,7 @@
                         <outlet property="ventilationButton" destination="rI4-jM-4mn" id="gME-1Z-fcq"/>
                         <outlet property="videoCall" destination="U5C-1O-tHM" id="QhK-gl-qhF"/>
                         <segue destination="UNo-Bw-Gvo" kind="show" identifier="takePicturesForCategory" id="NJh-UN-1HP"/>
+                        <segue destination="ETs-MS-wP6" kind="show" identifier="toPatientList" id="P0c-ED-fSW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MeR-3h-F5q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2986,6 +3047,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nJ2-PF-I2T"/>
                     </view>
+                    <navigationItem key="navigationItem" id="lpe-lb-bok"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="mG8-c5-dEQ" id="47E-3k-Qgu"/>
                     </connections>
@@ -3043,6 +3106,7 @@
         <image name="buttonRadiologiePictures" width="197" height="119"/>
         <image name="buttonSendInformation" width="75" height="70"/>
         <image name="buttonSonstigesPictures" width="197" height="119"/>
+        <image name="caseReportSendNotificationWindow" width="580" height="300"/>
         <image name="clearPaint-Button" width="530" height="530"/>
         <image name="close-Button" width="530" height="530"/>
         <image name="comment-Button" width="530" height="530"/>
@@ -3061,6 +3125,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
+        <segue reference="P0c-ED-fSW"/>
         <segue reference="EzM-g7-taV"/>
         <segue reference="NJh-UN-1HP"/>
         <segue reference="fKo-Ba-fGo"/>

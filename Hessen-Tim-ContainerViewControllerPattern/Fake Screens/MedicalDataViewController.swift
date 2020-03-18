@@ -10,15 +10,15 @@ import UIKit
 
 class MedicalDataViewController: UIViewController {
     
-    var pName: String = ""
-    var pBirthday: String = ""
-    var pSize: String = ""
-    var pSex: String = ""
-    var pWeight: String = ""
-    var insuranceName: String = ""
-    var clinic: String = ""
-    var doctor: String = ""
-    var number: String = ""
+    var pName: String = "Hans Müller"
+    var pBirthday: String = "15.02.1956"
+    var pSize: String = "180"
+    var pSex: String = "M"
+    var pWeight: String = "71"
+    var insuranceName: String = "Allianz"
+    var clinic: String = "Frankfurt"
+    var doctor: String = "Dr.Stein"
+    var number: String = "017412345"
     
 
     @IBOutlet weak var patientName: UILabel!
@@ -57,12 +57,12 @@ class MedicalDataViewController: UIViewController {
     @IBOutlet weak var normalCallView: UIView!
     @IBOutlet weak var hangUpView: UIView!
     @IBOutlet weak var caseReportView: UIView!
+    @IBOutlet weak var caseReportSendView: UIView!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /*
         patientName.text = pName
         patientBirthday.text = pBirthday
         patientSize.text = pSize
@@ -72,18 +72,7 @@ class MedicalDataViewController: UIViewController {
         clinicName.text = clinic
         contactDoctor.text = doctor
         contactNumber.text = number
-        */
         
-        patientName.text = "test"
-        patientBirthday.text = "test"
-        patientSize.text = "test"
-        patientSex.text = "test"
-        patientWeight.text = "test"
-        insurance.text = "test"
-        clinicName.text = "test"
-        contactDoctor.text = "test"
-        contactNumber.text = "test"
-
         // Do any additional setup after loading the view.
     }
     
@@ -138,6 +127,7 @@ class MedicalDataViewController: UIViewController {
         view.sendSubviewToBack(send)
         view.sendSubviewToBack(normalCall)
         view.sendSubviewToBack(videoCall)
+        view.sendSubviewToBack(createCaseReport)
         view.bringSubviewToFront(hangUp)
     }
     
@@ -161,9 +151,10 @@ class MedicalDataViewController: UIViewController {
     }
     
     @IBAction func sendCaseReport(_ sender: Any) {
-        view.sendSubviewToBack(grayOverlay)
-        grayOverlay.isHidden = true
+        view.bringSubviewToFront(grayOverlay)
+        grayOverlay.isHidden = false
         view.sendSubviewToBack(caseReportView)
+        view.bringSubviewToFront(caseReportSendView)
     }
     
     @IBAction func closeNotificationWIndow(_ sender: Any) {
@@ -173,6 +164,11 @@ class MedicalDataViewController: UIViewController {
         view.sendSubviewToBack(dataSendView)
         view.sendSubviewToBack(normalCallView)
         view.sendSubviewToBack(hangUpView)
+        view.sendSubviewToBack(caseReportSendView)
+    }
+    
+    @IBAction func goToPatientListView(_ sender: Any) {
+        performSegue(withIdentifier: "toPatientList", sender: sender)
     }
     
     func openPictureView(sender: Any, category: String){
