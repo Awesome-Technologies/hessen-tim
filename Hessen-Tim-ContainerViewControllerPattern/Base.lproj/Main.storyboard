@@ -597,6 +597,15 @@
                                     <action selector="hangUp:" destination="QVj-xf-d6w" eventType="touchUpInside" id="z8o-bO-6iI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iiD-79-znb">
+                                <rect key="frame" x="734" y="841" width="250" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Konsilbericht erstellen"/>
+                                <connections>
+                                    <action selector="createCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="yfE-kJ-RvZ"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFA-zh-MZ7">
                                 <rect key="frame" x="444" y="373.5" width="478" height="277"/>
                                 <subviews>
@@ -614,8 +623,7 @@
                                         <rect key="frame" x="187" y="220.5" width="104" height="30"/>
                                         <state key="normal" title="Konsil erstellen"/>
                                         <connections>
-                                            <action selector="continueNormalCall:" destination="QVj-xf-d6w" eventType="touchUpInside" id="v3W-FE-wzS"/>
-                                            <action selector="createCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="Xup-vA-Dzd"/>
+                                            <action selector="createCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="PaU-MF-zIK"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJd-5W-k8f">
@@ -636,6 +644,46 @@
                                     <constraint firstItem="TJd-5W-k8f" firstAttribute="centerX" secondItem="EFA-zh-MZ7" secondAttribute="centerX" multiplier="1.7" constant="5.6999999999999886" id="eFA-e4-P0K"/>
                                     <constraint firstItem="17N-3N-94Q" firstAttribute="centerX" secondItem="EFA-zh-MZ7" secondAttribute="centerX" id="oxO-Yt-DqH"/>
                                     <constraint firstItem="TJd-5W-k8f" firstAttribute="centerY" secondItem="EFA-zh-MZ7" secondAttribute="centerY" multiplier="1.7" id="uwk-CU-SFE"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Ta-aow">
+                                <rect key="frame" x="205" y="188.5" width="956" height="647"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Erstellen Sie einen Konsil-Bericht für den vorliegenden Fall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAg-NQ-2Os">
+                                        <rect key="frame" x="256" y="54.5" width="444.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24Z-wL-zuu">
+                                        <rect key="frame" x="105.5" y="583.5" width="76" height="30"/>
+                                        <state key="normal" title="Abbrechen"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E37-J9-6bN" userLabel="Absenden">
+                                        <rect key="frame" x="777.5" y="583.5" width="70" height="30"/>
+                                        <state key="normal" title="Absenden"/>
+                                        <connections>
+                                            <action selector="sendCaseReport:" destination="QVj-xf-d6w" eventType="touchUpInside" id="CX5-wQ-deU"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Nf-0R-8zo">
+                                        <rect key="frame" x="95.5" y="97" width="765" height="453"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="4Nf-0R-8zo" firstAttribute="width" secondItem="P1v-Ta-aow" secondAttribute="width" multiplier="0.8" id="3tT-FR-etD"/>
+                                    <constraint firstItem="E37-J9-6bN" firstAttribute="centerY" secondItem="P1v-Ta-aow" secondAttribute="centerY" multiplier="1.85" id="4BH-nR-wId"/>
+                                    <constraint firstItem="24Z-wL-zuu" firstAttribute="centerY" secondItem="P1v-Ta-aow" secondAttribute="centerY" multiplier="1.85" id="581-ZO-2vG"/>
+                                    <constraint firstItem="4Nf-0R-8zo" firstAttribute="centerY" secondItem="P1v-Ta-aow" secondAttribute="centerY" id="LeB-Hz-xqW"/>
+                                    <constraint firstItem="E37-J9-6bN" firstAttribute="centerX" secondItem="P1v-Ta-aow" secondAttribute="centerX" multiplier="1.7" id="Ndj-Gq-SKK"/>
+                                    <constraint firstItem="24Z-wL-zuu" firstAttribute="centerX" secondItem="P1v-Ta-aow" secondAttribute="centerX" multiplier="0.3" id="XoZ-SB-1Uc"/>
+                                    <constraint firstItem="cAg-NQ-2Os" firstAttribute="centerX" secondItem="P1v-Ta-aow" secondAttribute="centerX" id="gX1-Km-dtf"/>
+                                    <constraint firstItem="4Nf-0R-8zo" firstAttribute="centerX" secondItem="P1v-Ta-aow" secondAttribute="centerX" id="sCN-yh-LGd"/>
+                                    <constraint firstItem="cAg-NQ-2Os" firstAttribute="centerY" secondItem="P1v-Ta-aow" secondAttribute="centerY" multiplier="0.2" id="uT9-Q8-tsl"/>
+                                    <constraint firstItem="4Nf-0R-8zo" firstAttribute="height" secondItem="P1v-Ta-aow" secondAttribute="height" multiplier="0.7" id="v6S-ay-Lo0"/>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainDataViewFiller" translatesAutoresizingMaskIntoConstraints="NO" id="lDp-0D-gUQ">
@@ -860,15 +908,19 @@
                             <constraint firstItem="17N-3N-94Q" firstAttribute="centerX" secondItem="lDp-0D-gUQ" secondAttribute="centerX" id="EwJ-mK-FNZ"/>
                             <constraint firstItem="oo6-0G-oiE" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.3" id="FLm-tz-6mc"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="KF8-Pn-b9b"/>
+                            <constraint firstItem="P1v-Ta-aow" firstAttribute="height" secondItem="lDp-0D-gUQ" secondAttribute="height" multiplier="0.7" id="KaH-2H-gy8"/>
                             <constraint firstItem="EFA-zh-MZ7" firstAttribute="centerY" secondItem="lDp-0D-gUQ" secondAttribute="centerY" id="M8X-SJ-R4I"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="centerY" secondItem="iQQ-eP-NZW" secondAttribute="centerY" id="N39-EW-8qQ"/>
+                            <constraint firstItem="P1v-Ta-aow" firstAttribute="centerY" secondItem="LS1-ak-xpu" secondAttribute="centerY" id="SSr-7A-EEz"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="leading" secondItem="iQQ-eP-NZW" secondAttribute="leading" id="Ull-bj-NC5"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="height" secondItem="LS1-ak-xpu" secondAttribute="height" multiplier="0.3" id="Xrl-YP-CWG"/>
                             <constraint firstItem="GB5-xx-w8C" firstAttribute="centerY" secondItem="iQQ-eP-NZW" secondAttribute="centerY" id="ZFv-4R-jMd"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="centerX" secondItem="iQQ-eP-NZW" secondAttribute="centerX" id="bUu-Yy-2uC"/>
                             <constraint firstItem="oo6-0G-oiE" firstAttribute="height" secondItem="LS1-ak-xpu" secondAttribute="height" multiplier="0.3" id="bXf-1t-7ys"/>
+                            <constraint firstItem="P1v-Ta-aow" firstAttribute="width" secondItem="lDp-0D-gUQ" secondAttribute="width" multiplier="0.7" id="fRe-y5-EUG"/>
                             <constraint firstItem="GB5-xx-w8C" firstAttribute="width" secondItem="lDp-0D-gUQ" secondAttribute="width" id="fve-f1-qlr"/>
                             <constraint firstItem="EFA-zh-MZ7" firstAttribute="width" secondItem="lDp-0D-gUQ" secondAttribute="width" multiplier="0.35" id="oJO-bo-4ug"/>
+                            <constraint firstItem="P1v-Ta-aow" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="rWu-dd-PpW"/>
                             <constraint firstItem="lDp-0D-gUQ" firstAttribute="centerX" secondItem="LS1-ak-xpu" secondAttribute="centerX" id="spc-dw-GaS"/>
                             <constraint firstItem="dp3-PT-osz" firstAttribute="width" secondItem="LS1-ak-xpu" secondAttribute="width" multiplier="0.3" id="w45-xu-KnW"/>
                             <constraint firstItem="GB5-xx-w8C" firstAttribute="centerX" secondItem="iQQ-eP-NZW" secondAttribute="centerX" id="wo9-LH-dew"/>
@@ -880,10 +932,12 @@
                         <outlet property="additionalInformation" destination="AQ4-o9-ltQ" id="huo-RF-k84"/>
                         <outlet property="anamnesebutton" destination="b1u-kN-U7R" id="z8Z-oz-1gM"/>
                         <outlet property="bloodGasAnalysisButton" destination="mMi-Qj-vO4" id="ILj-2l-yqD"/>
+                        <outlet property="caseReportView" destination="P1v-Ta-aow" id="vt2-pg-dlF"/>
                         <outlet property="clinicName" destination="qeX-75-oFy" id="2Im-ac-mCO"/>
                         <outlet property="communicationTimeline" destination="qrT-bl-JiP" id="syU-aB-G7Z"/>
                         <outlet property="contactDoctor" destination="KQS-zp-wXo" id="LoZ-eb-J5v"/>
                         <outlet property="contactNumber" destination="iaw-m8-EhS" id="CpK-iQ-8sH"/>
+                        <outlet property="createCaseReport" destination="iiD-79-znb" id="G8D-z2-g6p"/>
                         <outlet property="dataSendView" destination="dp3-PT-osz" id="b2v-N7-nqG"/>
                         <outlet property="editPatientData" destination="gWh-04-sNz" id="Wnf-L6-IJK"/>
                         <outlet property="grayOverlay" destination="GB5-xx-w8C" id="0HO-SN-cG2"/>

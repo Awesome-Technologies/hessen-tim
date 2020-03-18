@@ -51,10 +51,12 @@ class MedicalDataViewController: UIViewController {
     @IBOutlet weak var normalCall: UIButton!
     @IBOutlet weak var videoCall: UIButton!
     @IBOutlet weak var hangUp: UIButton!
+    @IBOutlet weak var createCaseReport: UIButton!
     @IBOutlet weak var grayOverlay: UIView!
     @IBOutlet weak var dataSendView: UIView!
     @IBOutlet weak var normalCallView: UIView!
     @IBOutlet weak var hangUpView: UIView!
+    @IBOutlet weak var caseReportView: UIView!
     
     
     override func viewDidLoad() {
@@ -127,9 +129,29 @@ class MedicalDataViewController: UIViewController {
     @IBAction func hangUp(_ sender: Any) {
         view.bringSubviewToFront(grayOverlay)
         view.bringSubviewToFront(hangUpView)
+        view.bringSubviewToFront(normalCall)
+        view.bringSubviewToFront(videoCall)
+        view.bringSubviewToFront(createCaseReport)
+        view.sendSubviewToBack(hangUp)
+        
     }
     
     @IBAction func createCaseReport(_ sender: Any) {
+        view.sendSubviewToBack(hangUpView)
+        view.bringSubviewToFront(grayOverlay)
+        view.bringSubviewToFront(caseReportView)
+    }
+    
+    @IBAction func sendCaseReport(_ sender: Any) {
+        view.sendSubviewToBack(grayOverlay)
+        view.sendSubviewToBack(caseReportView)
+    }
+    
+    @IBAction func closeNotificationWIndow(_ sender: Any) {
+        view.sendSubviewToBack(grayOverlay)
+        view.sendSubviewToBack(caseReportView)
+        view.sendSubviewToBack(dataSendView)
+        view.sendSubviewToBack(normalCallView)
         view.sendSubviewToBack(hangUpView)
     }
     
