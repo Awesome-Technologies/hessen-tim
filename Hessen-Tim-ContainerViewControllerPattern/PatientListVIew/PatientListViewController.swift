@@ -17,18 +17,6 @@ struct cellData {
     var sectionData = [String]();
 }
 
-struct Patient {
-    var surename : String
-    var firstName : String
-    var sex : String
-    var birthday : Date
-    var size : Int
-    var weight : Int
-    var clinic : String
-    var insurance : String
-    
-}
-
 class PatientTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nachnameLabel: UILabel!
@@ -93,6 +81,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         if let client = Institute.shared.client {
             list = PatientListAll()
             list?.onPatientUpdate = {
+                self.createPatientTestData()
                 self.tableView.reloadData()
             }
             list?.retrieve(fromServer: client.server)
@@ -194,5 +183,25 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func click(_ sender: Any) {
         print("I clicktheButton")
     }
+    
+    func createPatientTestData(){
+        if list?.patients?.count != nil {
+            for patientNumber in 0..<(Int(list!.patients!.count-1)) {
+                let patient = list?.patients?[Int(patientNumber)]
+                if let name = patient?.name?[0] {
+                    print(name.family?.string)
+                    print(name.given?[0].string)
+                    print("---")
+                    
+                    tableViewData.append(cellData(opened: false, vorname: name.family!.string, nachname: (name.given?[0].string)!, sectionData: ["cell1","cell2","cell3"]))
+                    
+                }
+                
+            }
+        }
+ 
+            
+    }
+
     
 }
