@@ -54,6 +54,7 @@ class MedicalDataViewController: UIViewController {
     @IBOutlet weak var grayOverlay: UIView!
     @IBOutlet weak var dataSendView: UIView!
     @IBOutlet weak var normalCallView: UIView!
+    @IBOutlet weak var hangUpView: UIView!
     
     
     override func viewDidLoad() {
@@ -121,6 +122,15 @@ class MedicalDataViewController: UIViewController {
         view.sendSubviewToBack(normalCall)
         view.sendSubviewToBack(videoCall)
         view.bringSubviewToFront(hangUp)
+    }
+    
+    @IBAction func hangUp(_ sender: Any) {
+        view.bringSubviewToFront(grayOverlay)
+        view.bringSubviewToFront(hangUpView)
+    }
+    
+    @IBAction func createCaseReport(_ sender: Any) {
+        view.sendSubviewToBack(hangUpView)
     }
     
     func openPictureView(sender: Any, category: String){
