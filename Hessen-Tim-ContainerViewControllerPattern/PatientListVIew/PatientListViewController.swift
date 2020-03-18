@@ -9,6 +9,14 @@
 import UIKit
 import SMART
 
+
+struct cellData {
+    var opened = Bool()
+    var firstName = String()
+    var familyName = String()
+    var sectionData = [String]();
+}
+
 struct Patient {
     var surename : String
     var firstName : String
@@ -22,34 +30,21 @@ struct Patient {
 }
 
 class PatientTableViewCell: UITableViewCell {
-    @IBOutlet weak var surenameLabel: UILabel!
-    @IBOutlet weak var firstNameLabel: UILabel!
-    @IBOutlet weak var sexLabel: UILabel!
-    @IBOutlet weak var birthdayLabel: UILabel!
-    @IBOutlet weak var sizeLabel: UILabel!
-    @IBOutlet weak var weightLabel: UILabel!
-    @IBOutlet weak var clinicLabel: UILabel!
-    @IBOutlet weak var insuranceLabel: UILabel!
-    @IBOutlet weak var subview1: UIView!{
-    didSet {
-        subview1.isHidden = true
-        }
-    }
-    @IBOutlet weak var subview2: UIView!{
-    didSet {
-        subview2.isHidden = true
-        }
-    }
-    @IBOutlet weak var subview3: UIView!{
-    didSet {
-        subview3.isHidden = true
-        }
-    }
-    @IBOutlet weak var subview4: UIView!{
-    didSet {
-        subview4.isHidden = true
-        }
-    }
+
+    @IBOutlet weak var nachnameLabel: UILabel!
+    @IBOutlet weak var vornameLabel: UILabel!
+    @IBOutlet weak var geschlechtLabel: UILabel!
+    @IBOutlet weak var geburtsdatumLabel: UILabel!
+    @IBOutlet weak var groesseLabel: UILabel!
+    @IBOutlet weak var gewichtLabel: UILabel!
+    @IBOutlet weak var klinikLabel: UILabel!
+    @IBOutlet weak var versicherungLabel: UILabel!
+    @IBOutlet weak var comHistory: UIStackView!
+    
+}
+
+class CommunicationCell: UITableViewCell {
+    @IBOutlet weak var testLabel: UILabel!
     
 }
 
@@ -65,19 +60,16 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
     var selectedCellIndexPath: IndexPath?
     
     @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var communicationHistoryStack: UIStackView!
     
     @IBAction func goBackToRootTapped(_ sender: Any) {
         performSegue(withIdentifier: "exitToRoot", sender: self)
     }
     
-    var patienten: Array<Patient> = [
-        Patient(surename: "Müller", firstName: "Hans", sex: "M", birthday: parseDate("1950-02-15"), size: 180, weight: 71, clinic: "Kassel", insurance: "Allianz"),
-        Patient(surename: "Maier", firstName: "Georg", sex: "M", birthday: parseDate("1951-06-04"), size: 152, weight: 69, clinic: "Frankfurt", insurance: "AOK"),
-        Patient(surename: "Kachelman", firstName: "Jörg", sex: "M", birthday: parseDate("1953-05-01"), size: 169, weight: 87, clinic: "Frankfurt", insurance: "Allianz"),
-        Patient(surename: "Panzer", firstName: "Paul", sex: "M", birthday: parseDate("1950-02-18"), size: 180, weight: 81, clinic: "Frankfurt", insurance: "TK"),
-        Patient(surename: "Geiger", firstName: "Sabine", sex: "W", birthday: parseDate("1951-06-15"), size: 154, weight: 53, clinic: "Kassel", insurance: "HUK"),
-        Patient(surename: "Bauer", firstName: "Heiko", sex: "M", birthday: parseDate("1962-06-28"), size: 208, weight: 96, clinic: "Kassel", insurance: "AOK"),
-    ]
+
+    var tableViewData = [cellData]()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,17 +97,45 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             }
             list?.retrieve(fromServer: client.server)
         }
+        
+        tableViewData = [cellData(opened: false, firstName:"Hans", familyName: "müller", sectionData: ["cell1","cell2","cell3"]),
+                         cellData(opened: false, firstName:"Paul", familyName: "panzer", sectionData: ["cell1","cell2","cell3", "cell4"]),
+                         cellData(opened: false, firstName:"Heiko", familyName: "blümlein", sectionData: ["cell1","cell2"]),
+                         cellData(opened: false, firstName:"Nikolai", familyName: "panke", sectionData: ["cell1","cell2","cell3"])]
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        //return 1
+        print("Number of section:" + String(tableViewData.count))
+        return tableViewData.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return patienten.count
+       //return patienten.count
+        if(tableViewData[section].opened){
+            return tableViewData[section].sectionData.count+1
+        }else{
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if(indexPath.row == 0){
+            //guard let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell") as! PatientTableViewCell else{return UITableViewCell()}
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
+            //cell.textLabel?.text = tableViewData[indexPath.section].title
+            cell.nachnameLabel?.text = tableViewData[indexPath.section].familyName
+            cell.vornameLabel?.text = tableViewData[indexPath.section].firstName
+            
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CommunicationCell", for: indexPath) as! CommunicationCell
+            //cell.textLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row-1]
+            cell.testLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row-1]
+            return cell
+        }
+        /*
         let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
         
         let patient = patienten[indexPath.row]
@@ -133,6 +153,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         cell.insuranceLabel?.text = patient.insurance
         print("Name!!!:" + patient.surename)
         return cell
+         */
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -150,34 +171,25 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         
         return returnedView
     }
-    /*
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      selectedCellIndexPath = selectedCellIndexPath == indexPath ? nil : indexPath
-      tableView.beginUpdates()
-      tableView.endUpdates()
-    }
-    */
+
+    
     //https://www.atomicbird.com/blog/uistackview-table-cells/
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? PatientTableViewCell {
-            tableView.beginUpdates()
-            cell.subview1.isHidden = !cell.subview1.isHidden
-            cell.subview2.isHidden = !cell.subview2.isHidden
-            cell.subview3.isHidden = !cell.subview3.isHidden
-            cell.subview4.isHidden = !cell.subview4.isHidden
-            tableView.deselectRow(at: indexPath, animated: true)
-            tableView.endUpdates()
+        if(indexPath.row == 0){
+            if(tableViewData[indexPath.section].opened){
+                tableViewData[indexPath.section].opened = false
+                let sections = IndexSet.init(integer: indexPath.section)
+                tableView.reloadSections(sections, with: .none)
+            }else{
+                tableViewData[indexPath.section].opened = true
+                let sections = IndexSet.init(integer: indexPath.section)
+                tableView.reloadSections(sections, with: .none)
+            }
+        }else{
+            //hier passiert was ,wenn man auf die Zellen klickt
         }
-    }
 
-    /*
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-      if selectedCellIndexPath == indexPath {
-        return 250
-      }
-      return 65
     }
-     */
     
     @IBAction func click(_ sender: Any) {
         print("I clicktheButton")
