@@ -43,6 +43,8 @@ class Institute {
     var serviceRequestID = ""
     var sereviceRequestObject: ServiceRequest? = nil
     var patientObject: Patient? = nil
+    var observationWeight: Observation? = nil
+    var observationHeight: Observation? = nil
     
     //let serverUrl = "http://hapi.fhir.org/baseR4"
     let serverUrl = "https://tim.amp.institute/hapi-fhir-jpaserver/fhir/"
@@ -72,12 +74,13 @@ class Institute {
     }
     
     
-    func createPatient(firstName: String, familyName: String, gender: String, birthday: String, completion:@escaping (() -> Void)) {
+    func createPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String,clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
         print("createPatient")
         
         DispatchQueue.global(qos: .background).async {
             
             var patient = Patient()
+            patient._server = self.client?.server
             patient.active = true
             patient.gender = AdministrativeGender(rawValue: gender)
             
@@ -89,6 +92,28 @@ class Institute {
             patient.name?.append(patientName)
             patient.birthDate = FHIRDate(string: birthday)
             
+            patient.contact = [PatientContact()]
+            
+            var pc = PatientContact()
+            pc.telecom = [ContactPoint()]
+            
+            var docName = HumanName()
+            docName.family = FHIRString(doctorName)
+            
+            pc.name = docName
+            
+            var doctorNumber = ContactPoint()
+            doctorNumber.value = FHIRString(contactNumber)
+            
+            pc.telecom?.append(doctorNumber)
+            
+            var adress = Address()
+            adress.use = AddressUse(rawValue: "work")
+            adress.text = FHIRString(clinicName)
+            pc.address = adress
+            
+            patient.contact?.append(pc)
+            
             if let client = Institute.shared.client {
                 patient.createAndReturn(client.server) { error in
                     if let error = error as? FHIRError {
@@ -96,6 +121,8 @@ class Institute {
                     } else {
                         self.patientObject = patient
                         print("PatientCreationSucceded")
+                        self.createWeightVitalSigns(weight: weight)
+                        self.createHeightVitalSigns(height: height)
                         completion()
                     }
                 }
@@ -106,12 +133,154 @@ class Institute {
     }
     
     
+    func createWeightVitalSigns(weight: String) {
+        
+        var weightObserv = Observation()
+        weightObserv.status = ObservationStatus(rawValue: "preliminary")
+        var category = [CodeableConcept()]
+        
+        var ccVital = CodeableConcept()
+        ccVital.text = FHIRString("vital-signs")
+        ccVital.coding = [Coding()]
+        
+        var codeVital = Coding()
+        codeVital.system = FHIRURL("http://terminology.hl7.org/CodeSystem/observation-category")
+        codeVital.code = "vital-signs"
+        codeVital.display = "Vital Signs"
+        
+        ccVital.coding?.append(codeVital)
+        category.append(ccVital)
+        weightObserv.category = category
+        
+        var ccCode = CodeableConcept()
+        ccCode.coding = [Coding()]
+        
+        var codeCode = Coding()
+        codeCode.system = FHIRURL("http://loinc.org")
+        codeCode.code = "29463-7"
+        codeCode.display = "Body Weight"
+        
+        ccCode.coding?.append(codeCode)
+        weightObserv.code = ccCode
+        
+        do {
+            try weightObserv.subject = weightObserv.reference(resource: self.patientObject!)
+        } catch {
+            print(error)
+        }
+        
+        weightObserv.effectiveDateTime = DateTime.now
+        //weightObserv.valueQuantity
+        
+        var valQuant = Quantity()
+        valQuant.value = FHIRDecimal(weight)
+        valQuant.unit = "kg"
+        
+        weightObserv.valueQuantity = valQuant
+        
+        if let client = Institute.shared.client {
+            weightObserv.createAndReturn(client.server) { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("WeightObservationCreationSucceded")
+                    
+                    DispatchQueue.global(qos: .background).async {
+                        weightObserv.update() { error in
+                            if let error = error as? FHIRError {
+                                print(error)
+                            } else {
+                                print("MediaUpdateSucceded")
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            
+            // check error
+        }
+    
+    }
+    
+    
+    
+    func createHeightVitalSigns(height: String) {
+        
+        var heightObserv = Observation()
+        heightObserv.status = ObservationStatus(rawValue: "final")
+        var category = [CodeableConcept()]
+        
+        var ccVital = CodeableConcept()
+        ccVital.text = FHIRString("vital-signs")
+        ccVital.coding = [Coding()]
+        
+        var codeVital = Coding()
+        codeVital.system = FHIRURL("http://terminology.hl7.org/CodeSystem/observation-category")
+        codeVital.code = "vital-signs"
+        codeVital.display = "Vital Signs"
+        
+        ccVital.coding?.append(codeVital)
+        category.append(ccVital)
+        heightObserv.category = category
+        
+        var ccCode = CodeableConcept()
+        ccCode.coding = [Coding()]
+        
+        var codeCode = Coding()
+        codeCode.system = FHIRURL("http://loinc.org")
+        codeCode.code = "8302-2"
+        codeCode.display = "Body Height"
+        
+        ccCode.coding?.append(codeCode)
+        heightObserv.code = ccCode
+        
+        do {
+            try heightObserv.subject = heightObserv.reference(resource: self.patientObject!)
+        } catch {
+            print(error)
+        }
+        
+        heightObserv.effectiveDateTime = DateTime.now
+        //weightObserv.valueQuantity
+        
+        var valQuant = Quantity()
+        valQuant.value = FHIRDecimal(height)
+        valQuant.unit = "cm"
+        
+        heightObserv.valueQuantity = valQuant
+        
+        if let client = Institute.shared.client {
+            heightObserv.createAndReturn(client.server) { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("HeightObservationCreationSucceded")
+                    DispatchQueue.global(qos: .background).async {
+                        heightObserv.update() { error in
+                            if let error = error as? FHIRError {
+                                print(error)
+                            } else {
+                                print("MediaUpdateSucceded")
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            
+            // check error
+        }
+    
+    }
+    
     
     func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String){
         
         DispatchQueue.global(qos: .background).async {
             
             var serv = ServiceRequest()
+            serv._server = self.client?.server
             serv.status = RequestStatus(rawValue: status)
             serv.intent = RequestIntent(rawValue: intent)
             serv.category = [CodeableConcept()]
@@ -122,6 +291,8 @@ class Institute {
             serv.category?.append(cc)
             serv.priority = RequestPriority(rawValue: priority)
             serv.subject = Reference()
+            
+            print(self.patientObject?._server?.baseURL)
             do {
                 try serv.subject = serv.reference(resource: self.patientObject!)
             } catch {
@@ -136,7 +307,7 @@ class Institute {
                     if let error = error as? FHIRError {
                         print(error)
                     } else {
-                        //print("ServiceRequestCreationSucceded")
+                        print("ServiceRequestCreationSucceded")
                         self.sereviceRequestObject = serv
                         //print("I have created the ServiceRewuest with the ID:")
                         //print(serv.id)
@@ -1138,24 +1309,58 @@ class Institute {
                     patient = resource as! Patient
                     print("Found Patient with the ID")
                     print(patient.id)
-                    completion(patient)
+                    self.getWeightOfPatient(patient: patient, completion: completion)
                 }
             }
         }
     }
     
-    /*
-    func backgroundThread(_ delay: Double = 0.0, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
-        dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0).async() {
-            background?()
-
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
-            dispatch_after(popTime, dispatch_get_main_queue()) {
-                completion?()
+    
+    func getWeightOfPatient(patient:Patient, completion: @escaping ((Patient) -> Void)) {
+        print("getWeightOfPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Observation.search(["patient":patient.id?.description,"category":"vital-signs","code": "29463-7"])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let patientWeight = bundle?.entry?
+                        .filter() { return $0.resource is Observation }
+                        .map() { return $0.resource as! Observation }
+                        
+                    self.observationWeight = patientWeight?.first
+                    self.getHeightOfPatient(patient: patient, completion: completion)
+                    
+                }
             }
         }
     }
-    */
+    
+    
+    func getHeightOfPatient(patient:Patient, completion: @escaping ((Patient) -> Void)) {
+        print("getHeightOfPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Observation.search(["patient":patient.id?.description,"category":"vital-signs","code": "8302-2"])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let patientHeight = bundle?.entry?
+                        .filter() { return $0.resource is Observation }
+                        .map() { return $0.resource as! Observation }
+                        
+                    self.observationHeight = patientHeight?.first
+                    completion(patient)
+                    
+                }
+            }
+        }
+    }
+    
     
     func countImages(type: String){
         print("countImages")
