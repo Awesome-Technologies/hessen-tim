@@ -311,7 +311,7 @@
         <!--Second Screen View Controller-->
         <scene sceneID="CSA-zI-abF">
             <objects>
-                <viewController storyboardIdentifier="SecondScreen" id="SU6-Eh-hR5" customClass="SecondScreenViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SecondScreen" modalPresentationStyle="fullScreen" id="SU6-Eh-hR5" customClass="SecondScreenViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6bH-66-Gqy">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -461,7 +461,7 @@
         <!--Insert Patient Data-->
         <scene sceneID="Nr1-wY-aMY">
             <objects>
-                <viewController storyboardIdentifier="insertPatientDataVC" id="rN7-kR-hsP" customClass="InsertPatientData" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="insertPatientDataVC" modalPresentationStyle="fullScreen" id="rN7-kR-hsP" customClass="InsertPatientData" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9KS-1U-zlx">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -706,7 +706,7 @@
         <!--Medical Data View Controller-->
         <scene sceneID="kff-ej-OmW">
             <objects>
-                <viewController storyboardIdentifier="medicalDataVC" id="QVj-xf-d6w" customClass="MedicalDataViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="medicalDataVC" modalPresentationStyle="fullScreen" id="QVj-xf-d6w" customClass="MedicalDataViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LS1-ak-xpu">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2698,7 +2698,7 @@
         <!--Patient List View Controller-->
         <scene sceneID="g3v-kK-Kb6">
             <objects>
-                <viewController id="ETs-MS-wP6" customClass="PatientListViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="ETs-MS-wP6" customClass="PatientListViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4Qe-2R-9wW">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2872,6 +2872,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ZjG-Uq-Pfp">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="czp-8q-ETC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="sceneNavController" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="mtu-in-WBY" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -2887,16 +2888,15 @@
                         <segue destination="SU6-Eh-hR5" kind="relationship" relationship="rootViewController" id="3tL-75-dZo"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="czp-8q-ETC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-626.35431918008783" y="141.796875"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="P0c-ED-fSW"/>
+        <segue reference="7yx-zQ-vMn"/>
         <segue reference="nxV-jW-LDg"/>
-        <segue reference="8Jz-la-XWu"/>
+        <segue reference="Sa7-Yb-i21"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anruf" width="88" height="83"/>
