@@ -132,6 +132,59 @@ class Institute {
         
     }
     
+    func updateExistingPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String,clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
+        print("createPatient")
+        
+        
+            
+            self.patientObject!.gender = AdministrativeGender(rawValue: gender)
+            
+            var patientName = HumanName()
+            patientName.family = FHIRString(familyName)
+            patientName.given = [FHIRString(firstName)]
+            
+            self.patientObject!.name = [HumanName()]
+            self.patientObject!.name?.append(patientName)
+            self.patientObject!.birthDate = FHIRDate(string: birthday)
+            
+            self.patientObject!.contact = [PatientContact()]
+            
+            var pc = PatientContact()
+            pc.telecom = [ContactPoint()]
+            
+            var docName = HumanName()
+            docName.family = FHIRString(doctorName)
+            
+            pc.name = docName
+            
+            var doctorNumber = ContactPoint()
+            doctorNumber.value = FHIRString(contactNumber)
+            
+            pc.telecom?.append(doctorNumber)
+            
+            var adress = Address()
+            adress.use = AddressUse(rawValue: "work")
+            adress.text = FHIRString(clinicName)
+            pc.address = adress
+            
+            self.patientObject!.contact?.append(pc)
+            
+            DispatchQueue.global(qos: .background).async {
+                self.patientObject!.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("PatientResourceUpdateSucceded")
+                        self.updateWeightVitalSigns(weight: weight)
+                        self.updateHeightVitalSigns(height: height)
+                        completion()
+                    }
+                }
+                
+            }
+        
+    }
+    
     
     func createWeightVitalSigns(weight: String) {
         
@@ -190,7 +243,7 @@ class Institute {
                             if let error = error as? FHIRError {
                                 print(error)
                             } else {
-                                print("MediaUpdateSucceded")
+                                print("WeightResourceUpdateSucceded")
                             }
                         }
                     }
@@ -199,6 +252,29 @@ class Institute {
             }
             
             // check error
+        }
+    
+    }
+    
+    func updateWeightVitalSigns(weight: String) {
+        
+        self.observationWeight!.effectiveDateTime = DateTime.now
+        //weightObserv.valueQuantity
+        
+        var valQuant = Quantity()
+        valQuant.value = FHIRDecimal(weight)
+        valQuant.unit = "kg"
+        
+        self.observationWeight!.valueQuantity = valQuant
+    
+        DispatchQueue.global(qos: .background).async {
+            self.observationWeight!.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("WeightResourceUpdateSucceded")
+                }
+            }
         }
     
     }
@@ -261,7 +337,7 @@ class Institute {
                             if let error = error as? FHIRError {
                                 print(error)
                             } else {
-                                print("MediaUpdateSucceded")
+                                print("HeightResourceUpdateSucceded")
                             }
                         }
                     }
@@ -274,8 +350,31 @@ class Institute {
     
     }
     
+    func updateHeightVitalSigns(height: String) {
+        
+        self.observationHeight!.effectiveDateTime = DateTime.now
+        //weightObserv.valueQuantity
+        
+        var valQuant = Quantity()
+        valQuant.value = FHIRDecimal(height)
+        valQuant.unit = "cm"
+        
+        self.observationHeight!.valueQuantity = valQuant
+        
+        DispatchQueue.global(qos: .background).async {
+            self.observationHeight!.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("HeightResourceUpdateSucceded")
+                }
+            }
+        }
     
-    func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String){
+    }
+    
+    
+    func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String, completion:@escaping (() -> Void)){
         
         DispatchQueue.global(qos: .background).async {
             
@@ -309,6 +408,7 @@ class Institute {
                     } else {
                         print("ServiceRequestCreationSucceded")
                         self.sereviceRequestObject = serv
+                        completion()
                         //print("I have created the ServiceRewuest with the ID:")
                         //print(serv.id)
                         self.serviceRequestID = serv.id?.string ?? "noID"
@@ -319,6 +419,30 @@ class Institute {
             }
         }
     }
+    
+    func updateExistingServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String, completion:@escaping (() -> Void)){
+        self.sereviceRequestObject!.subject = Reference()
+        
+        print(self.patientObject?._server?.baseURL)
+        do {
+            try self.sereviceRequestObject!.subject = self.sereviceRequestObject!.reference(resource: self.patientObject!)
+        } catch {
+            print(error)
+        }
+        self.sereviceRequestObject!.authoredOn = DateTime.now
+        
+        DispatchQueue.global(qos: .background).async {
+            self.sereviceRequestObject!.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("ServiceRequestUpdateSucceded")
+                    completion()
+                }
+            }
+        }
+    }
+    
     
 
     func changeAllMediaStatus(){

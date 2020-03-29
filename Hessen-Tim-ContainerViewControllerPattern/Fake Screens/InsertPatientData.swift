@@ -45,10 +45,6 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setTitle(title: "Bitte geben sie die Patientendaten ein")
-        
-        
-        
         //add round cornes to Textfields and Buttons
         addUIcorners(item: patientDropdown)
         addUIcorners(item: patientSurname)
@@ -74,7 +70,6 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         contactNumber.setLeftPaddingPoints(15)
         
         //Add observer to TextFields to highlight text input
-        patientFirstname.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         patientSurname.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         patientFirstname.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         patientBirthday.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
@@ -111,14 +106,15 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         
         
         //Institute.shared.deleteAllImageMedia()
-        //Institute.shared.deleteAllObservations()
         //Institute.shared.deleteAllServiceRequests()
+        //Institute.shared.deleteAllDiagnosticReports()
         //Institute.shared.deleteAllPatients()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         if let client = Institute.shared.client {
             list = PatientListAll()
@@ -128,7 +124,18 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             }
             list?.retrieve(fromServer: client.server)
         }
+        if(Institute.shared.sereviceRequestObject != nil && Institute.shared.patientObject != nil){
+            fillTextFields(id: (Institute.shared.patientObject?.id!.description)!)
+        }
+        
     }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     
     
     /**
@@ -140,20 +147,9 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         }
     }
     
-    
     /**
-     Sets the String and the style for the Title
+     Segue back to CaseSelection screen
      */
-    func setTitle(title: String){
-        self.title = title
-        let attrs = [
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont(name: "AppleSDGothicNeo-SemiBold", size: 25)!
-        ]
-        UINavigationBar.appearance().titleTextAttributes = attrs
-        
-    }
-    
     @IBAction func toPrevScreen(_ sender: Any) {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.splitView = false
@@ -220,7 +216,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     @objc func donedatePicker(){
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "yyyy-MM-dd"
         patientBirthday.text = formatter.string(from: datePicker.date)
         patientBirthday.layer.borderColor = UIColor.green.cgColor
         self.view.endEditing(true)
@@ -319,6 +315,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         Institute.shared.getPatientByID(id: id, completion: { patient in
             DispatchQueue.main.async {
                 Institute.shared.patientObject = patient
+                self.patientDropdown.text = (patient.name?[0].family!.string)! + " " + (patient.name?[0].given?[0].string)!
                 self.patientSurname.text = patient.name?[0].family?.string
                 self.patientFirstname.text = patient.name?[0].given?[0].string
                 self.patientBirthday.text = patient.birthDate?.description
@@ -369,15 +366,34 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
      Checks the inputs and triggers the creation of a patient/ServiceRequest - resource and segues to the next screen
      */
     @IBAction func `continue`(_ sender: Any) {
-        if(patientDropdown.text != ""){
-            //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
-            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51")
-            performSegue(withIdentifier: "toMedicalData", sender: nil)
-        }else if (!textElementsMissing()) {
-            Institute.shared.createPatient(firstName: patientSurname.text!, familyName: patientFirstname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
-                Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", patientID: "7", organizationID: "51")
+        if(Institute.shared.sereviceRequestObject != nil){
+            Institute.shared.updateExistingPatient(firstName: patientFirstname.text!, familyName: patientSurname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
+                Institute.shared.updateExistingServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "toMedicalData", sender: nil)
+                    }
+                })
             })
-            performSegue(withIdentifier: "toMedicalData", sender: nil)
+        
+        }else if(patientDropdown.text != ""){
+            //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
+            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "toMedicalData", sender: nil)
+                }
+            })
+            
+        }else if (!textElementsMissing()) {
+        //}else if (true) {
+            
+            Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
+                Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "toMedicalData", sender: nil)
+                    }
+                })
+            })
+            
         }
     }
     
@@ -458,6 +474,9 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         return false
     }
     
+    @IBAction func toHomeScreen(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindToHomeScreen", sender: self)
+    }
 }
 
 /**

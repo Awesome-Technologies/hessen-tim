@@ -94,7 +94,7 @@ class SecondScreenViewController: UIViewController {
         consilOpen = false
         
         // Hide the navigation bar on the this view controller
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         UIView.animate(withDuration: 0.7, animations: {
             self.ecls.alpha = 1.0
             self.ecls.frame.origin = CGPoint(x: self.ecls.frame.origin.x - 100.0, y: self.ecls.frame.origin.y)
@@ -227,6 +227,10 @@ class SecondScreenViewController: UIViewController {
     @IBAction func insertPatientData(_ sender: Any) {
         print("InsertPatientData")
         performSegue(withIdentifier: "insertPatientData", sender: nil)
+    }
+    
+    @IBAction func unwindToStart(segue:UIStoryboardSegue) {
+        
     }
     
 }
