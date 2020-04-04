@@ -1,16 +1,21 @@
 PODS:
   - IQKeyboardManagerSwift (6.4.0)
+  - SwiftGifOrigin (1.7.0)
 
 DEPENDENCIES:
   - IQKeyboardManagerSwift
+  - SwiftGifOrigin (~> 1.7.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - IQKeyboardManagerSwift
+  trunk:
+    - SwiftGifOrigin
 
 SPEC CHECKSUMS:
   IQKeyboardManagerSwift: ed9b04ee0e3067ffba543283462d619f944b05e5
+  SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
 
-PODFILE CHECKSUM: 3f4989fbf0a3eb6dc5e99361754979ef2e92d30a
+PODFILE CHECKSUM: 69e1fe10a3dab487fa4a30b0552b640b2cb8b9cb
 
 COCOAPODS: 1.8.4

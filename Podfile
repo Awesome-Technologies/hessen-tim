@@ -5,6 +5,7 @@ target 'Hessen-Tim-ContainerViewControllerPattern' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 pod 'IQKeyboardManagerSwift'
+pod 'SwiftGifOrigin', '~> 1.7.0'
   # Pods for Hessen-Tim-ContainerViewControllerPattern
 
   target 'Hessen-Tim-ContainerViewControllerPatternTests' do
