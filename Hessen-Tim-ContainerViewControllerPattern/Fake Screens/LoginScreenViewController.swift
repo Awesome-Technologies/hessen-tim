@@ -9,6 +9,8 @@
 import UIKit
 
 class LoginScreenViewController: UIViewController {
+    
+    var isConsultationClinic:Bool? = nil
 
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var loginName: UITextField! {
@@ -24,7 +26,9 @@ class LoginScreenViewController: UIViewController {
             loginPw.setIcon(UIImage(named: "login-pw")!)
         }
     }
-
+    @IBOutlet weak var peripheralClinic: UIButton!
+    @IBOutlet weak var consultationClinic: UIButton!
+    
     @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLayoutSubviews() {
@@ -48,13 +52,55 @@ class LoginScreenViewController: UIViewController {
         loginButton.clipsToBounds = true;
         loginButton.layer.cornerRadius = 15
         
+        
+    }
+    @IBAction func selectPeripheralClinic(_ sender: Any) {
+        peripheralClinic.layer.cornerRadius = 35
+        peripheralClinic.layer.borderWidth = 4
+        peripheralClinic.layer.borderColor = UIColor.green.cgColor
+        consultationClinic.layer.borderWidth = 0
+        
+        isConsultationClinic = false
+        
     }
     
+    @IBAction func selectConsultationClinic(_ sender: Any) {
+        consultationClinic.layer.cornerRadius = 35
+        consultationClinic.layer.borderWidth = 4
+        consultationClinic.layer.borderColor = UIColor.green.cgColor
+        peripheralClinic.layer.borderWidth = 0
+        
+        isConsultationClinic = true
+    }
+    
+    
     @IBAction func loginAction(_ sender: Any) {
-        Institute.shared.connect { error in
-            if error == nil {
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "mainView", sender: self)
+        if(isConsultationClinic == nil){
+            highlightAllMissingElements()
+        }else{
+            Institute.shared.connect { error in
+                if error == nil {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "mainView", sender: self)
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     highlight all testfields with missing input with a shake animation and a red border
+     */
+    func highlightAllMissingElements(){
+        
+        for view in self.view.subviews {
+            if (view is UIButton) {
+                var button = view as! UIButton
+                if (button == peripheralClinic || button == consultationClinic){
+                    button.layer.cornerRadius = 35
+                    button.layer.borderWidth = 4
+                    button.layer.borderColor = UIColor.red.cgColor
+                    button.shake()
                 }
             }
         }

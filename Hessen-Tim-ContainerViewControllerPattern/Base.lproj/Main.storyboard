@@ -2527,7 +2527,7 @@
                                     <constraint firstAttribute="width" secondItem="o67-yy-abj" secondAttribute="height" multiplier="1.44964:1" id="7sP-RN-kPF"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-NK-jub">
+                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-NK-jub">
                                 <rect key="frame" x="230" y="280" width="620" height="70"/>
                                 <color key="backgroundColor" red="0.25201153755187988" green="0.31355282664299011" blue="0.49607431888580322" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2539,7 +2539,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Passwort" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="86y-JU-PC6">
+                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Passwort" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="86y-JU-PC6">
                                 <rect key="frame" x="230" y="370" width="620" height="70"/>
                                 <color key="backgroundColor" red="0.2520115376" green="0.3135528266" blue="0.49607431889999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -2567,6 +2567,22 @@
                                     <action selector="loginAction:" destination="tQb-Xs-GmT" eventType="touchUpInside" id="B9A-KA-bmy"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y67-cj-aiS">
+                                <rect key="frame" x="230" y="216" width="225" height="225"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="peripheral_clinic_login"/>
+                                <connections>
+                                    <action selector="selectPeripheralClinic:" destination="tQb-Xs-GmT" eventType="touchUpInside" id="QHA-zL-uM9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AKe-o0-XtO">
+                                <rect key="frame" x="626" y="216" width="225" height="225"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="consultation_clinic_login"/>
+                                <connections>
+                                    <action selector="selectConsultationClinic:" destination="tQb-Xs-GmT" eventType="touchUpInside" id="bZm-aN-U7k"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -2587,9 +2603,11 @@
                         <viewLayoutGuide key="safeArea" id="vGj-Rl-Qbz"/>
                     </view>
                     <connections>
+                        <outlet property="consultationClinic" destination="AKe-o0-XtO" id="WFA-Yu-dcH"/>
                         <outlet property="loginButton" destination="aJP-m8-ItA" id="0sN-4D-33e"/>
                         <outlet property="loginName" destination="MqG-NK-jub" id="fre-S3-RfK"/>
                         <outlet property="loginPw" destination="86y-JU-PC6" id="SaM-OP-WOj"/>
+                        <outlet property="peripheralClinic" destination="y67-cj-aiS" id="Qe3-E5-esg"/>
                         <outlet property="screen2ImageView" destination="o67-yy-abj" id="CAT-Mx-aWC"/>
                         <segue destination="zzg-gO-SCa" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="ije-lE-hxo"/>
                         <segue destination="mtu-in-WBY" kind="show" identifier="mainView" id="jmv-j2-Fyf"/>
@@ -2598,7 +2616,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1EZ-Jb-rIv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zzg-gO-SCa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-626.35431918008783" y="-627.5390625"/>
+            <point key="canvasLocation" x="-626.66666666666663" y="-628.14814814814815"/>
         </scene>
         <!--Order List View Controller-->
         <scene sceneID="1Yb-mZ-jxC">
@@ -2995,6 +3013,7 @@
         <image name="close-Button" width="530" height="530"/>
         <image name="comment-Button" width="530" height="530"/>
         <image name="consilButton" width="210" height="159"/>
+        <image name="consultation_clinic_login" width="530" height="530"/>
         <image name="ecmo" width="382" height="161"/>
         <image name="editButton" width="95" height="92"/>
         <image name="foto-Button" width="530" height="530"/>
@@ -3008,6 +3027,7 @@
         <image name="notfall_direktkontakt" width="289" height="121"/>
         <image name="otherButton" width="333" height="198"/>
         <image name="perfusorsButton" width="326" height="198"/>
+        <image name="peripheral_clinic_login" width="530" height="530"/>
         <image name="radeologyButton" width="330" height="197"/>
         <image name="savePaint-Button" width="530" height="530"/>
         <image name="sendButton" width="148" height="114"/>
