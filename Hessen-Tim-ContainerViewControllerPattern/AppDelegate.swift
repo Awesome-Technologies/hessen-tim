@@ -83,15 +83,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }}
 
-
+    //Handle Push Notifications, when app is not running
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         application.unregisterForRemoteNotifications()
         IQKeyboardManager.shared.enable = true
         registerForPushNotifications()
+        // Check if launched from notification
+        let notificationOption = launchOptions?[.remoteNotification]
+        
+        //If your app wasn’t running and the user launches it by tapping the push notification
+        if let notification = notificationOption as? [String: AnyObject],
+            let aps = notification["aps"] as? [String: AnyObject] {
+            Institute.shared.connect { error in
+                if error == nil {
+                    Institute.shared.openMedicalDataFromNotification(notification: aps, completion: {
+                        DispatchQueue.main.async {
+                            self.setupRootViewController(animated: false)
+                        }
+                    })
+                }
+            }
+            
+        }
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -140,32 +157,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-      let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-      let token = tokenParts.joined()
-      print("Device Token: \(token)")
+        //https://forums.developer.apple.com/thread/52224
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
     }
-
+    
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {
-      print("Failed to register: \(error)")
+        print("Failed to register: \(error)")
     }
     
 }
 
 //https://www.ably.io/tutorials/ios-push-notifications#step6-register-device-for-push
 extension AppDelegate: UNUserNotificationCenterDelegate {
-
+    
+    //Handle Push Notifications, when App is in Background or running in the foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Tell the app that we have finished processing the user's action (eg: tap on notification banner) / response
-        // Handle received remoteNotification: 'response.notification.request.content.userInfo'
-        // response.notification.request.content.userInfo
-        print(response.notification.request.content.userInfo)
+        let userInfo = response.notification.request.content.userInfo
+        if let aps = userInfo["aps"] as? [String: AnyObject]{
+            Institute.shared.connect { error in
+                if error == nil {
+                    Institute.shared.openMedicalDataFromNotification(notification: aps, completion: {
+                        DispatchQueue.main.async {
+                            self.setupRootViewController(animated: false)
+                        }
+                    })
+                }
+            }
+        }
         completionHandler()
     }
-
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("[LOCALLOG] Your device just received a notification!")
         // Show the notification alert in foreground
-        completionHandler([.alert, .sound])
+        completionHandler([.alert, .sound, .badge])
     }
 }
 

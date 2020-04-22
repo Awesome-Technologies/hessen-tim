@@ -1584,6 +1584,24 @@ class Institute {
         }
     }
     
+    func getServiceRequestByID(id : String, completion: @escaping ((ServiceRequest) -> Void)) {
+        print("getServiceRequestByID")
+        
+        var request = ServiceRequest()
+            
+        DispatchQueue.global(qos: .background).async {
+            ServiceRequest.read(id, server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else if resource != nil {
+                    request = resource as! ServiceRequest
+                    print("Found Patient with the ID")
+                    completion(request)
+                }
+            }
+        }
+    }
+    
     
     func getWeightOfPatient(patient:Patient, completion: @escaping ((Patient) -> Void)) {
         print("getWeightOfPatient")
@@ -1963,6 +1981,31 @@ class Institute {
         let sortedKeys = filteredForDate.keys.sorted(by: >)  // ["A", "D", "Z"]
         //print(sortedKeys.description)
         return sortedKeys
+    }
+    
+    func openMedicalDataFromNotification(notification: [String: AnyObject], completion: @escaping (() -> Void)) {
+        if let serviceRequest_id = notification["serviceRequestID"] as? String {
+            if let patient_id = notification["patientID"] as? String {
+                self.getServiceRequestByID(id: serviceRequest_id, completion: { (request) in
+                    self.getPatientByID(id: patient_id, completion: { (patient) in
+                        self.sereviceRequestObject = request
+                        self.patientObject = patient
+                        completion()
+                    })
+                    
+                })
+            }
+            
+            
+            
+        }
+        /*
+        guard let serviceRequest = notification["serviceRequest_id"] as? String,
+          let url = notification["link_url"] as? String  else {
+            print("Bad notification info")
+            return nil
+        }
+         */
     }
     
     
