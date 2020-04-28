@@ -41,6 +41,7 @@ class Institute {
     public var photoName = 0
     
     var serviceRequestID = ""
+    var serviceRequestDraftObject: ServiceRequest? = nil
     var sereviceRequestObject: ServiceRequest? = nil
     var patientObject: Patient? = nil
     var observationWeight: Observation? = nil
@@ -409,6 +410,7 @@ class Institute {
                     } else {
                         print("ServiceRequestCreationSucceded")
                         self.sereviceRequestObject = serv
+                        self.serviceRequestDraftObject = serv
                         completion()
                         //print("I have created the ServiceRewuest with the ID:")
                         //print(serv.id)
@@ -530,12 +532,12 @@ class Institute {
        }
     
     
-    func getAllPreviewImagesOfTypeForPatient(type: String, completion: @escaping (([Media]) -> Void)) {
+    func getAllPreviewImagesOfTypeForPatient(filterDate: String,type: String, completion: @escaping (([Media]) -> Void)) {
         print("getAllPreviewImagesOfTypeForPatient")
         
         DispatchQueue.global(qos: .background).async {
             
-            let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "modality":["$text": type], "_summary":"true", "_sort":"-created"])
+            let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description],"status":"active"], "modality":["$text": type], "_summary":"true", "_sort":"-created", "created":"le" + filterDate])
             
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 search.perform(self.client!.server) { bundle, error in
@@ -1540,7 +1542,7 @@ class Institute {
     
     
     func loadPreviewImagesInBackground(type: String, completion: (() -> Void)? = nil){
-        getAllPreviewImagesOfTypeForPatient(type: type, completion: { (medias) in
+        getAllPreviewImagesOfTypeForPatient(filterDate: (self.sereviceRequestObject?.authoredOn!.description)!, type: type, completion: { (medias) in
             self.previewMediaCall(allMedia: medias, completion: completion)
             
         })
@@ -1628,32 +1630,32 @@ class Institute {
         }
     }
     
-    
     func countImages(completion: @escaping ((ObservationType, Int) -> Void)){
         print("countImages")
+        let date = self.sereviceRequestObject?.authoredOn?.description
         
         for type in ObservationType.allCases {
             switch type {
             case .Anamnesis:
-                countImagesCustom(obsType: .Anamnesis, type: "Anamnese", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Anamnesis, type: "Anamnese", completion: completion)
             case .MedicalLetter:
-                countImagesCustom(obsType: .MedicalLetter, type: "Arztbriefe", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .MedicalLetter, type: "Arztbriefe", completion: completion)
             case .Haemodynamics:
-                countImagesCustom(obsType: .Haemodynamics, type: "Haemodynamik", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Haemodynamics, type: "Haemodynamik", completion: completion)
             case .Respiration:
-                countImagesCustom(obsType: .Respiration, type: "Beatmung", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Respiration, type: "Beatmung", completion: completion)
             case .BloodGasAnalysis:
-                countImagesCustom(obsType: .BloodGasAnalysis, type: "Blutgasanalyse", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .BloodGasAnalysis, type: "Blutgasanalyse", completion: completion)
             case .Perfusors:
-                countImagesCustom(obsType: .Perfusors, type: "Perfusoren", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Perfusors, type: "Perfusoren", completion: completion)
             case .InfectiousDisease:
-                countImagesCustom(obsType: .InfectiousDisease, type: "Infektiologie", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .InfectiousDisease, type: "Infektiologie", completion: completion)
             case .Radeology:
-                countImagesCustom(obsType: .Radeology, type: "Radiologie", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Radeology, type: "Radiologie", completion: completion)
             case .Lab:
-                countImagesCustom(obsType: .Lab, type: "Labor", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Lab, type: "Labor", completion: completion)
             case .Others:
-                countImagesCustom(obsType: .Others, type: "Sonstige", completion: completion)
+                countImagesCustom(filterDate: date!,obsType: .Others, type: "Sonstige", completion: completion)
             case .NONE:
                 print("case NONE")
                 //countImagesCustom(obsType: .NONE, type: "NONE", completion: completion)
@@ -1665,8 +1667,8 @@ class Institute {
         
     }
     
-    func countImagesCustom(obsType: ObservationType, type: String, completion: @escaping ((ObservationType, Int) -> Void)){
-        
+    func countImagesCustom(filterDate: String, obsType: ObservationType, type: String, completion: @escaping ((ObservationType, Int) -> Void)){
+        //print("countImagesCustom")
         DispatchQueue.global(qos: .background).async {
             var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
             request?.options = [.lenient]
@@ -1674,11 +1676,49 @@ class Institute {
                 var headers = FHIRRequestHeaders()
                 headers.customHeaders = ["Cache-Control":"no-cache"]
                 request.add(headers: headers)
-                self.client!.server.performRequest(against: "Media?modality:text=" + type + "&_summary=count", handler: request) { (response) in
+                let expression1 = "Media?modality:text=" + type
+                let expression2 = "&_summary=count&created=le" + filterDate
+                let expression3 = "&based-on:ServiceRequest.status=active"
+                self.client!.server.performRequest(against: expression1 + expression2 + expression3, handler: request) { (response) in
                     do {
                         let bundle = try response.responseResource(ofType: Bundle.self)
-                        print("Antwort: \(bundle.total ?? "Fehler!")")
-                        completion(obsType, Int(String(bundle.total!.description))! )
+                        //print("Antwort: \(bundle.total ?? "Fehler!")")
+                        if(self.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+                            self.countImagesCustomDraftServiceRequest(count: Int(String(bundle.total!.description))!, obsType: obsType, type: type, completion: completion)
+                        }else{
+                           completion(obsType, Int(String(bundle.total!.description))! )
+                        }
+                        
+                        
+                        
+                    }
+                    catch let error {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func countImagesCustomDraftServiceRequest(count: Int, obsType: ObservationType, type: String, completion: @escaping ((ObservationType, Int) -> Void)){
+        //print("countImagesCustom")
+        DispatchQueue.global(qos: .background).async {
+            var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
+            request?.options = [.lenient]
+            if let request = request {
+                var headers = FHIRRequestHeaders()
+                headers.customHeaders = ["Cache-Control":"no-cache"]
+                request.add(headers: headers)
+                let expression1 = "Media?modality:text=" + type
+                let expression2 = "&based-on:ServiceRequest._id=" + self.sereviceRequestObject!.id!.description
+                self.client!.server.performRequest(against: expression1 + expression2 , handler: request) { (response) in
+                    do {
+                        let bundle = try response.responseResource(ofType: Bundle.self)
+                        
+                        let newcount = Int(String(bundle.total!.description))!
+                        completion(obsType, count+newcount)
+                        
                         
                         
                     }
@@ -1694,6 +1734,7 @@ class Institute {
     func saveDiagnosticReport(text: String){
         self.createDiagnosticReport(reportText: text, completion: { report in
             self.updateDiagnosticReport(report: report)
+            self.setServiceRequestActive()
         })
     }
     
@@ -1749,8 +1790,27 @@ class Institute {
         }
     }
     
-    func getAllDiagnosticReportsForPatient(completion: @escaping (([DiagnosticReport]) -> Void)) {
-        print("getAllDiagnosticReportsForPatient")
+    func setServiceRequestActive(){
+        if(self.sereviceRequestObject != nil){
+            self.sereviceRequestObject?.authoredOn = DateTime.now
+            self.sereviceRequestObject?.status = RequestStatus(rawValue: "active")
+            DispatchQueue.global(qos: .background).async {
+                self.sereviceRequestObject!.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("ServicerequestUpdateSucceded")
+                        
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+    
+    func getAllDiagnosticReportsForPatient(completion: @escaping (([DiagnosticReport]?) -> Void)) {
+        print("--- getAllDiagnosticReportsForPatient")
         
         let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "_sort": "-issued"])
         print(search.construct())
@@ -1766,26 +1826,92 @@ class Institute {
                 
                 print("We found some Reports:")
                 print(reports?.count)
-                
-                if reports != nil {
-                    if(!reports!.isEmpty){
-                        completion(reports!)
-                        for observation in reports! {
-                            print(observation.id)
-                            //self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
-                        }
-
-                    }
-                }
+                completion(reports)
                 
             }
         }
         
     }
     
+    func getAllServiceRequestsForPatient(completion: @escaping (([ServiceRequest]?) -> Void)) {
+        print("--- getAllServiceRequestsForPatient")
+        
+        let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":self.patientObject?.id?.description], "_sort": "-authored", "status": "active"])
+        print(search.construct())
+        
+        search.perform(self.client!.server) { bundle, error in
+            if nil != error {
+                // there was an error
+            }
+            else {
+                let sRequests = bundle?.entry?
+                    .filter() { return $0.resource is ServiceRequest }
+                    .map() { return $0.resource as! ServiceRequest }
+                
+                print("We found some ServiceRequests:")
+                print(sRequests?.count)
+                completion(sRequests)
+                if sRequests != nil {
+                    if(!sRequests!.isEmpty){
+                        //completion(sRequests!)
+                        /*
+                        for observation in sRequests! {
+                            print(observation.id)
+                            //self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
+                        }
+                        */
+
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func getHistoryForPatient(completion: @escaping (([DomainResource]?) -> Void)) {
+    print("getHistoryForPatient")
+        //Create Array for the communication history
+        var patientHistory = [DomainResource]()
+        //Put every Service Request in the history
+        self.getAllServiceRequestsForPatient(completion: { (requests) in
+            for request in requests!{
+                patientHistory.append(request)
+            }
+            //Get all DiagnosticReports
+            self.getAllDiagnosticReportsForPatient(completion: { (reports) in
+                if (reports != nil){
+                    for rep in reports!{
+                        //Get the String of the Service request, that its based on
+                        var stringReference = rep.basedOn![0].reference?.string
+                        if let range = stringReference!.range(of: "/") {
+                            let newID = stringReference![range.upperBound...]
+                            //Replace every ServiceRequest, that a DiagnosticReport is based on with the DiagnosticReport
+                            patientHistory = patientHistory.map({
+                                if let sr = $0 as? ServiceRequest{
+                                    if (newID != "" && newID == String(sr.id!.description)) {
+                                        return rep
+                                    }
+                                }
+                            return $0 })
+                        }
+                    }
+                }
+                //Insert the current ServiceRequest(draft) to fitst place in history
+                if(self.serviceRequestDraftObject != nil){
+                    patientHistory.insert(self.serviceRequestDraftObject!, at:0)
+                }
+                print("COUNNTTT: " +  String(patientHistory.count))
+                completion(patientHistory)
+            })
+        })
+        
+    }
+    
+    
     func sendServiceRequest(){
         print("sendServiceRequest")
         if(self.sereviceRequestObject != nil){
+            self.sereviceRequestObject?.authoredOn = DateTime.now
             self.sereviceRequestObject?.status = RequestStatus(rawValue: "active")
             DispatchQueue.global(qos: .background).async {
                 self.sereviceRequestObject!.update() { error in
@@ -1824,8 +1950,17 @@ class Institute {
     func getOrderedImageSubset(category: String) -> [String]{
         //create a subset of the dictionary, that only containes images of the category
         let filteredByCategory = images.filter { $0.value.modality?.text?.description == category }
+        //create a subset of the dictionary, that only containes images that are taken bevor the currently selected Servicerequest
+        var filteredForDate = filteredByCategory.filter{ $0.value.createdDateTime?.nsDate.compare((Institute.shared.sereviceRequestObject?.authoredOn!.nsDate)!) == ComparisonResult.orderedAscending}
+        //If we are in the draft section add all the Images to the subset, that are created after the draft serviceRequest was created
+        if(self.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            let filteredForDraftPictures = filteredByCategory.filter{ $0.value.createdDateTime?.nsDate.compare((Institute.shared.sereviceRequestObject?.authoredOn!.nsDate)!) == ComparisonResult.orderedDescending
+            }
+            let merge = filteredForDraftPictures.merging(filteredForDate, uniquingKeysWith: { (first, _) in first })
+            filteredForDate = merge
+        }
         //Sort the subset to an array by the imageNames/ids of the images (same order as date would be)
-        let sortedKeys = filteredByCategory.keys.sorted(by: >)  // ["A", "D", "Z"]
+        let sortedKeys = filteredForDate.keys.sorted(by: >)  // ["A", "D", "Z"]
         //print(sortedKeys.description)
         return sortedKeys
     }

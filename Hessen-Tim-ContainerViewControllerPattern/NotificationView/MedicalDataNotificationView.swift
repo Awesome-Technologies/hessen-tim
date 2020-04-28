@@ -241,16 +241,17 @@ class MedicalDataNotificationView: UIView {
         button.layer.borderWidth = 0
         button.layer.borderColor = UIColor.blue.cgColor
         button.backgroundColor = UIColor(red: 0/255, green: 96/255, blue: 167/255, alpha: 1)
-        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        button.addTarget(self, action: #selector(confirmSendServiceRequesrt), for: .touchUpInside)
         
         self.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalToConstant: buttonWidth),
+            //button.widthAnchor.constraint(equalToConstant: buttonWidth),
             button.heightAnchor.constraint(equalToConstant: buttonHeight),
             button.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
+            button.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
             button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
         ])
         
@@ -494,6 +495,13 @@ class MedicalDataNotificationView: UIView {
       print("Button tapped")
         grayPanel.removeFromSuperview()
         self.removeFromSuperview()
+        
+    }
+    @objc func confirmSendServiceRequesrt(sender: UIButton!) {
+        print(confirmSendServiceRequesrt)
+        grayPanel.removeFromSuperview()
+        self.removeFromSuperview()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
         
     }
     

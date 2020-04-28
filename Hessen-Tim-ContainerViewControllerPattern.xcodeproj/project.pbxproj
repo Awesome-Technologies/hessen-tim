@@ -22,6 +22,7 @@
 		8F5233EE223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233ED223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift */; };
 		8F5233F9223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */; };
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
+		8F8A536D2449E1550016AA0B /* ServiceRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8A536C2449E1550016AA0B /* ServiceRequestTableViewCell.swift */; };
 		8F94A9F02404024900E96A06 /* createServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9EF2404024800E96A06 /* createServiceRequest.json */; };
 		8F94A9F22404200600E96A06 /* imageMedia.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9F12404200500E96A06 /* imageMedia.json */; };
 		8FA1A382242B934A00049A3F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA1A381242B934A00049A3F /* Extensions.swift */; };
@@ -90,6 +91,7 @@
 		8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hessen_Tim_ContainerViewControllerPatternUITests.swift; sourceTree = "<group>"; };
 		8F5233FA223949D70020292F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
+		8F8A536C2449E1550016AA0B /* ServiceRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestTableViewCell.swift; sourceTree = "<group>"; };
 		8F94A9EF2404024800E96A06 /* createServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createServiceRequest.json; sourceTree = "<group>"; };
 		8F94A9F12404200500E96A06 /* imageMedia.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageMedia.json; sourceTree = "<group>"; };
 		8F9E81C124486E1800EA8BCE /* AMP.intensiv.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AMP.intensiv.entitlements; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				8FB1C1D2242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift */,
+				8F8A536C2449E1550016AA0B /* ServiceRequestTableViewCell.swift */,
 			);
 			path = HistoryTabelView;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FA1A382242B934A00049A3F /* Extensions.swift in Sources */,
+				8F8A536D2449E1550016AA0B /* ServiceRequestTableViewCell.swift in Sources */,
 				8F5233DB223949D50020292F /* BaseViewController.swift in Sources */,
 				97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */,
 				8F01870623CDE27200C9CDD6 /* InsertPatientData.swift in Sources */,

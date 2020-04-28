@@ -67,7 +67,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var historyTableView: UITableView!
     
-    var historyData = [DiagnosticReport]()
+    var historyData = [DomainResource]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,13 +82,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         contactDoctor.text = doctor
         contactNumber.text = number
         
-        if(Institute.shared.sereviceRequestObject == nil || Institute.shared.sereviceRequestObject?.status != RequestStatus(rawValue: "draft")){
-            editPatientData.isHidden = true
-            send.isHidden = true
-        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
-            editPatientData.isHidden = false
-            send.isHidden = false
-        }
+        toggleEditButtons()
         
         patientDataView.layer.cornerRadius = 10
         patientDataView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -99,6 +93,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         historyView.layer.cornerRadius = 10
         historyView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         historyTableView.register(DiagnosticReportTableViewCell.self, forCellReuseIdentifier: "cellId")
+        historyTableView.register(ServiceRequestTableViewCell.self, forCellReuseIdentifier: "ScellId")
         
         pictureCategory.layer.cornerRadius = 10
         pictureCategory.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -116,11 +111,16 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         Institute.shared.countImages(completion: { observation, count  in
             self.setNumberOfImages(observation: observation, count: count)
         })
-        Institute.shared.getAllDiagnosticReportsForPatient(completion: { items in
-            self.historyData = items
-            DispatchQueue.main.async {
-                self.historyTableView.reloadData()
+        
+        //Display the communicagtion history for the patient
+        Institute.shared.getHistoryForPatient(completion: { items in
+            if (items != nil){
+                self.historyData = items!
+                DispatchQueue.main.async {
+                    self.historyTableView.reloadData()
+                }
             }
+            
             
             
         })
@@ -267,7 +267,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         notificationView.addNotificationLabel(text: "Die Informationen wurden gesendet")
         notificationView.addPatientInforamtion()
         notificationView.addRequestSendInformation()
-        notificationView.addCancelbutton()
+        //notificationView.addCancelbutton()
         notificationView.addOKbutton()
         
         view.bringSubviewToFront(notificationView)
@@ -308,43 +308,114 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //https://blog.usejournal.com/easy-tableview-setup-tutorial-swift-4-ad48ec4cbd45
-        let cell = historyTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! DiagnosticReportTableViewCell
-        cell.backgroundColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
-        cell.dateIssued.text = DiagnosticReportDateFormater(report: historyData[indexPath.row])
-        cell.preview.text = historyData[indexPath.row].conclusion?.description
-        return cell
+        if let report = historyData[indexPath.row] as? DiagnosticReport {
+            print("tableView: Diagnostic: " + report.id!.description)
+            //https://blog.usejournal.com/easy-tableview-setup-tutorial-swift-4-ad48ec4cbd45
+            let cell = historyTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! DiagnosticReportTableViewCell
+            cell.backgroundColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
+            cell.dateIssued.text = DiagnosticReportDateFormater(item: report)
+            cell.preview.text = report.conclusion?.description
+            return cell
+        }
+        else {
+            let request = historyData[indexPath.row] as? ServiceRequest
+            print("tableView: Service: " + request!.id!.description)
+            let cell = historyTableView.dequeueReusableCell(withIdentifier: "ScellId", for: indexPath) as! ServiceRequestTableViewCell
+            cell.backgroundColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
+            cell.dateIssued.text = DiagnosticReportDateFormater(item: request!)
+            
+            if(request?.id?.description == Institute.shared.sereviceRequestObject?.id?.description){
+                cell.greenBorder()
+            }else{
+                cell.noBorder()
+                if(request?.status == RequestStatus(rawValue: "draft")){
+                    cell.orangeBorder()
+                }
+            }
+            
+            if(request?.status == RequestStatus(rawValue: "draft")){
+                cell.preview.text = (request?.id!.description)! + " Entwurf"
+                
+            }else{
+                cell.preview.text = (request?.id!.description)! + " Neue Informationen"
+            }
+            return cell
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showDiagosticReport(report: historyData[indexPath.row])
+        if let report = historyData[indexPath.row] as? DiagnosticReport {
+            showDiagosticReport(report: report)
+        }else{
+            let request = historyData[indexPath.row] as? ServiceRequest
+            print("Date created: " + (request?.authoredOn!.description)!)
+            Institute.shared.sereviceRequestObject = request
+            Institute.shared.countImages(completion: { observation, count  in
+                self.setNumberOfImages(observation: observation, count: count)
+                //self.openPictureCategoryView(self)
+            })
+            toggleEditButtons()
+            //self.openPictureCategoryView(self)
+            tableView.reloadData()
+            
+        }
+        
+        
     }
     
-    func DiagnosticReportDateFormater(report: DiagnosticReport)->String{
-        let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
+    func DiagnosticReportDateFormater(item: DomainResource)->String{
+        if let report = item as? DiagnosticReport {
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
 
-        let clockTime = DateFormatter()
-        clockTime.dateFormat = "HH:mm"
-        
-        let dateTime = DateFormatter()
-        dateTime.dateFormat = "dd.MM.yyyy"
-        
-        var printdate = ""
-        if let date = dateFormatterGet.date(from: (report.issued?.description)!) {
+            let clockTime = DateFormatter()
+            clockTime.dateFormat = "HH:mm"
             
-            var clock = clockTime.string(from: date)
-            var date = dateTime.string(from: date)
-            printdate = clock + "     " + date
+            let dateTime = DateFormatter()
+            dateTime.dateFormat = "dd.MM.yyyy"
             
+            var printdate = ""
+            if let date = dateFormatterGet.date(from: (report.issued?.description)!) {
+                
+                var clock = clockTime.string(from: date)
+                var date = dateTime.string(from: date)
+                printdate = date + "     " + clock
+                
+            } else {
+               print("There was an error decoding the string")
+            }
+            return printdate
+        
         } else {
-           print("There was an error decoding the string")
+            let request = item as? ServiceRequest
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
+
+            let clockTime = DateFormatter()
+            clockTime.dateFormat = "HH:mm"
+            
+            let dateTime = DateFormatter()
+            dateTime.dateFormat = "dd.MM.yyyy"
+            
+            var printdate = ""
+            if let date = dateFormatterGet.date(from: (request?.authoredOn?.description)!) {
+                
+                var clock = clockTime.string(from: date)
+                var date = dateTime.string(from: date)
+                printdate = clock + "     " + date
+                
+            } else {
+               print("There was an error decoding the string")
+            }
+            return printdate
+            
         }
-        return printdate
+        
     }
     
     func showDiagosticReport(report: DiagnosticReport){
@@ -354,11 +425,24 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         notificationView.addGrayBackPanel()
         notificationView.addLayoutConstraints()
         notificationView.addConsilLabel(text: "Konsilbericht:")
-        notificationView.addConsilDateLabel(text: DiagnosticReportDateFormater(report: report))
+        notificationView.addConsilDateLabel(text: DiagnosticReportDateFormater(item: report))
         notificationView.addConsilReportTextView(editable: false, consilText: report.conclusion!.description)
         notificationView.addCancelbutton()
         
         view.bringSubviewToFront(notificationView)
+        
+    }
+    
+    func toggleEditButtons(){
+        if(Institute.shared.sereviceRequestObject == nil || Institute.shared.sereviceRequestObject?.status != RequestStatus(rawValue: "draft")){
+            print("NO DRAFFT")
+            editPatientData.isHidden = true
+            send.isHidden = true
+        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            print("DRAFFT")
+            editPatientData.isHidden = false
+            send.isHidden = false
+        }
         
     }
 
