@@ -2794,170 +2794,10 @@
         <scene sceneID="g3v-kK-Kb6">
             <objects>
                 <viewController modalPresentationStyle="fullScreen" id="ETs-MS-wP6" customClass="PatientListViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4Qe-2R-9wW">
-                        <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mG8-c5-dEQ">
-                                <rect key="frame" x="54" y="162" width="972" height="648"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="separatorColor" red="0.14714419841766357" green="0.18062838912010193" blue="0.32998749613761902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PatientCell" id="j0d-Hz-6gV" customClass="PatientTableViewCell" customModule="AMP_intensiv" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="972" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j0d-Hz-6gV" id="XME-oQ-B7o">
-                                            <rect key="frame" x="0.0" y="0.0" width="972" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nd2-p5-8gy">
-                                                    <rect key="frame" x="91" y="11.5" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCC-je-A0M" customClass="Patient">
-                                                    <rect key="frame" x="260" y="11.5" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstItem="fCC-je-A0M" firstAttribute="leading" secondItem="nd2-p5-8gy" secondAttribute="trailing" constant="127" id="Gsb-XN-0EI"/>
-                                                <constraint firstItem="nd2-p5-8gy" firstAttribute="centerY" secondItem="Qvo-ag-xsW" secondAttribute="centerY" id="YJk-1e-Nm1"/>
-                                                <constraint firstItem="nd2-p5-8gy" firstAttribute="leading" secondItem="Qvo-ag-xsW" secondAttribute="leading" constant="91" id="k53-3K-djs"/>
-                                                <constraint firstItem="fCC-je-A0M" firstAttribute="centerY" secondItem="Qvo-ag-xsW" secondAttribute="centerY" id="mq3-eG-ikW"/>
-                                            </constraints>
-                                            <viewLayoutGuide key="safeArea" id="Qvo-ag-xsW"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="nachnameLabel" destination="nd2-p5-8gy" id="MaH-tP-ZHh"/>
-                                            <outlet property="vornameLabel" destination="fCC-je-A0M" id="R5p-yP-9H5"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommunicationCell" id="byg-W5-H0j" userLabel="ComunicationCell" customClass="CommunicationCell" customModule="AMP_intensiv" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="71.5" width="972" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="byg-W5-H0j" id="cmb-CO-5HR">
-                                            <rect key="frame" x="0.0" y="0.0" width="972" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jb7-B1-I9d">
-                                                    <rect key="frame" x="175" y="11" width="42" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstItem="jb7-B1-I9d" firstAttribute="centerY" secondItem="cmb-CO-5HR" secondAttribute="centerY" id="6aE-zu-qa9"/>
-                                                <constraint firstItem="jb7-B1-I9d" firstAttribute="leading" secondItem="cmb-CO-5HR" secondAttribute="leading" constant="175" id="Aib-DT-Kdz"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="testLabel" destination="jb7-B1-I9d" id="znR-4Q-Krd"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eHw-25-SAu">
-                                <rect key="frame" x="428.5" y="116" width="126" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Geburtsdatum"/>
-                                <connections>
-                                    <action selector="sortGeburtsdatum:" destination="ETs-MS-wP6" eventType="touchUpInside" id="Xk1-wH-2hT"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ArU-K5-3m3">
-                                <rect key="frame" x="322.5" y="116" width="100" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Geschlecht"/>
-                                <connections>
-                                    <action selector="sortGeschlecht:" destination="ETs-MS-wP6" eventType="touchUpInside" id="4uI-uO-4YC"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1D-Nv-vmt">
-                                <rect key="frame" x="582.5" y="116" width="55" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Größe"/>
-                                <connections>
-                                    <action selector="sortGroeße:" destination="ETs-MS-wP6" eventType="touchUpInside" id="buM-FJ-Zys"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkr-GS-ykm">
-                                <rect key="frame" x="808" y="116" width="47" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Klinik"/>
-                                <connections>
-                                    <action selector="sortKlinik:" destination="ETs-MS-wP6" eventType="touchUpInside" id="1pO-uu-AFy"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tyr-jy-OdZ">
-                                <rect key="frame" x="835" y="116" width="115" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Versicherung"/>
-                                <connections>
-                                    <action selector="sortVersicherung:" destination="ETs-MS-wP6" eventType="touchUpInside" id="9e8-s2-ztR"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faj-eJ-DQV">
-                                <rect key="frame" x="676.5" y="116" width="73" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Gewicht"/>
-                                <connections>
-                                    <action selector="sortGewicht:" destination="ETs-MS-wP6" eventType="touchUpInside" id="5KA-Ej-LVi"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTw-ys-TPA">
-                                <rect key="frame" x="140" y="116" width="95" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Nachname"/>
-                                <connections>
-                                    <action selector="sortNachname:" destination="ETs-MS-wP6" eventType="touchUpInside" id="36e-YA-iiK"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqF-UB-AKp">
-                                <rect key="frame" x="236.5" y="116" width="78" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Vorname"/>
-                                <connections>
-                                    <action selector="sortVorname:" destination="ETs-MS-wP6" eventType="touchUpInside" id="rYZ-34-vib"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.14901960780000001" green="0.18039215689999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="fqF-UB-AKp" secondAttribute="bottom" constant="10" id="4fd-Vs-usD"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="Tyr-jy-OdZ" secondAttribute="bottom" constant="10" id="5Wo-Y1-WQt"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="sTw-ys-TPA" secondAttribute="bottom" constant="10" id="5dL-ZM-Ne4"/>
-                            <constraint firstItem="gkr-GS-ykm" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="154/100" id="87c-Gu-jl0"/>
-                            <constraint firstItem="fqF-UB-AKp" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="51/100" id="Bf8-C6-Ixp"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="y1D-Nv-vmt" secondAttribute="bottom" constant="10" id="F29-CC-w1O"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" id="FcM-wm-Vop"/>
-                            <constraint firstItem="y1D-Nv-vmt" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="113/100" id="H3N-8O-lyK"/>
-                            <constraint firstItem="nJ2-PF-I2T" firstAttribute="trailing" secondItem="Tyr-jy-OdZ" secondAttribute="trailing" constant="130" id="OhR-pl-oeI"/>
-                            <constraint firstItem="eHw-25-SAu" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="91/100" id="Qhi-rU-OTU"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="height" secondItem="4Qe-2R-9wW" secondAttribute="height" multiplier="80/100" id="Rry-SJ-q88"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="gkr-GS-ykm" secondAttribute="bottom" constant="10" id="SdD-C0-r6X"/>
-                            <constraint firstItem="nJ2-PF-I2T" firstAttribute="bottom" secondItem="mG8-c5-dEQ" secondAttribute="bottom" id="Swk-3g-GK0"/>
-                            <constraint firstItem="ArU-K5-3m3" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="69/100" id="XoL-DT-G57"/>
-                            <constraint firstItem="sTw-ys-TPA" firstAttribute="leading" secondItem="nJ2-PF-I2T" secondAttribute="leading" constant="140" id="a9D-zS-Ru4"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="eHw-25-SAu" secondAttribute="bottom" constant="10" id="gtm-fA-x8S"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="ArU-K5-3m3" secondAttribute="bottom" constant="10" id="mqB-AS-rhB"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="top" secondItem="faj-eJ-DQV" secondAttribute="bottom" constant="10" id="ppX-u9-Quv"/>
-                            <constraint firstItem="faj-eJ-DQV" firstAttribute="centerX" secondItem="4Qe-2R-9wW" secondAttribute="centerX" multiplier="132/100" id="rHo-4i-l0B"/>
-                            <constraint firstItem="mG8-c5-dEQ" firstAttribute="width" secondItem="4Qe-2R-9wW" secondAttribute="width" multiplier="90/100" id="wB9-kI-SGG"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="nJ2-PF-I2T"/>
-                    </view>
                     <navigationItem key="navigationItem" id="lpe-lb-bok"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="tableView" destination="mG8-c5-dEQ" id="47E-3k-Qgu"/>
+                        <segue destination="QVj-xf-d6w" kind="show" identifier="showMedicalDataView" id="lea-1d-aJr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31E-aH-y7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2989,9 +2829,10 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="7yx-zQ-vMn"/>
+        <segue reference="P0c-ED-fSW"/>
         <segue reference="EzM-g7-taV"/>
-        <segue reference="Sa7-Yb-i21"/>
+        <segue reference="lea-1d-aJr"/>
+        <segue reference="8Jz-la-XWu"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anruf" width="88" height="83"/>

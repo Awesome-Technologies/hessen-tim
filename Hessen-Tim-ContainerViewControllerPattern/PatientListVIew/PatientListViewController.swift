@@ -10,236 +10,138 @@ import UIKit
 import SMART
 import Foundation
 
-
-struct cellData {
-    var opened = Bool()
-    var firstName = String()
-    var familyName = String()
-    var sectionData = [String]();
+struct CellData {
+    var patient = Patient()
 }
 
-class PatientTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nachnameLabel: UILabel!
-    @IBOutlet weak var vornameLabel: UILabel!
-    @IBOutlet weak var geschlechtLabel: UILabel!
-    @IBOutlet weak var geburtsdatumLabel: UILabel!
-    @IBOutlet weak var groesseLabel: UILabel!
-    @IBOutlet weak var gewichtLabel: UILabel!
-    @IBOutlet weak var klinikLabel: UILabel!
-    @IBOutlet weak var versicherungLabel: UILabel!
-    @IBOutlet weak var comHistory: UIStackView!
+//https://stackoverflow.com/questions/47963568/programmatically-creating-an-expanding-uitableviewcell
+class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ExpandableCellDelegate, HistoryViewDelegate {
     
-}
-
-class CommunicationCell: UITableViewCell {
-    @IBOutlet weak var testLabel: UILabel!
     
-}
-
-fileprivate func parseDate(_ str : String) -> Date {
-    let dateFormat = DateFormatter()
-    dateFormat.dateFormat = "yyyy-MM-dd"
-    return dateFormat.date(from: str)!
-}
-
-class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var list: PatientList?
     var newPatient: Patient?
+    var data = [CellData]()
     
-    var selectedCellIndexPath: IndexPath?
-    
-    @IBOutlet weak var tableView: UITableView!
-
-    @IBOutlet weak var communicationHistoryStack: UIStackView!
-    
-    @IBAction func goBackToRootTapped(_ sender: Any) {
-        performSegue(withIdentifier: "exitToRoot", sender: self)
-    }
-    
-
-    var tableViewData = [cellData]()
-
+    let tableView:UITableView = {
+        let tb = UITableView()
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        return tb
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
-        
-        tableView.rowHeight = 70
-        tableView.sectionHeaderHeight = 40
-        tableView.sectionFooterHeight = 20
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 85
+        self.view.backgroundColor = UIColor(red: 38/255, green: 46/255, blue: 84/255, alpha: 1)
+        self.tableView.backgroundColor = UIColor.clear
         
         let attributes = [NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Light", size: 25)!]
         UINavigationBar.appearance().titleTextAttributes = attributes
-        
         self.title = "Patientenliste"
-        //self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Patientenliste", size: 20)!]
+        
         
         if let client = Institute.shared.client {
             list = PatientListAll()
             list?.onPatientUpdate = {
-                self.createPatientTestData()
+                self.loadPatientData()
                 self.tableView.reloadData()
             }
             list?.retrieve(fromServer: client.server)
         }
-        
-        tableViewData = [cellData(opened: false, firstName:"Hans", familyName: "müller", sectionData: ["cell1","cell2","cell3"]),
-                         cellData(opened: false, firstName:"Paul", familyName: "panzer", sectionData: ["cell1","cell2","cell3", "cell4"]),
-                         cellData(opened: false, firstName:"Heiko", familyName: "blümlein", sectionData: ["cell1","cell2"]),
-                         cellData(opened: false, firstName:"Nikolai", familyName: "panke", sectionData: ["cell1","cell2","cell3"])]
-        
-        
-        //Institute.shared.createPatientOnServer(firstName: "Miro", familyName: "Klose", gender: "male", birthday: "1982-01-23")
-        
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        //return 1
-        print("Number of section:" + String(tableViewData.count))
-        return tableViewData.count
+    override func loadView() {
+        super.loadView()
+        
+        view.addSubview(tableView)
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 500
+        tableView.register(ExpandableHistoryCell.self, forCellReuseIdentifier: "expandableCell")
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       //return patienten.count
-        if(tableViewData[section].opened){
-            return tableViewData[section].sectionData.count+1
-        }else{
-            return 1
-        }
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if(indexPath.row == 0){
-            //guard let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell") as! PatientTableViewCell else{return UITableViewCell()}
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
-            //cell.textLabel?.text = tableViewData[indexPath.section].title
-            cell.nachnameLabel?.text = tableViewData[indexPath.section].familyName
-            cell.vornameLabel?.text = tableViewData[indexPath.section].firstName
-            
-            return cell
-        }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CommunicationCell", for: indexPath) as! CommunicationCell
-            //cell.textLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row-1]
-            cell.testLabel?.text = tableViewData[indexPath.section].sectionData[indexPath.row-1]
-            return cell
-        }
-        /*
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PatientCell", for: indexPath) as! PatientTableViewCell
-        
-        let patient = patienten[indexPath.row]
-        let date = patient.birthday
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMMM yyyy"
-        cell.backgroundView = UIImageView(image: UIImage(named: "ListElementBackground.png")!)
-        cell.surenameLabel?.text = patient.surename
-        cell.firstNameLabel?.text = patient.firstName
-        cell.sexLabel?.text = patient.sex
-        cell.birthdayLabel?.text = dateFormatter.string(from: date)
-        cell.sizeLabel?.text = String(patient.size)
-        cell.weightLabel?.text = String(patient.weight)
-        cell.clinicLabel?.text = patient.clinic
-        cell.insuranceLabel?.text = patient.insurance
-        print("Name!!!:" + patient.surename)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "expandableCell", for: indexPath) as! ExpandableHistoryCell
+        cell.patient = data[indexPath.row].patient
+        cell.getPatientData()
+        cell.delegate = self
+        cell.historyDelegate = self
         return cell
-         */
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerView = view as? UITableViewHeaderFooterView {
-            //headerView.contentView.backgroundColor = UIColor(red:30.0/255.0, green:37.0/255.0, blue:67.0/255.0, alpha:1.0)
-            headerView.contentView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
-            headerView.backgroundView?.backgroundColor = .white
-            headerView.textLabel?.textColor = .green
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 10))
-        returnedView.backgroundColor = UIColor(red:38.0/255.0, green:46.0/255.0, blue:84.0/255.0, alpha:1.0)
-        
-        return returnedView
-    }
-
-    
-    //https://www.atomicbird.com/blog/uistackview-table-cells/
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.row == 0){
-            if(tableViewData[indexPath.section].opened){
-                tableViewData[indexPath.section].opened = false
-                let sections = IndexSet.init(integer: indexPath.section)
-                tableView.reloadSections(sections, with: .none)
-            }else{
-                tableViewData[indexPath.section].opened = true
-                let sections = IndexSet.init(integer: indexPath.section)
-                tableView.reloadSections(sections, with: .none)
-            }
-        }else{
-            //hier passiert was ,wenn man auf die Zellen klickt
+        if let cell = tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
+            cell.isExpanded = !cell.isExpanded
         }
-
     }
     
-    @IBAction func click(_ sender: Any) {
-        print("I clicktheButton")
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
+            cell.isExpanded = false
+        }
     }
     
-    func createPatientTestData(){
+    
+    func expandableCellLayoutChanged(_ expandableCell: ExpandableHistoryCell) {
+        refreshTableAfterCellExpansion()
+    }
+    
+    func refreshTableAfterCellExpansion() {
+        self.tableView.beginUpdates()
+        self.tableView.setNeedsDisplay()
+        self.tableView.endUpdates()
+    }
+    
+    func loadPatientData(){
         if list?.patients?.count != nil {
-            for patientNumber in 0..<(Int(list!.patients!.count-1)) {
-                let patient = list?.patients?[Int(patientNumber)]
-                if let name = patient?.name?[0] {
-                    //print(name.family?.string)
-                    //print(name.given?[0].string)
-                    //print("---")
-                    
-                    tableViewData.append(cellData(opened: false, firstName: name.family!.string, familyName: (name.given?[0].string)!, sectionData: ["cell1","cell2","cell3"]))
-  
-                }
-                
-            }
-        }
-        
-        let search = Patient.search([
-            "gender": "male"
-        ])
-        if let client = Institute.shared.client {
-            search.perform(client.server) { bundle, error in
-                if nil != error {
-                    // there was an error
-                }
-                else {
-                    let searchPatient = bundle?.entry?
-                        .filter() { return $0.resource is Patient }
-                        .map() { return $0.resource as! Patient }
-                        
-                        // now `bruces` holds all known Patient resources
-                        // named Bruce and born earlier than 1970
-                    
-                    print(searchPatient?.count)
-                    for patientMale in 0..<(Int(searchPatient!.count)) {
-                        let patient = searchPatient?[Int(patientMale)]
-                        print("id ")
-                        print(patient?.id)
-                        if let name = patient?.name?[0] {
-                            print(name.family?.string)
-                            print(name.given?[0].string)
-                            print("---")
-                            
-                        }
-                    }
+            for patient in list!.patients!{
+                if let name = patient.name?[0] {
+                    self.data.append(CellData(patient: patient))
                 }
             }
-        // check error
         }
-        
-               
     }
+    
+    func showDiagosticReport(historyView: UIView){
+        
+        if let report = historyView as? DiagnosticReportView {
+            var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 700, height: 500))
+            self.view.addSubview(notificationView)
+            notificationView.addGrayBackPanel()
+            notificationView.addLayoutConstraints()
+            notificationView.addConsilLabel(text: "Konsilbericht:")
+            notificationView.addConsilDateLabel(text: report.dateIssued.text!)
+            notificationView.addConsilReportTextView(editable: false, consilText: report.preview.text!)
+            notificationView.addCancelbutton()
+            
+            view.bringSubviewToFront(notificationView)
+        }
+    }
+    
+    func showMedicalDataView() {
+        self.performSegue(withIdentifier: "showMedicalDataView", sender: self)
+    }
+    
     
 }
+
+
+
+protocol ExpandableCellDelegate: class {
+    func expandableCellLayoutChanged(_ expandableCell: ExpandableHistoryCell)
+}
+
+protocol HistoryViewDelegate: class {
+    func showDiagosticReport(historyView: UIView)
+    func showMedicalDataView()
+}
+
+

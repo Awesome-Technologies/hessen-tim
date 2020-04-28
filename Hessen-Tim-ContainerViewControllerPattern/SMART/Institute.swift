@@ -1827,10 +1827,10 @@ class Institute {
         }
     }
     
-    func getAllDiagnosticReportsForPatient(completion: @escaping (([DiagnosticReport]?) -> Void)) {
+    func getAllDiagnosticReportsForPatient(patient: Patient, completion: @escaping (([DiagnosticReport]?) -> Void)) {
         print("--- getAllDiagnosticReportsForPatient")
         
-        let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "_sort": "-issued"])
+        let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":patient.id?.description]], "_sort": "-issued"])
         print(search.construct())
         
         search.perform(self.client!.server) { bundle, error in
@@ -1851,10 +1851,10 @@ class Institute {
         
     }
     
-    func getAllServiceRequestsForPatient(completion: @escaping (([ServiceRequest]?) -> Void)) {
+    func getAllServiceRequestsForPatient(patient: Patient, completion: @escaping (([ServiceRequest]?) -> Void)) {
         print("--- getAllServiceRequestsForPatient")
         
-        let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":self.patientObject?.id?.description], "_sort": "-authored", "status": "active"])
+        let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":patient.id?.description], "_sort": "-authored", "status": "active"])
         print(search.construct())
         
         search.perform(self.client!.server) { bundle, error in
@@ -1886,17 +1886,20 @@ class Institute {
         
     }
     
-    func getHistoryForPatient(completion: @escaping (([DomainResource]?) -> Void)) {
+    func getHistoryForPatient(patient: Patient, completion: @escaping (([DomainResource]?) -> Void)) {
     print("getHistoryForPatient")
         //Create Array for the communication history
         var patientHistory = [DomainResource]()
         //Put every Service Request in the history
-        self.getAllServiceRequestsForPatient(completion: { (requests) in
-            for request in requests!{
+        self.getAllServiceRequestsForPatient(patient: patient, completion: { (requests) in
+            if(requests != nil){
+                for request in requests!{
                 patientHistory.append(request)
+                }
+            
             }
             //Get all DiagnosticReports
-            self.getAllDiagnosticReportsForPatient(completion: { (reports) in
+            self.getAllDiagnosticReportsForPatient(patient: patient, completion: { (reports) in
                 if (reports != nil){
                     for rep in reports!{
                         //Get the String of the Service request, that its based on
@@ -1918,7 +1921,6 @@ class Institute {
                 if(self.serviceRequestDraftObject != nil){
                     patientHistory.insert(self.serviceRequestDraftObject!, at:0)
                 }
-                print("COUNNTTT: " +  String(patientHistory.count))
                 completion(patientHistory)
             })
         })
@@ -1951,6 +1953,7 @@ class Institute {
         self.patientObject = nil
         self.observationWeight = nil
         self.observationHeight = nil
+        self.serviceRequestDraftObject = nil
     }
     
     func deleteAllDataForServiceRequest(){
@@ -2006,6 +2009,18 @@ class Institute {
             return nil
         }
          */
+    }
+    
+    func createPatientListData(list: PatientList, completion: @escaping ((Dictionary<String,[DomainResource]>)) -> Void){
+        var historyData: Dictionary<String,[DomainResource]> = [:]
+        for patient in list.patients!{
+            getHistoryForPatient(patient: patient, completion: { history in
+                historyData[patient.id!.description] = history
+                
+            })
+            
+        }
+        
     }
     
     

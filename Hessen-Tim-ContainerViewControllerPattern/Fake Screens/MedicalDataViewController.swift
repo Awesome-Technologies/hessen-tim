@@ -113,7 +113,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         })
         
         //Display the communicagtion history for the patient
-        Institute.shared.getHistoryForPatient(completion: { items in
+        Institute.shared.getHistoryForPatient(patient:Institute.shared.patientObject!,  completion: { items in
             if (items != nil){
                 self.historyData = items!
                 DispatchQueue.main.async {
