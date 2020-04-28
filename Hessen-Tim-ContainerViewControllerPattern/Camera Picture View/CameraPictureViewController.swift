@@ -23,7 +23,6 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     //Outlets
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var savedImagePreviewView: UIImageView!
-    //@IBOutlet weak var captureImageView: UIImageView!
     @IBOutlet weak var tempDrawImageView: UIImageView!
     
     //instance variables
@@ -44,9 +43,6 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     // The previewImage, that is shown on the screen
     var shownPreviewImageName = ""
     
-    
-    var photoName = 0
-    
     var currentObservation:ObservationType = .NONE
     
     
@@ -60,30 +56,6 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         print("Reload Camera")
     }
 
-    /*
-    @IBAction func didTakePhoto(_ sender: Any) {
-        
-        /*
-        let videoPreviewLayerOrientation = self.videoPreviewLayer.connection?.videoOrientation
-        
-        if let photoOutputConnection = self.stillImageOutput.connection(with: .video) {
-            photoOutputConnection.videoOrientation = videoPreviewLayerOrientation!
-        }
-
-        let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
-        stillImageOutput.capturePhoto(with: settings, delegate: self)
-        
-        //insertItemTest()
-        delegate?.addGalleryImage()
-        print("I press the Button!")
- */
-        //makePhoto()
-        clearTempFolder()
-        
-    }
-    */
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Setup your camera here...
@@ -113,7 +85,9 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         
     }
     
-    
+    /**
+     Setup the camera and the preview view
+     */
     func setupLivePreview() {
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -132,28 +106,18 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         }
     }
     
+    /**
+     captures the taken image and saves it
+     */
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         
         guard let imageData = photo.fileDataRepresentation()
             else { return }
         
-        //let image = UIImage(data: imageData)
-        //captureImageView.image = image
-        
         if let image = UIImage(data: imageData){
-            
-            //savePhotoToFile(image: image)
-            //UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-            saveImage(imageName: "\(photoName).jpg", image: image)
-            
-            //insertItemTest()
-            delegate?.addGalleryImage(imageName: "\(photoName).jpg", newImage: true)
-            
-            //captureImageView.image = image
-            getImage(imageName: "\(photoName).jpg")
+            saveImage(imageName: nil, image: image)
         }
     }
-    
     
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -161,12 +125,12 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         self.captureSession.stopRunning()
     }
     
-    //Function called by the photo button from the base View
+    /**
+     Called by the photo button from the BaseViewController
+     */
     func makePhoto(observation: ObservationType){
         
         currentObservation = observation
-        
-        photoName = photoName+1
         
         let videoPreviewLayerOrientation = self.videoPreviewLayer.connection?.videoOrientation
         
@@ -181,19 +145,32 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         
     }
     
-    func saveImage(imageName: String, image:UIImage){
-        //create an instance of the FileManager
-        let fileManager = FileManager.default
-        //get the image path
-        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
-        //get the JPEG data for this image
-        let data = image.jpegData(compressionQuality: 1)
-        //store it in the document directory
-        fileManager.createFile(atPath: imagePath as String, contents: data, attributes: nil)
+    /**
+     Saves a new image in cache and Server or updates an existing image in cache and server
+     */
+    func saveImage(imageName: String?, image:UIImage){
+        print("saveImage")
         
-        Institute.shared.saveImage(imageData: data!, observationType: currentObservation)
+        let data = image.jpegData(compressionQuality: 1)
+        
+        if (imageName == nil){
+            Institute.shared.saveImage(imageData: data!, observationType: currentObservation, completion: { imageName in
+                DispatchQueue.main.async {
+                    print("We made a photo and want to Add it!!!")
+                    self.delegate?.addGalleryFotoImage(imageName: imageName)
+                }
+                
+            })
+        }else {
+            print("updateImage")
+            Institute.shared.updateImageMedia(name: imageName!, imageData: image.jpegData(compressionQuality: 1.0)!, completion: {
+                self.delegate?.addGalleryUpdateImage(imageName: imageName!)
+            })
+        }
+        
     }
     
+    /*
     func getImage(imageName: String){
         let fileManager = FileManager.default
         let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
@@ -203,7 +180,8 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             print("Panic! No Image!")
         }
     }
-    
+    */
+    /*
     func clearTempFolder() {
         let fileManager = FileManager.default
         let tempFolderPath = NSTemporaryDirectory()
@@ -216,31 +194,26 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             print("Could not clear temp folder: \(error)")
         }
     }
+    */
     
+    /**
+     Shows a image on the preview view, when it was selected in the gallery
+     */
     func didSelectImage(photoName: String) {
-        let fileManager = FileManager.default
-        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(photoName)
-        if fileManager.fileExists(atPath: imagePath){
-            do {
-                let imageData = try Data(contentsOf: URL(fileURLWithPath: imagePath))
-                
-                //Save the name of the image, that is shown on the screen
-                shownPreviewImageName = photoName
-                print("Shown on the screen: ",shownPreviewImageName)
-                
-                //the drawing functions should only activated if the view is made visible. If it is already visible another call to the function would make the buttons invisible again
-                if(savedImagePreviewView.isHidden) {
-                    //Function call to show button for drawing on the screen in the BaseViewController
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
-                }
+        let imageMedia = Institute.shared.images[photoName]
+        if let imageData = imageMedia!.content?.data{
+            let decodedData = Data(base64Encoded: imageData.value)!
+            //Save the name of the image, that is shown on the screen
+            shownPreviewImageName = photoName
+            print("Shown on the screen: ",shownPreviewImageName)
             
-                savedImagePreviewView.isHidden = false
-                savedImagePreviewView.image = UIImage(data: imageData)
-                
-            } catch {
-                print("Error loading image!")
-            }
-        }else{
+            self.delegate?.createDateLabel(media: imageMedia!)
+            
+            previewView.isHidden = true
+            savedImagePreviewView.isHidden = false
+            savedImagePreviewView.image = UIImage(data: decodedData)
+            savedImagePreviewView.contentMode = .scaleAspectFit
+        } else {
             print("Panic! No Image!")
         }
     }
@@ -297,7 +270,7 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
                 return
             }
             swiped = false
-            lastPoint = touch.location(in: view)
+            lastPoint = touch.location(in: tempDrawImageView)
         }
     }
     
@@ -310,7 +283,7 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             
             // 6
             swiped = true
-            let currentPoint = touch.location(in: view)
+            let currentPoint = touch.location(in: tempDrawImageView)
             drawLine(from: lastPoint, to: currentPoint)
             
             // 7
@@ -321,12 +294,12 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     //Draws a line on the the tempDrawImageView from ate old and the new touch point
     func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
         // 1
-        UIGraphicsBeginImageContext(view.frame.size)
+        UIGraphicsBeginImageContext(tempDrawImageView.bounds.size)
         guard let context = UIGraphicsGetCurrentContext() else {
             return
         }
-        tempDrawImageView.image?.draw(in: view.bounds)
-        
+        //tempDrawImageView.image?.draw(in: tempDrawImageView.bounds)
+        tempDrawImageView.image?.draw(at: CGPoint.zero)
         // 2
         context.move(to: fromPoint)
         context.addLine(to: toPoint)
@@ -368,44 +341,7 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         tempDrawImageView.image = nil
     }
     
-    /*
-    func savePhotoToFile(image:UIImage){
-        
-        print("I wanna Save the photo!")
-        
-        guard let documentDirectoryPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return
-        }
-        
-        //Using force unwrapping here because we're sure "1.jpg" exists. Remember, this is just an example.
-        //let img = UIImage(named: "1.jpg")!
-        
-        // Change extension if you want to save as PNG.
-        let imgPath = documentDirectoryPath.appendingPathComponent("MyHessenTimImage.jpg")
-        
-         print(imgPath)
-        
-        do {
-            //Use .pngData() if you want to save as PNG.
-            //.atomic is just an example here, check out other writing options as well. (see the link under this example)
-            //(atomic writes data to a temporary file first and sending that file to its final destination)
-            try image.jpegData(compressionQuality: 1)?.write(to: imgPath, options: .atomic)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    */
     
     
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

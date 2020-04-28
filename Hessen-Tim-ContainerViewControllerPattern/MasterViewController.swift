@@ -8,11 +8,21 @@
 
 import UIKit
 
+
+class CategoryTableViewCell: UITableViewCell{
+    @IBOutlet weak var categoryImage: UIImageView!
+    @IBOutlet weak var categoryImages: UILabel!
+    @IBOutlet weak var highlightView: UIView!
+    
+}
+
 class MasterViewController: UITableViewController {
 
     var addButton: UIBarButtonItem!
     
     var selectedCategory = 4
+    
+    var ImageCategoryCount:Dictionary<ObservationType, String> = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,12 +40,22 @@ class MasterViewController: UITableViewController {
 
         self.view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
         
+        tableView.separatorColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
+        
         /*
         var initialIndexPath = IndexPath(row: selectedCategory, section: 0)
         //self.performSegue(withIdentifier: "mySegue", sender: initialIndexPath)
         self.tableView.selectRow(at: initialIndexPath, animated: true, scrollPosition:UITableView.ScrollPosition.none)
         self.performSegue(withIdentifier: "cameraData", sender: initialIndexPath)
         */
+        
+        Institute.shared.countImages(completion: { observation, count  in
+            //self.setNumberOfImagesInCategory(observation: observation, count: count)
+            self.ImageCategoryCount[observation] = String(count)
+            DispatchQueue.main.async {
+                self.tableView.reloadRows(at: [IndexPath(row: observation.ordinal()+1, section: 0)], with: .automatic)
+            }
+        })
         
 
 
@@ -61,7 +81,56 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CategoryTableViewCell
+        let detailVC = (self.splitViewController?.viewControllers.last as? UINavigationController)?.topViewController as! BaseViewController
+        if((detailVC.observationType?.ordinal())!+1 == indexPath.row){
+            //cell.contentView.backgroundColor = .red
+            cell.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+            cell.highlightView.backgroundColor = UIColor.init(red: 49.0/255.0, green: 49.0/255.0, blue: 49.0/255.0, alpha: 0.2)
+        }else{
+            //cell.contentView.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+            cell.highlightView.backgroundColor = UIColor.clear
+            cell.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+            //cell.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+        }
+        
+        if indexPath.row == 0 {
+            cell.categoryImage.image = UIImage(named: "TabPatientData.png")!
+            cell.categoryImages.isHidden = true
+        } else if indexPath.row == 1 {
+            cell.categoryImage.image = UIImage(named: "TabAnamnesis.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Anamnesis]
+        } else if indexPath.row == 2 {
+            cell.categoryImage.image = UIImage(named: "TabMedicalLetter.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.MedicalLetter]
+        } else if indexPath.row == 3 {
+            cell.categoryImage.image =  UIImage(named: "TabHaemodynamics.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Haemodynamics]
+            print("THIS IS FOR CELL 3")
+            print(self.ImageCategoryCount[ObservationType.Haemodynamics])
+        } else if indexPath.row == 4 {
+            cell.categoryImage.image = UIImage(named: "TabVentilation.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Respiration]
+        } else if indexPath.row == 5 {
+            cell.categoryImage.image = UIImage(named: "TabBloodGasAnalysis.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.BloodGasAnalysis]
+        } else if indexPath.row == 6 {
+            cell.categoryImage.image = UIImage(named: "TabPerfusors.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Perfusors]
+        } else if indexPath.row == 7 {
+            cell.categoryImage.image = UIImage(named: "TabInfectiousDisease.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.InfectiousDisease]
+        } else if indexPath.row == 8 {
+            cell.categoryImage.image = UIImage(named: "TabRadeology.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Radeology]
+        } else if indexPath.row == 9 {
+            cell.categoryImage.image = UIImage(named: "TabLab.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Lab]
+        } else if indexPath.row == 10 {
+            cell.categoryImage.image = UIImage(named: "TabOther.png")!
+            cell.categoryImages.text = self.ImageCategoryCount[ObservationType.Others]
+        }
+        cell.selectionStyle = UITableViewCell.SelectionStyle.gray
         /*
         if cell.isSelected == true {
             var bgColorView = UIView()
@@ -80,7 +149,7 @@ class MasterViewController: UITableViewController {
             //cell.selectionStyle = UITableViewCell.SelectionStyle.gray
         }
         */
-
+        /*
         let backgroundView = UIView()
         /*
         backgroundView.backgroundColor = UIColor.blue
@@ -90,7 +159,10 @@ class MasterViewController: UITableViewController {
         //backgroundView.backgroundColor = UIColor.clear
         backgroundView.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 0.5)
         cell.selectedBackgroundView = backgroundView
-
+        cell.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+        */
+        
+        
         return cell
     }
 
@@ -136,49 +208,57 @@ class MasterViewController: UITableViewController {
             detailVC.observationType = type
             print(detailVC.title)
             print(self.splitViewController?.isCollapsed)
+            tableView.reloadData()
         }
     }
-
+    /*
     override func tableView(_ tableView: UITableView,willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){
-
-        cell.contentView.alpha = 0.0
+        
+        //cell.contentView.alpha = 0.0
 
         if indexPath.row == 0 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TablePatientendaten.png")!)
+            //cell.backgroundView = UIImageView(image: UIImage(named: "TabPatientData.png")!)
+            //cell.imageView?.image = UIImage(named: "TabPatientData.png")!
 
         } else if indexPath.row == 1 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabAnamnese.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabAnamnesis.png")!)
         } else if indexPath.row == 2 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabArztbriefe.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabMedicalLetter.png")!)
         } else if indexPath.row == 3 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabMonitoring.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabHaemodynamics.png")!)
         } else if indexPath.row == 4 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabBeatmung.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabVentilation.png")!)
         } else if indexPath.row == 5 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabBlutgasanalyse.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabBloodGasAnalysis.png")!)
         } else if indexPath.row == 6 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabPerfusoren.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabPerfusors.png")!)
         } else if indexPath.row == 7 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabMibi.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabInfectiousDisease.png")!)
         } else if indexPath.row == 8 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabRadiologie.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabRadeology.png")!)
         } else if indexPath.row == 9 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabLabor.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabLab.png")!)
         } else if indexPath.row == 10 {
-            cell.backgroundView = UIImageView(image: UIImage(named: "TabSonstige.png")!)
+            cell.backgroundView = UIImageView(image: UIImage(named: "TabOther.png")!)
          }
+        
+        cell.contentView.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+        cell.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+        
     }
+    */
 
     @objc func collapse(){
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell  = tableView.cellForRow(at: indexPath)
-        cell!.contentView.backgroundColor = .red
+        //cell!.contentView.backgroundColor = .red
     }
+    
 
     @objc func speichern(){
         print("Fall gespeichert")

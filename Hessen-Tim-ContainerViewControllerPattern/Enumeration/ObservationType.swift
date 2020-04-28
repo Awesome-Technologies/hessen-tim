@@ -8,7 +8,8 @@
 
 import Foundation
 
-enum ObservationType: CaseIterable{
+
+enum ObservationType: CaseIterable {
     case Anamnesis
     case MedicalLetter
     case Haemodynamics
@@ -20,4 +21,12 @@ enum ObservationType: CaseIterable{
     case Lab
     case Others
     case NONE
+}
+
+public extension CaseIterable where Self: Equatable {
+
+    func ordinal() -> Self.AllCases.Index {
+        return Self.allCases.firstIndex(of: self)!
+    }
+
 }

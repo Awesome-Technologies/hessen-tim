@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftGifOrigin
 
 
 /*
@@ -17,10 +18,12 @@ import UIKit
 class GalleryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     //Delegate
     weak var delegate:CameraPictureDelegate?
+    weak var baseDelegate: GalleryDelegate?
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     var newPicture = false
+    var category = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,38 +34,88 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.layer.borderColor = UIColor.lightGray.cgColor
         collectionView.layer.backgroundColor = UIColor.init(red: 65/255, green: 81/255, blue: 124/255, alpha: 1).cgColor
         
+        category = self.baseDelegate?.setCategory() as! String
+        
     }
     
-    
-    let reuseIdentifier = "cell" // also enter this string as the cell identifier in the storyboard
-    //var items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"]
-    //var items = ["1", "2"]
-    var items = [String]()
+    //var Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse") = [String]()
 
     
     // MARK: - UICollectionViewDataSource protocol
     
     // tell the collection view how many cells to make
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.items.count
+        return Institute.shared.getOrderedImageSubset(category: category).count
     }
     
     // make a cell for each cell index path
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        
+        let imageName = Institute.shared.getOrderedImageSubset(category: category)[indexPath.item]
+        
+        print("we have the index: \(indexPath)")
+        print("All Items: " +  Institute.shared.getOrderedImageSubset(category: category).description)
+        print("Ordered Subset: " + Institute.shared.getOrderedImageSubset(category: category).description)
+        print("we have the Image Name: " + Institute.shared.getOrderedImageSubset(category: category)[indexPath.item])
+        
         // get a reference to our storyboard cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! GalleryPictureCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! GalleryPictureCollectionViewCell
         
         // Use the outlet in our custom class to get a reference to the UILabel in the cell
-        cell.myLabel.text = self.items[indexPath.item].replacingOccurrences(of: ".jpg", with: "")
+        cell.myLabel.text = imageName
         
-        //loads The Image, that was saved when the Photo was taken
-        cell.galleryImage.image = getImage(imageName: self.items[indexPath.item])
+        //When an image, that is already in the cache is updated for example, when Lines are drawn
+        if let imageData = Institute.shared.images[Institute.shared.getOrderedImageSubset(category: category)[indexPath.item]]?.content?.data{
+            print("the image is already in the cache")
+            //let imageData = imageMedia.content?.data
+            if(imageData != nil){
+                cell.loadingImage.isHidden = true
+                let decodedData = Data(base64Encoded: imageData.value)!
+                cell.galleryImage.image = getImage(imageName: Institute.shared.getOrderedImageSubset(category: category)[indexPath.item])
+                cell.galleryImage.isHidden = false
+                
+            }else{
+                /*
+                print("the image is NOTTT in the cache")
+                cell.galleryImage.isHidden = true
+                cell.loadingImage.isHidden = false
+                cell.loadingImage.loadGif(asset: "loading")
+                
+                
+                //After the load animation for the cell was set, the cell downloads its respective Image itself
+                Institute.shared.getMediaWithID(id: Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse")[indexPath.item], completion: { media in
+                    DispatchQueue.main.async {
+                        print("I LOADED The Image")
+                        cell.galleryImage.image = self.getImage(imageName: media)
+                        cell.loadingImage.isHidden = true
+                        cell.galleryImage.isHidden = false
+                    }
+                    
+                })
+                */
+            }
+        }else{
+            print("the image is NOT in the cache")
+            cell.galleryImage.isHidden = true
+            cell.loadingImage.isHidden = false
+            cell.loadingImage.loadGif(asset: "loading")
+            
+            //After the load animation for the cell was set, the cell downloads its respective Image itself
+            Institute.shared.getMediaWithID(id: imageName, completion: { media in
+                DispatchQueue.main.async {
+                    print("I LOADED The Image")
+                    cell.galleryImage.image = self.getImage(imageName: media)
+                    cell.loadingImage.isHidden = true
+                    cell.galleryImage.isHidden = false
+                }
+                
+            })
+            
+        }
+        
         
         cell.backgroundColor = UIColor.white // make cell more visible in our example project
-        print("we have the index: \(indexPath)")
-        //collectionView.reloadData()
-        //collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
         if(newPicture){
             print("NEWIMAGE")
             cell.layer.borderColor = UIColor.yellow.cgColor
@@ -76,27 +129,28 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
             cell.layer.cornerRadius = 4
         }
         
-
         return cell
     }
     
     // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // handle tap events
+        // Handle tap events
         print("You selected cell #\(indexPath.item)!")
-        delegate?.didSelectImage(photoName: items[indexPath.row])
+        
+        // Get a reference to our storyboard cell
+        let cell = collectionView.cellForItem(at: indexPath) as! GalleryPictureCollectionViewCell
+        
+        if(cell.loadingImage.isHidden == true){
+        //if(cell.galleryImage.isHidden == false){
+            print("loading screen visible")
+            baseDelegate?.clearView()
+            delegate?.didSelectImage(photoName: Institute.shared.getOrderedImageSubset(category: category)[indexPath.row])
+            //NotificationCenter.default.post(name: Notification.Name(rawValue: "clearView"), object: nil)
+        }
+        
     }
  
-    /*
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let i = IndexPath(item: 3, section: 0)
-        collectionView.reloadData()
-        collectionView.scrollToItem(at: i, at: .left, animated: true)
-        print("Selected")
-    }
-    */
-    
     // change background color when user touches cell
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
@@ -121,74 +175,124 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     func insertItemTest(imageName: String, newImage: Bool){
-        /*
-         //Update DataSource
-         let newComment = "3"
-         items.append(newComment)
-         
-         let indexPath = IndexPath(item: self.items.count - 1, section: 0)
-         var indexPaths: [IndexPath] = [indexPath]
-         
-         // finally update the collection view
-         self.collectionView?.performBatchUpdates({ () -> Void in
-         collectionView.insertItems(at: indexPaths)
-         }, completion: nil)
-         */
+        
+        
+        print("Add LOADED Image")
+        print(imageName)
+        
+        
         self.newPicture = newImage
         self.collectionView?.performBatchUpdates({
-            let indexPath = IndexPath(row: self.items.count, section: 0)
-            items.append(imageName) //add your object to data source first
-            self.collectionView?.insertItems(at: [indexPath])
+            
+            //for row in 0..<collectionView.numberOfItems(inSection: 0){
+            for cell in  self.collectionView!.visibleCells {
+                if let tableViewCell = cell as? GalleryPictureCollectionViewCell {
+                    if(tableViewCell.myLabel.text == imageName){
+                        print("Changing the cells titel")
+                        tableViewCell.loadingImage.isHidden = true
+                        tableViewCell.galleryImage.image = getImage(imageName: imageName)
+                        tableViewCell.galleryImage.isHidden = false
+                    }
+                        
+                }else{
+                    print("Cell not yet loaded")
+                }
+                
+            }
         }, completion: { (result) in
             if result {
-                self.collectionView?.scrollToItem(at: IndexPath(row: self.items.count - 1, section: 0), at: UICollectionView.ScrollPosition.right, animated: true)
+                self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionView.ScrollPosition.right, animated: true)
             }
         })
     }
     
+    func insertPreviewImage(imageName: String){
+        print("Add PREVIEW Image")
+        print(imageName)
+        print("category" + self.category)
+        print(Institute.shared.getOrderedImageSubset(category: category).description)
+        let indexPath = IndexPath(row: Institute.shared.getOrderedImageSubset(category: category).count-1, section: 0)
+        self.collectionView?.insertItems(at: [indexPath])
+        /*
+        self.collectionView?.performBatchUpdates({
+            //Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse").append(imageName)
+            let indexPath = IndexPath(row: Institute.shared.getOrderedImageSubset(category: category).count-1, section: 0)
+            self.collectionView?.insertItems(at: [indexPath])
+        }, completion: nil)
+        */
+        
+    }
+    
+    func insertFotoImage(imageName: String){
+        print("Add FOTO Image")
+        print(imageName)
+        print("category: " + category)
+        
+        print(Institute.shared.getOrderedImageSubset(category: category).description)
+        
+        print("//I mande a new foto and I want to place it in a new cell")
+        //I mande a new foto and I want to place it in a new cell
+        self.collectionView?.performBatchUpdates({
+            //Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse").insert(imageName, at: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.collectionView?.insertItems(at: [indexPath])
+            
+        }, completion: nil)
+        /*
+        if(Institute.shared.getOrderedImageSubset(category: category).contains(imageName)){
+            print("//I updated an existing foto")
+            //I updated an existing foto
+            let indexPath = IndexPath(item: Institute.shared.getOrderedImageSubset(category: category).firstIndex(of: imageName)!, section: 0)
+            collectionView.reloadItems(at: [indexPath])
+           
+        }else {
+            print("//I mande a new foto and I want to place it in a new cell")
+            //I mande a new foto and I want to place it in a new cell
+            self.collectionView?.performBatchUpdates({
+                //Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse").insert(imageName, at: 0)
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.collectionView?.insertItems(at: [indexPath])
+                
+            }, completion: nil)
+        }
+        */
+    }
+    
+    func insertUpdateImage(imageName: String){
+        print("UpdateImage")
+        print(imageName)
+        print("category: " + category)
+        
+        print(Institute.shared.getOrderedImageSubset(category: category).description)
+        
+        //I updated an existing foto
+        let indexPath = IndexPath(item: Institute.shared.getOrderedImageSubset(category: category).firstIndex(of: imageName)!, section: 0)
+        collectionView.reloadItems(at: [indexPath])
+    }
+    
     func getImage(imageName: String) -> UIImage?{
+        print("getImage")
+        print(imageName)
+        
         
         var image : UIImage?
+        //print(Institute.shared.images.description)
+        print(imageName)
+        //print(Institute.shared.images[imageName])
         
-        let fileManager = FileManager.default
-        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
-        if fileManager.fileExists(atPath: imagePath){
-            image = UIImage(contentsOfFile: imagePath)
+        if let imageMedia = Institute.shared.images[imageName]{
+            let imageData = imageMedia.content?.data
+            if(imageData != nil){
+                let decodedData = Data(base64Encoded: imageData!.value)!
+                //let jeremyGif = UIImage.gif(name: "jeremy")
+                return UIImage(data: decodedData)
+                
+            }
+            
         }else{
             print("Panic! No Image!")
         }
-        
-        return image
+        return nil
     }
     
-    
-    /*
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        let cellWidth: CGFloat = flowLayout.itemSize.width
-        let cellSpacing: CGFloat = flowLayout.minimumInteritemSpacing
-        let cellCount = CGFloat(collectionView.numberOfItems(inSection: section))
-        var collectionWidth = collectionView.frame.size.width
-        if #available(iOS 11.0, *) {
-            collectionWidth -= collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right
-        }
-        let totalWidth = cellWidth * cellCount + cellSpacing * (cellCount - 1)
-        if totalWidth <= collectionWidth {
-            let edgeInset = (collectionWidth - totalWidth) / 2
-            return UIEdgeInsets(top: flowLayout.sectionInset.top, left: edgeInset, bottom: flowLayout.sectionInset.bottom, right: edgeInset)
-        } else {
-            return flowLayout.sectionInset
-        }
-    }
-    */
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

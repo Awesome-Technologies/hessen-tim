@@ -12,4 +12,6 @@ class GalleryPictureCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var myLabel: UILabel!
     @IBOutlet weak var galleryImage: UIImageView!
+    @IBOutlet weak var loadingImage: UIImageView!
+    
 }

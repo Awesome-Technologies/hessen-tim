@@ -9,6 +9,67 @@
 import UIKit
 import SMART
 
+class CommentTextView: UITextView {
+    
+    init(frame: CGRect) {
+        super.init(frame: frame, textContainer: nil)
+        setup()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    
+    func setup(){
+        
+        // Use RGB colour
+        self.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 0.8)
+        
+        // Update UITextView font size and colour
+        self.font = UIFont.systemFont(ofSize: 20)
+        self.textColor = UIColor.black
+        
+        self.font = UIFont.boldSystemFont(ofSize: 20)
+        self.font = UIFont(name: "Verdana", size: 25)
+        
+        // Capitalize all characters user types
+        self.autocapitalizationType = UITextAutocapitalizationType.allCharacters
+        
+        // Enable auto-correction and Spellcheck
+        self.autocorrectionType = UITextAutocorrectionType.yes
+        self.spellCheckingType = UITextSpellCheckingType.yes
+        
+        // Make UITextView Editable
+        self.isEditable = true
+        
+        self.delegate = self
+        //self.text = "\u{2022} "
+        
+        
+    }
+    
+    func showText(text: String){
+        if(text == " "){
+            self.text = "\u{2022} "
+        }else{
+            self.text = text + ("\n\n\u{2022} ")
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            var updatedText: String = textView.text! + ("\n\n\u{2022} ")
+            textView.text = updatedText
+            return false
+            
+        }
+        return true
+        
+    }
+}
+
+
 /*
  Helping Tutorials:
  
@@ -23,12 +84,10 @@ class BaseViewController: UIViewController {
     let window = UIApplication.shared.keyWindow!
     
     var observationType: ObservationType? {
-      didSet {
-        loadViewIfNeeded()
-      }
+        didSet {
+            loadViewIfNeeded()
+        }
     }
-    
-    var currentObservation: ObservationType = .NONE
     
     var observationObject:Observation? = nil
     
@@ -44,86 +103,47 @@ class BaseViewController: UIViewController {
         
         setTitle(type: observationType!)
         
-        //initialization information for the gray sidebar
+        //Initialization information for the gray sidebar
         customView = UIView(frame: window.bounds)
         self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.0)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(drawButtonFunction(_:)), name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
         
         //Notifications to get information from the sidebar, when the gray overlay has to be turned on or off
         NotificationCenter.default.addObserver(self, selector: #selector(addGraySubview(_:)), name: Notification.Name(rawValue: "addGraySubview"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(removeGraySubview(_:)), name: Notification.Name(rawValue: "removeGraySubview"), object: nil)
         
-        //Institute.shared.searchAllServiceRequests()
-        
-        //print("The received Observation ID:")
-        //print(observationType)
-        
-        
-        //Institute.shared.searchObservationTypeInServiceRequestWithID(id: Institute.shared.serviceRequestID, type: self.navigationItem.title!)
-        
-        
-        Institute.shared.loadImagesInBackground(type: self.navigationItem.title!, completion: { (imageName, newImage) in
+        //Institute.shared.loadPreviewImagesInBackground(type: self.navigationItem.title!, completion: { (mediaItems) in
+        Institute.shared.loadPreviewImagesInBackground(type: self.navigationItem.title!, completion: {
             DispatchQueue.main.async {
-                print("I ADD THE IMAGE WITH")
-                print(imageName)
-                print(newImage)
-                self.addGalleryImage(imageName: "\(imageName).jpg", newImage: newImage)
-                /*
-                print(Institute.shared.photoName)
-                if(Institute.shared.photoName > 0){
-                    for imageItem in 0...Institute.shared.photoName {
-                        //print("I add the image:")
-                        print(imageItem)
-                        self.addGalleryImage(imageName: "\(imageItem).jpg")
+                print("Added Preview Imagessss")
+                //self.setCategory()
+                //Institute.shared.getOrderedImageSubset(category: category)
+                print(Institute.shared.getOrderedImageSubset(category: self.navigationItem.title!))
+                for media in Institute.shared.getOrderedImageSubset(category: self.navigationItem.title!) {
+                    self.addGalleryPreviewImage(imageName: media)
+                    /*
+                    if media != nil {
+                        //We put every preview Image in the cache
+                        Institute.shared.saveImageInDirectory(imageData: media, name:String(media.id!.description))
+                        self.addGalleryPreviewImage(imageName: media.id!.description)
+                        
                     }
-                }
-                */
-                /*
-                
-                // Get the document directory url
-                let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-
-                do {
-                    // Get the directory contents urls (including subfolders urls)
-                    let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
-                    print(directoryContents)
-
-                    // if you want to filter the directory contents you can do like this:
-                    let mp3Files = directoryContents.filter{ $0.pathExtension == "jpg" }
-                    print("jpeg:",mp3Files)
-                    let imageFilenames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
-                    print("jpeg:", imageFilenames)
-                    for image in imageFilenames{
-                        //print("I add the image:")
-                        print(image)
-                        self.addGalleryImage(imageName: "\(image).jpg")
-                    }
-
-                } catch {
-                    print(error)
+                    */
+                    
                 }
                 
-                Institute.shared.photoName = 0
-                */
-                
-                //print("I start this, when all Images are loaded!")
             }
             
         })
-
         
-        
-      
     }
     
     
     var galleryVC:GalleryViewController?
     var cameraVC:CameraPictureViewController?
     var collapseMaster:UIBarButtonItem!
-    var commentWindowOpen = false
     var textView = UITextView()
-
+    var dateLabel: UILabel = UILabel()
+    
     @IBOutlet weak var takePictureButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
     
@@ -137,6 +157,8 @@ class BaseViewController: UIViewController {
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var saveComment: UIButton!
+    @IBOutlet weak var clearComment: UIButton!
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -145,6 +167,7 @@ class BaseViewController: UIViewController {
         if let vc = segue.destination as? GalleryViewController {
             galleryVC = vc
             galleryVC?.delegate = cameraVC
+            galleryVC?.baseDelegate = self
             
         }
         
@@ -155,70 +178,69 @@ class BaseViewController: UIViewController {
     }
     
     
-    //Action
+    /**
+     Take a photo
+     */
     @IBAction func takePicture(_ sender: Any) {
         cameraVC?.makePhoto(observation: observationType!)
-        /*
-        Institute.shared.searchAllMediaResource()
-        for imageItem in 0...Institute.shared.photoName {
-            print("I add the image:")
-            print(imageItem)
-            addGalleryImage(imageName: "\(imageItem).jpg")
-        }
- */
     }
     
+    /**
+     Seques back to the MedicalDavacView
+     */
     @IBAction func toPrevScreen(_ sender: Any) {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.splitView = false
         delegate.setupRootViewController(animated: true)
-        
         dismiss(animated: true, completion: nil)
     }
     
+    /**
+     Shows or hides the commentView that displays Notes taken for the current picture
+     */
     @IBAction func showComments(_ sender: Any) {
         
-        if(commentWindowOpen == false) {
-            textView = UITextView(frame: CGRect(x: 0, y: 0, width: 1330, height: 500))
+        //  if(commentWindowOpen == false) {
+        if(commentButton.currentImage == UIImage(named: "comment-Button")) {
+            commentButton.setImage(UIImage(named: "comment-Button-green"), for: .normal)
             
+            saveComment.isHidden = false
+            clearComment.isHidden = false
+            
+            textView = CommentTextView(frame: CGRect(x: 0, y: 0, width: 600, height: 400))
             textView.center = self.view.center
             textView.textAlignment = NSTextAlignment.justified
-            
-            // Use RGB colour
-            textView.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 0.7)
-            
-            // Update UITextView font size and colour
-            textView.font = UIFont.systemFont(ofSize: 20)
-            textView.textColor = UIColor.black
-            
-            textView.font = UIFont.boldSystemFont(ofSize: 20)
-            textView.font = UIFont(name: "Verdana", size: 25)
-            
-            // Capitalize all characters user types
-            textView.autocapitalizationType = UITextAutocapitalizationType.allCharacters
+            textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             
             // Make UITextView web links clickable
             textView.isSelectable = true
-            textView.isEditable = false
             textView.dataDetectorTypes = UIDataDetectorTypes.link
             
             // Make UITextView corners rounded
             textView.layer.cornerRadius = 5
-            
-            // Enable auto-correction and Spellcheck
-            textView.autocorrectionType = UITextAutocorrectionType.yes
-            textView.spellCheckingType = UITextSpellCheckingType.yes
-            
-            // Make UITextView Editable
-            textView.isEditable = true
-            
+            textView.layer.borderWidth = 2
             self.view.addSubview(textView)
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                //textView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                textView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 215),
+                textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -200),
+                textView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 5),
+                textView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -5),
+            ])
             
-            commentWindowOpen = true
+            paintButton.isHidden = true
+            
+            var med = Institute.shared.images[cameraVC!.shownPreviewImageName]
+            
+            textView.text = med?.note![0].text?.description
             
         } else {
             textView.removeFromSuperview()
-            commentWindowOpen = false
+            commentButton.setImage(UIImage(named: "comment-Button"), for: .normal)
+            saveComment.isHidden = true
+            clearComment.isHidden = true
+            paintButton.isHidden = false
         }
         
         
@@ -226,11 +248,9 @@ class BaseViewController: UIViewController {
     }
     
     /**
-     Gets triggered, when paint button is touched
      Activates/deactivates the drawing functions in the cameraPictureView Controller
      Shows/hides the buttons for the drawing functionality
-     
-    */
+     */
     @IBAction func activateDrawing(_ sender: Any?) {
         print("Drawing function")
         cameraVC?.activateDrawigFunctions()
@@ -245,6 +265,8 @@ class BaseViewController: UIViewController {
             whiteButton.isHidden = false
             clearButton.isHidden = false
             saveButton.isHidden = false
+            
+            commentButton.isHidden = true
         } else {
             paintButton.setImage(UIImage(named: "malen-button"), for: .normal)
             
@@ -257,15 +279,20 @@ class BaseViewController: UIViewController {
             clearButton.isHidden = true
             saveButton.isHidden = true
             
+            commentButton.isHidden = false
+            
         }
     }
     
     @objc func collapse(){
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
     
+    /**
+     Sets the title of the View according to the selected category type
+     */
     func setTitle(type:ObservationType){
         switch type {
         case .Anamnesis:
@@ -298,39 +325,8 @@ class BaseViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.black,
             NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 25)!
         ]
-
+        
         UINavigationBar.appearance().titleTextAttributes = attrs
-    }
-    
-    @objc func drawButtonFunction(_ notification: Notification) {
-        if(paintButton.isHidden == false) {
-            //Hide pait Buttons
-            paintButton.isHidden = true
-            commentButton.isHidden = true
-            paintButton.isHidden = true
-            commentButton.isHidden = true
-            redButton.isHidden = true
-            greenButton.isHidden = true
-            blueButton.isHidden = true
-            blackButton.isHidden = true
-            whiteButton.isHidden = true
-            clearButton.isHidden = true
-            saveButton.isHidden = true
-            closeButton.isHidden = true
-            
-            //Show photo button
-            takePictureButton.isHidden = false
-            
-        } else {
-            //Show the paint buttons
-            paintButton.isHidden = false
-            commentButton.isHidden = false
-            closeButton.isHidden = false
-            
-            //Hide the photo button
-            takePictureButton.isHidden = true
-            
-        }
     }
     
     /**
@@ -343,14 +339,46 @@ class BaseViewController: UIViewController {
     }
     
     /**
-    Function gets trigegred by actions in sidebar, to remove gray overlay
-    */
+     Function gets trigegred by actions in sidebar, to remove gray overlay
+     */
     @objc func removeGraySubview(_ notification: Notification) {
         self.customView.removeFromSuperview()
     }
     
+    /**
+     Gets called, when a image in the gallery is selected
+     Prepares the elements on the screen to be displayed correctly
+     */
+    func clear() {
+        print("clear")
+        clearPaint(self)
+        clearComment(self)
+        
+        redButton.isHidden = true
+        greenButton.isHidden = true
+        blueButton.isHidden = true
+        blackButton.isHidden = true
+        whiteButton.isHidden = true
+        clearButton.isHidden = true
+        saveButton.isHidden = true
+        saveComment.isHidden = true
+        clearComment.isHidden = true
+        takePictureButton.isHidden = true
+        
+        textView.removeFromSuperview()
+        dateLabel.removeFromSuperview()
+        paintButton.setImage(UIImage(named: "malen-button"), for: .normal)
+        commentButton.setImage(UIImage(named: "comment-Button"), for: .normal)
+        
+        paintButton.isHidden = false
+        closeButton.isHidden = false
+        commentButton.isHidden = false
+    }
     
-    // Function call when the close Button is pressed
+    
+    /**
+     Closes the preview image and hides oll the visual elements
+     */
     @IBAction func closeImagePreview(_ sender: Any) {
         print("I close the PreviewImageView")
         
@@ -358,12 +386,10 @@ class BaseViewController: UIViewController {
         if(cameraVC!.drawingActive) {
             self.activateDrawing(nil)
         }
-        
         //close the previewImage View
         cameraVC?.closeImagePreview()
-        
         // Make the paint buttons invisible and show the take picture button
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "drawButtonFunction"), object: nil)
+        closeImagePreview()
     }
     
     // Pic red color for drawing
@@ -395,25 +421,194 @@ class BaseViewController: UIViewController {
         cameraVC?.tempDrawImageView.image = nil
     }
     
-    // Save the drawings
+    /**
+     Saves the drawings in an image
+     */
     @IBAction func savePaint(_ sender: Any) {
+        print("savePaint")
         // Merge the drawn lines with the shown picture
         cameraVC?.savePaintedLines()
         // The new Painted Image overwrites the old image in the file directory
         cameraVC?.saveImage(imageName: cameraVC!.shownPreviewImageName, image: cameraVC!.savedImagePreviewView.image!)
-        // Reload the elements in the collection view to update the displayed images
-        galleryVC?.collectionView.reloadData()
     }
+    
+    /**
+     Saves the comments made for an image
+     */
+    @IBAction func saveComment(_ sender: Any) {
+        print("SaveComment")
+        Institute.shared.updateImageNote(name: cameraVC!.shownPreviewImageName, imageNote: textView.text, completion: {
+            print("comment was saved")
+        })
+        
+    }
+    
+    /**
+     Deletes the appended comments and restores the original comment text
+     */
+    @IBAction func clearComment(_ sender: Any) {
+        print("clearComment")
+        let oldText = Institute.shared.images[cameraVC!.shownPreviewImageName]?.note?[0].text?.description
+        textView.text = oldText
+    }
+    
+    /**
+     closes the image preview and hides all the respective visual elementas
+     */
+    func closeImagePreview(){
+        clearPaint(self)
+        clearComment(self)
+        
+        paintButton.isHidden = true
+        commentButton.isHidden = true
+        paintButton.isHidden = true
+        commentButton.isHidden = true
+        redButton.isHidden = true
+        greenButton.isHidden = true
+        blueButton.isHidden = true
+        blackButton.isHidden = true
+        whiteButton.isHidden = true
+        clearButton.isHidden = true
+        saveButton.isHidden = true
+        closeButton.isHidden = true
+        
+        textView.removeFromSuperview()
+        dateLabel.removeFromSuperview()
+        saveComment.isHidden = true
+        clearComment.isHidden = true
+        
+        //Show photo button
+        takePictureButton.isHidden = false
+        
+        cameraVC?.previewView.isHidden = false
+    }
+    
+    /**
+     When a Image is selecred from the gallery a label is created that displayes
+     the date and time of the image creation
+     */
+    func createDateLabel(media: Media){
+        //var label: UILabel = UILabel()
+        dateLabel.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        dateLabel.font = dateLabel.font.withSize(22)
+        dateLabel.textColor = UIColor.white
+        dateLabel.layer.masksToBounds = true
+        dateLabel.layer.cornerRadius = 10
+        dateLabel.layer.borderWidth = 0
+        dateLabel.layer.borderColor = UIColor.blue.cgColor
+        dateLabel.backgroundColor = UIColor(red: 75/255, green: 99/255, blue: 139/255, alpha: 0.8)
+        dateLabel.textAlignment = NSTextAlignment.center
+        dateLabel.text = MediaDateFormatter(media: media)
+        dateLabel.textAlignment = .center
+        self.view.addSubview(dateLabel)
+        
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            dateLabel.heightAnchor.constraint(equalToConstant: 40),
+            dateLabel.widthAnchor.constraint(equalToConstant: 220),
+            //label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            dateLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10),
+            //label.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
+            dateLabel.topAnchor.constraint(equalTo: self.closeButton.topAnchor, constant: 0),
+            //label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        ])
+        
+    }
+    
+    /**
+     Formats the image creation date into a readalbe format
+     */
+    func MediaDateFormatter(media: Media)->String{
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
+        
+        let clockTime = DateFormatter()
+        clockTime.dateFormat = "HH:mm"
+        
+        let dateTime = DateFormatter()
+        dateTime.dateFormat = "dd.MM.yyyy"
+        
+        var printdate = ""
+        if let date = dateFormatterGet.date(from: (media.createdDateTime?.description)!) {
+            
+            var clock = clockTime.string(from: date)
+            var date = dateTime.string(from: date)
+            printdate = date + "   " + clock
+            
+        } else {
+            print("There was an error decoding the string")
+        }
+        return printdate
+    }
+    
 }
 
 
-
+/**
+ Designated delegate functions
+ */
 extension BaseViewController: GalleryDelegate {
     func addGalleryImage(imageName: String, newImage: Bool) {
         //print("added an Image")
         //print(imageName)
         galleryVC?.insertItemTest(imageName: imageName, newImage: newImage)
     }
+    
+    func addGalleryPreviewImage(imageName: String) {
+        //print("added an Image")
+        //print(imageName)
+        galleryVC?.insertPreviewImage(imageName: imageName)
+    }
+    
+    func addGalleryFotoImage(imageName: String) {
+        //print("added an Image")
+        //print(imageName)
+        galleryVC?.insertFotoImage(imageName: imageName)
+    }
+    
+    func addGalleryUpdateImage(imageName: String){
+        galleryVC?.insertUpdateImage(imageName: imageName)
+    }
+    
+    func clearView() {
+        self.clear()
+    }
+    
+    func setCategory() -> String {
+        var stringCategory = ""
+        switch observationType {
+        case .Anamnesis:
+            stringCategory = "Anamnese"
+        case .MedicalLetter:
+            stringCategory = "Arztbriefe"
+        case .Haemodynamics:
+            stringCategory = "Haemodynamik"
+        case .Respiration:
+            stringCategory = "Beatmung"
+        case .BloodGasAnalysis:
+            stringCategory = "Blutgasanalyse"
+        case .Perfusors:
+            stringCategory = "Perfusoren"
+        case .InfectiousDisease:
+            stringCategory = "Infektiologie"
+        case .Radeology:
+            stringCategory = "Radiologie"
+        case .Lab:
+            stringCategory = "Labor"
+        case .Others:
+            stringCategory = "Sonstige"
+        case .NONE:
+            stringCategory = "NONE"
+        default:
+            stringCategory = ""
+        }
+        
+        print("setCategory" + stringCategory)
+        //galleryVC?.category = stringCategory
+        return stringCategory
+    }
+    
 }
 
 

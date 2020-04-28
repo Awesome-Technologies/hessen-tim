@@ -7,9 +7,16 @@
 //
 
 import Foundation
+import SMART
 
 //https://naveenr.net/beginning-container-views-in-ios/
 
 protocol GalleryDelegate:class {
-    func addGalleryImage(imageName: String, newImage: Bool) 
+    func addGalleryImage(imageName: String, newImage: Bool)
+    func addGalleryPreviewImage(imageName: String)
+    func addGalleryFotoImage(imageName: String)
+    func addGalleryUpdateImage(imageName: String)
+    func clearView()
+    func setCategory() -> String
+    func createDateLabel(media: Media)
 }

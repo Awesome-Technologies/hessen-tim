@@ -45,6 +45,7 @@ class Institute {
     var patientObject: Patient? = nil
     var observationWeight: Observation? = nil
     var observationHeight: Observation? = nil
+    var images:Dictionary<String, Media> = [:]
     
     //let serverUrl = "http://hapi.fhir.org/baseR4"
     let serverUrl = "https://tim.amp.institute/hapi-fhir-jpaserver/fhir/"
@@ -493,11 +494,11 @@ class Institute {
     func getAllImagesOfTypeForPatient(type: String, completion: @escaping (([Media]) -> Void)) {
            print("getAllObservationsOfTypeForPatient")
         
-            DispatchQueue.global(qos: .background).async {
+            //DispatchQueue.global(qos: .background).async {
             
-                let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "modality":["$text": type]])
+        let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "modality":["$text": type], "_summary": "data"])
 
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                DispatchQueue.global(qos: .background).async {
                     search.perform(self.client!.server) { bundle, error in
                                if nil != error {
                                    print("ERROR")
@@ -521,12 +522,46 @@ class Institute {
                                }
                            }
                 }
-            }
+            //}
 
            
            
            
        }
+    
+    
+    func getAllPreviewImagesOfTypeForPatient(type: String, completion: @escaping (([Media]) -> Void)) {
+        print("getAllPreviewImagesOfTypeForPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            
+            let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "modality":["$text": type], "_summary":"true", "_sort":"-created"])
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                search.perform(self.client!.server) { bundle, error in
+                    if nil != error {
+                        print("ERROR")
+                        print(error)
+                    }
+                    else {
+                        let med = bundle?.entry?
+                            .filter() { return $0.resource is Media }
+                            .map() { return $0.resource as! Media }
+                        
+                        print("We found some Preview:")
+                        print(med?.count)
+                        
+                        if med != nil {
+                            if(!med!.isEmpty){
+                                completion(med!)
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     
     func getAllImagesFromObservastion(observation: Observation, completion: @escaping (([String]) -> Void)) {
@@ -579,7 +614,7 @@ class Institute {
         
     }
     
-    
+    /*
     func getAllImagesFromID(allMedia:[String],completion: ((String, Bool) -> Void)? = nil){
         print("mediaCall")
             var mediaIDs = allMedia
@@ -593,7 +628,7 @@ class Institute {
                         var testMedia:Media = resource as! Media
                         let imageData = testMedia.content?.data
                         let decodedData = Data(base64Encoded: imageData!.value)!
-                        self.safeImageInDirectory(imageData: decodedData, name:String(id))
+                        self.saveImageInDirectory(imageData: decodedData, name:String(id))
                         if(testMedia.status!.rawValue == "completed"){
                             completion!(id, true)
                         }else {
@@ -606,7 +641,7 @@ class Institute {
             }
             
         }
-    
+    */
     
     
     
@@ -666,7 +701,7 @@ class Institute {
         
     }
     
-    func saveImage(imageData: Data,observationType: ObservationType){
+    func saveImage(imageData: Data,observationType: ObservationType, completion: @escaping (String) -> Void){
         
         print("saveImage")
         
@@ -708,8 +743,26 @@ class Institute {
         
         self.createImageMedia(imageData: imageData,category: obsType, completion: { media in
             self.updateImage(media: media)
+            completion(media.id!.description)
         })
         
+    }
+    
+    func updateImageMedia(name: String, imageData: Data, completion: @escaping () -> Void){
+        var media = images[name]
+        let base64Encoded = imageData.base64EncodedString()
+        media?.content?.data = Base64Binary(value:base64Encoded)
+        images[name] = media
+        self.updateImage(media: media!)
+        completion()
+    }
+    
+    func updateImageNote(name: String, imageNote: String, completion: @escaping () -> Void){
+        var media = images[name]
+        media?.note![0].text = FHIRString(imageNote)
+        images[name] = media
+        self.updateImage(media: media!)
+        completion()
     }
     
     func createImageMedia(imageData: Data, category: String, completion: @escaping (Media) -> Void){
@@ -743,6 +796,17 @@ class Institute {
                 print(error)
             }
         }
+        
+        med.note = [Annotation()]
+        med.note![0].text = FHIRString("test")
+        /*
+        var annotation = Annotation()
+        annotation.text = FHIRString("test")
+        med.note?.append(annotation)
+        */
+        
+        
+        
             
 
             if let client = Institute.shared.client {
@@ -751,6 +815,7 @@ class Institute {
                         print(error)
                     } else {
                         print("MediaCreationSucceded")
+                        self.images[med.id!.description] = med
                         print(med.id)
                         
                         completion(med)
@@ -803,6 +868,24 @@ class Institute {
             }
         }
         */
+    }
+    
+    func getMediaWithID(id: String, completion: @escaping (String) -> Void){
+        DispatchQueue.global(qos: .background).async {
+            Media.read(id, server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                    //completion!(id, true)
+                } else if resource != nil {
+                    var med:Media = resource as! Media
+                    //testMedia.status = EventStatus(rawValue: "preparation")
+                    self.images[med.id!.description] = med
+                    completion(med.id!.description)
+                    
+                }
+            }
+        }
+        
     }
     
     /**
@@ -886,7 +969,7 @@ class Institute {
                         // check error
                     }
                 case "imageMedia":
-                    print("createImage")
+                    print("asyne")
                     var newMedia = try Media(json: json)
                     if let client = Institute.shared.client {
                         newMedia.createAndReturn(client.server) { error in
@@ -1123,9 +1206,10 @@ class Institute {
         for med in allMedia {
             
             if med != nil {
+                print(med.id?.description)
                 let imageData = med.content?.data
                 let decodedData = Data(base64Encoded: imageData!.value)!
-                self.safeImageInDirectory(imageData: decodedData, name:String(med.id!.description))
+                self.saveImageInDirectory(imageData: med, name:String(med.id!.description))
                 /*
                 testMedia.update() { error in
                     if let error = error as? FHIRError {
@@ -1152,7 +1236,7 @@ class Institute {
                     var testMedia:Media = resource as! Media
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:String(med.id!.description))
+                    self.saveImageInDirectory(imageData: decodedData, name:String(med.id!.description))
                     /*
                     testMedia.update() { error in
                         if let error = error as? FHIRError {
@@ -1176,105 +1260,63 @@ class Institute {
         }
         
     }
-     
     
-    func recursiveMediaCall(allMedia:[String],completion: ((String) -> Void)? = nil){
-        print("recursiveMediaCall")
-        if (allMedia.count == 1) {
-            print("Letzte Datei:: Datei:")
-            //print(allMedia.last!.id!.string)
+    func previewMediaCall(allMedia:[Media],completion: (() -> Void)? = nil){
+        print("previewMediaCall")
+        var mediaIDs = allMedia
+        
+        for med in allMedia {
             
-            let obsRef = allMedia.last!
-            print("Check MEDIA ID")
-            print(obsRef)
-            
-            Media.read(String(obsRef), server: self.client!.server){ resource, error in
-                if let error = error as? FHIRError {
-                    print(error)
-                    completion!(obsRef)
-                } else if resource != nil {
-                    var testMedia:Media = resource as! Media
-                    let imageData = testMedia.content?.data
-                    let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:String(obsRef))
-                    completion!(obsRef)
-                }
+            if med != nil {
+                self.saveImageInDirectory(imageData: med, name:String(med.id!.description))
+                
             }
-            
-            
-        }else{
-            
-            print("verbleibende Dateien:")
-            print(allMedia.count)
-            //print("Ich speichere die Datei:")
-            //print(allMedia.last!.id!.string)
-            
-            let obsRef = allMedia.last!
-            print("Check MEDIA ID")
-            print(obsRef)
-            
-            Media.read(String(obsRef), server: self.client!.server){ resource, error in
-                if let error = error as? FHIRError {
-                    print(error)
-                } else if resource != nil {
-                    var testMedia:Media = resource as! Media
-                    let imageData = testMedia.content?.data
-                    let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:String(obsRef))
-                    completion!(obsRef)
-                }
-            }
-            
-            var newMedia = allMedia
-            newMedia.removeLast()
-            self.recursiveMediaCall(allMedia: newMedia, completion: completion)
             
         }
-        
+        completion!()
     }
     
-    
-    func safeImageInDirectory(imageData: Data, name: String){
-        //create an instance of the FileManager
-        let fileManager = FileManager.default
-        var imageName = "\(name).jpg"
-        //get the image path
-        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imageName)
-        //store it in the document directory
-        fileManager.createFile(atPath: imagePath as String, contents: imageData, attributes: nil)
-        print("Saved Photo with name:")
-        print(name)
-        //delegate?.addGalleryImage(imageName: "\(photoName).jpg")
-        photoName = photoName+1
+    func saveImageInDirectory(imageData: Media, name: String){
+        
+        if(images[name] != nil){
+            if(imageData.content?.data == nil && images[name]!.content?.data != nil){
+                //When we habe a preview Image, we dont want it to override images in the cache
+            }
+            
+        }else{
+            images[name] = imageData
+        }
     }
     
     func deleteAllImageMedia(){
-        let search = Media.search([])
-        
-        search.perform(client!.server) { bundle, error in
-            if nil != error {
-                // there was an error
-            }
-            else {
-                let allMedia = bundle?.entry?
-                    .filter() { return $0.resource is Media }
-                    .map() { return $0.resource as! Media }
-                    
-                    // now `bruces` holds all known Patient resources
-                    // named Bruce and born earlier than 1970
-                    if allMedia != nil {
-                        //print(allMedia)
-                        for imageMedia in allMedia! {
-                            imageMedia.delete {error in
-                                if nil != error {
-                                    print(error)
+        DispatchQueue.global(qos: .background).async {
+            let search = Media.search([])
+            
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let allMedia = bundle?.entry?
+                        .filter() { return $0.resource is Media }
+                        .map() { return $0.resource as! Media }
+                        
+                        // now `bruces` holds all known Patient resources
+                        // named Bruce and born earlier than 1970
+                        if allMedia != nil {
+                            //print(allMedia)
+                            for imageMedia in allMedia! {
+                                imageMedia.delete {error in
+                                    if nil != error {
+                                        print(error)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
+                }
             }
         }
+        
     }
     
     
@@ -1311,37 +1353,40 @@ class Institute {
     
     func deleteAllServiceRequests(){
         print("deleteAllServiceRequests")
-        let search = ServiceRequest.search([])
         
-        search.perform(client!.server) { bundle, error in
-            if nil != error {
-                print("Something went wrong")
-                print(error)
-            }
-            else {
-                let allServReq = bundle?.entry?
-                    .filter() { return $0.resource is ServiceRequest }
-                    .map() { return $0.resource as! ServiceRequest }
-                
-                    print("I have found count ServRequests:")
-                print(allServReq?.count)
+        DispatchQueue.global(qos: .background).async {
+            let search = ServiceRequest.search([])
+            
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    print("Something went wrong")
+                    print(error)
+                }
+                else {
+                    let allServReq = bundle?.entry?
+                        .filter() { return $0.resource is ServiceRequest }
+                        .map() { return $0.resource as! ServiceRequest }
                     
-                    // now `bruces` holds all known Patient resources
-                    // named Bruce and born earlier than 1970
-                    if allServReq != nil {
-                        //print(allMedia)
-                        for sr in allServReq! {
-                            print("Server of ServiceRequest")
-                            print(sr._server)
-                            
-                            sr.delete {error in
-                                if nil != error {
-                                    print(error)
+                        print("I have found count ServRequests:")
+                    print(allServReq?.count)
+                        
+                        // now `bruces` holds all known Patient resources
+                        // named Bruce and born earlier than 1970
+                        if allServReq != nil {
+                            //print(allMedia)
+                            for sr in allServReq! {
+                                print("Server of ServiceRequest")
+                                print(sr._server)
+                                
+                                sr.delete {error in
+                                    if nil != error {
+                                        print(error)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
+                        
+                }
             }
         }
     }
@@ -1426,32 +1471,33 @@ class Institute {
     }
     
     func deleteAllDiagnosticReports(){
-        let search = DiagnosticReport.search([])
-        
-        search.perform(client!.server) { bundle, error in
-            if nil != error {
-                // there was an error
-            }
-            else {
-                let allReports = bundle?.entry?
-                    .filter() { return $0.resource is DiagnosticReport }
-                    .map() { return $0.resource as! DiagnosticReport }
-                    
-                    // now `bruces` holds all known Patient resources
-                    // named Bruce and born earlier than 1970
-                    if allReports != nil {
-                        //print(allMedia)
-                        for report in allReports! {
-                            report.delete {error in
-                                if nil != error {
-                                    print(error)
+        DispatchQueue.global(qos: .background).async {
+            let search = DiagnosticReport.search([])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let allReports = bundle?.entry?
+                        .filter() { return $0.resource is DiagnosticReport }
+                        .map() { return $0.resource as! DiagnosticReport }
+                        
+                        // now `bruces` holds all known Patient resources
+                        // named Bruce and born earlier than 1970
+                        if allReports != nil {
+                            //print(allMedia)
+                            for report in allReports! {
+                                report.delete {error in
+                                    if nil != error {
+                                        print(error)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
+                }
             }
         }
+  
     }
     
     
@@ -1493,6 +1539,20 @@ class Institute {
     }
     
     
+    func loadPreviewImagesInBackground(type: String, completion: (() -> Void)? = nil){
+        getAllPreviewImagesOfTypeForPatient(type: type, completion: { (medias) in
+            self.previewMediaCall(allMedia: medias, completion: completion)
+            
+        })
+    }
+    
+    /*
+    func loadPreviewImagesInBackground(type: String, completion: (([Media]) -> Void)? = nil){
+        getAllPreviewImagesOfTypeForPatient(type: type, completion: completion)
+    }
+    */
+    
+    
     
     func loadImagesInBackground(type: String, completion: ((String, Bool) -> Void)? = nil){
         getAllImagesOfTypeForPatient(type: type, completion: { (medias) in
@@ -1500,6 +1560,7 @@ class Institute {
             
         })
     }
+    
     
     
     func getPatientByID(id : String, completion: @escaping ((Patient) -> Void)) {
@@ -1755,6 +1816,18 @@ class Institute {
             clearData()
         }
         
+    }
+    /**
+     Usually a collection view needs an array of Elements, that represent all the items that should be displayed in the collection
+     So instead of having a separate array in the GalleryVC we return a subset of the cache, that holds all the items to be displayed
+     */
+    func getOrderedImageSubset(category: String) -> [String]{
+        //create a subset of the dictionary, that only containes images of the category
+        let filteredByCategory = images.filter { $0.value.modality?.text?.description == category }
+        //Sort the subset to an array by the imageNames/ids of the images (same order as date would be)
+        let sortedKeys = filteredByCategory.keys.sorted(by: >)  // ["A", "D", "Z"]
+        //print(sortedKeys.description)
+        return sortedKeys
     }
     
     
