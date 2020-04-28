@@ -95,7 +95,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
                          cellData(opened: false, firstName:"Nikolai", familyName: "panke", sectionData: ["cell1","cell2","cell3"])]
         
         
-        Institute.shared.createPatientOnServer(firstName: "Miro", familyName: "Klose", gender: "male", birthday: "1982-01-23")
+        //Institute.shared.createPatientOnServer(firstName: "Miro", familyName: "Klose", gender: "male", birthday: "1982-01-23")
         
     }
     

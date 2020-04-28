@@ -41,7 +41,6 @@ class Institute {
     public var photoName = 0
     
     var serviceRequestID = ""
-    var observationObject: Observation? = nil
     var sereviceRequestObject: ServiceRequest? = nil
     var patientObject: Patient? = nil
     
@@ -137,10 +136,10 @@ class Institute {
                     if let error = error as? FHIRError {
                         print(error)
                     } else {
-                        print("ServiceRequestCreationSucceded")
+                        //print("ServiceRequestCreationSucceded")
                         self.sereviceRequestObject = serv
-                        print("I have created the ServiceRewuest with the ID:")
-                        print(serv.id)
+                        //print("I have created the ServiceRewuest with the ID:")
+                        //print(serv.id)
                         self.serviceRequestID = serv.id?.string ?? "noID"
                     }
                 }
@@ -150,60 +149,7 @@ class Institute {
         }
     }
     
-    func createObservation(category: String, completion:@escaping (() -> Void)) {
-        print("createObservation")
-        
-        DispatchQueue.global(qos: .background).async {
-            
-            var obs = Observation()
-            obs.code = CodeableConcept()
-            obs.code?.text = FHIRString(category)
-            obs.status = ObservationStatus(rawValue: "final")
-            obs.derivedFrom = [Reference()]
-            
-            if let client = Institute.shared.client {
-                obs.createAndReturn(client.server) { error in
-                    if let error = error as? FHIRError {
-                        print(error)
-                    } else {
-                        print("ObservationCreationSucceded")
-                        self.observationObject = obs
-                        print("I have created the Observation with the ID:")
-                        print(obs.id)
-                        completion()
-                    }
-                }
-                
-                // check error
-            }
-        }
-        
-    }
-    
-    func createAndReturnObservation(category: String) -> Observation{
-        
-        var replaced = ""
-        if let filepath = Bundle.main.path(forResource: "createObservation", ofType: "json") {
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                replaced = contents.replacingOccurrences(of: "replace_category", with: category)
-            } catch {
-                // contents could not be loaded
-            }
-        } else {
-            // example.txt not found!
-        }
-        
-        let observRequestURL = writeNewFile(replacedText: replaced, filename: "createObservation")
-        let observation = createObservationResource(createdFile: observRequestURL, resourceType: "observation")
-        
-        return observation
-        
-    }
-    
-    
-    
-    
+
     func changeAllMediaStatus(){
         getAllObservationsForPatient(completion: { (observations) in
             for observation in observations {
@@ -248,40 +194,44 @@ class Institute {
         
     }
     
-    func getAllObservationsOfTypeForPatient(type: String, completion: @escaping (([Observation]) -> Void)) {
-        print("getAllObservationsOfTypeForPatient")
     
-        let search = Observation.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "code":["$text": type]])
+    func getAllImagesOfTypeForPatient(type: String, completion: @escaping (([Media]) -> Void)) {
+           print("getAllObservationsOfTypeForPatient")
         
-        search.perform(self.client!.server) { bundle, error in
-            if nil != error {
-                print("ERROR")
-                print(error)
-            }
-            else {
-                let obs = bundle?.entry?
-                    .filter() { return $0.resource is Observation }
-                    .map() { return $0.resource as! Observation }
-                
-                print("We found some Observations:")
-                print(obs?.count)
-                
-                if obs != nil {
-                    if(!obs!.isEmpty){
-                        /*
-                        for observation in obs! {
-                            print(observation.id)
-                        }
- */
-                        completion(obs!)
-                        
-                    }
+            DispatchQueue.global(qos: .background).async {
+            
+                let search = Media.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "modality":["$text": type]])
+
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    search.perform(self.client!.server) { bundle, error in
+                               if nil != error {
+                                   print("ERROR")
+                                   print(error)
+                               }
+                               else {
+                                   let med = bundle?.entry?
+                                       .filter() { return $0.resource is Media }
+                                       .map() { return $0.resource as! Media }
+                                   
+                                   print("We found some Media:")
+                                   print(med?.count)
+                                   
+                                   if med != nil {
+                                       if(!med!.isEmpty){
+                                           completion(med!)
+                                           
+                                       }
+                                   }
+                                   
+                               }
+                           }
                 }
-                
             }
-        }
-        
-    }
+
+           
+           
+           
+       }
     
     
     func getAllImagesFromObservastion(observation: Observation, completion: @escaping (([String]) -> Void)) {
@@ -399,68 +349,6 @@ class Institute {
         
     }
     
-    func addObservationToServiceRequest(){
-        print ("addObservationToServiceRequest")
-        
-        
-        if sereviceRequestObject?.reasonReference != nil {
-            print("We HAVE reasonReference and append it")
-            do {
-                try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
-            } catch {
-                print(error)
-
-            }
-
-            do {
-                observationObject!.basedOn = [Reference()]
-                try observationObject!.basedOn?.append(observationObject!.reference(resource: sereviceRequestObject!))
-            } catch {
-                print(error)
-
-            }
-        }else{
-            print("We dont have reasonReference and create it")
-            sereviceRequestObject?.reasonReference = [Reference()]
-            do {
-                try sereviceRequestObject!.reasonReference?.append(sereviceRequestObject!.reference(resource: observationObject!))
-            } catch {
-                print(error)
-
-            }
-            
-            do {
-                observationObject!.basedOn = [Reference()]
-                try observationObject!.basedOn?.append(observationObject!.reference(resource: sereviceRequestObject!))
-            } catch {
-                print(error)
-
-            }
-        }
-        
-        
-        
-        //print("Added the refference")
-        //print(sereviceRequestObject!.reasonReference)
-        
-        sereviceRequestObject!.update() { error in
-            if let error = error as? FHIRError {
-                print(error)
-            } else {
-                print("ServiceRequestUpdateSucceded")
-            }
-        }
-        
-        observationObject!.update() { error in
-            if let error = error as? FHIRError {
-                print(error)
-            } else {
-                print("ObservationUpdateSucceded")
-            }
-        }
-        
-        
-    }
     
     func createOrganization(organizationName: String, contactName: String, contactNumber: String){
         
@@ -496,75 +384,70 @@ class Institute {
         
         
         
-        if observationObject == nil {
-            switch observationType {
-            case .Anamnesis:
-                obsType = "Anamnese"
-            case .MedicalLetter:
-                obsType = "Arztbriefe"
-            case .Haemodynamics:
-                obsType = "Haemodynamik"
-            case .Respiration:
-                obsType = "Beatmung"
-            case .BloodGasAnalysis:
-                obsType = "Blutgasanalyse"
-            case .Perfusors:
-                obsType = "Perfusoren"
-            case .InfectiousDisease:
-                obsType = "Infektiologie"
-            case .Radeology:
-                obsType = "Radiologie"
-            case .Lab:
-                obsType = "Labor"
-            case .Others:
-                obsType = "Sonstige"
-            case .NONE:
-                obsType = "NONE"
-            default:
-                obsType = ""
-            }
-            //erstelle neue Observation
-            //hänge sie dem SeviceRequest als Refferenz an
-            print("Wir haben als Observation nil und erstellen eine neue")
-            createObservation(category: obsType, completion: {
-                self.searchServiceRequestWithID(id: self.serviceRequestID, completion: {
-                    self.addObservationToServiceRequest()
-                })
-                self.createImageMedia(imageData: imageData)
-                
-                
-            })
-            
-        }else{
-            print("haben die Observation")
-            print(observationObject?.id)
-            print("und arbeiten mit der")
-            
-            
-            self.createImageMedia(imageData: imageData)
-            
+        switch observationType {
+        case .Anamnesis:
+            obsType = "Anamnese"
+        case .MedicalLetter:
+            obsType = "Arztbriefe"
+        case .Haemodynamics:
+            obsType = "Haemodynamik"
+        case .Respiration:
+            obsType = "Beatmung"
+        case .BloodGasAnalysis:
+            obsType = "Blutgasanalyse"
+        case .Perfusors:
+            obsType = "Perfusoren"
+        case .InfectiousDisease:
+            obsType = "Infektiologie"
+        case .Radeology:
+            obsType = "Radiologie"
+        case .Lab:
+            obsType = "Labor"
+        case .Others:
+            obsType = "Sonstige"
+        case .NONE:
+            obsType = "NONE"
+        default:
+            obsType = ""
         }
         
-        
+        self.createImageMedia(imageData: imageData,category: obsType, completion: { media in
+            self.updateImage(media: media)
+        })
         
     }
     
-    func createImageMedia(imageData: Data){
+    func createImageMedia(imageData: Data, category: String, completion: @escaping (Media) -> Void){
+    print("createImageMedia")
+    
+    DispatchQueue.global(qos: .background).async {
         
-        DispatchQueue.global(qos: .background).async {
-            
-            var med = Media()
-            med.status = EventStatus(rawValue: "completed")
-            med.createdDateTime = DateTime.now
-            
-            var image = Attachment()
-            image.contentType = "image/jpeg"
-            //image.data = Base64Binary(imageData.base64EncodedString() as Base64Binary
-            //let str = String(decoding: data, as: UTF8.self)
-            let base64Encoded = imageData.base64EncodedString()
-            image.data = Base64Binary(value:base64Encoded)
-            
-            med.content = image
+        var med = Media()
+        med.status = EventStatus(rawValue: "preparation")
+        
+        var cc = CodeableConcept()
+        cc.text = FHIRString(category)
+        
+        med.modality = cc
+        med.createdDateTime = DateTime.now
+        
+        var image = Attachment()
+        image.contentType = "image/jpeg"
+        //image.data = Base64Binary(imageData.base64EncodedString() as Base64Binary
+        //let str = String(decoding: data, as: UTF8.self)
+        let base64Encoded = imageData.base64EncodedString()
+        image.data = Base64Binary(value:base64Encoded)
+        
+        med.content = image
+        
+        if(self.sereviceRequestObject != nil){
+            do {
+                med.basedOn = [Reference()]
+                try med.basedOn?.append(med.reference(resource: self.sereviceRequestObject!))
+            } catch {
+                print(error)
+            }
+        }
             
 
             if let client = Institute.shared.client {
@@ -573,24 +456,10 @@ class Institute {
                         print(error)
                     } else {
                         print("MediaCreationSucceded")
-                        if(self.observationObject != nil){
-                            do {
-                                try self.observationObject!.derivedFrom?.append(self.observationObject!.reference(resource: med))
-                            } catch {
-                                print(error)
-                            }
-                            
-                            //print("Added the refference")
-                            //print(observation.derivedFrom)
-                            
-                            self.observationObject!.update() { error in
-                                if let error = error as? FHIRError {
-                                    print(error)
-                                } else {
-                                    print("ObservationUpdateSucceded")
-                                }
-                            }
-                        }
+                        print(med.id)
+                        
+                        completion(med)
+                        
                         
                     }
                 }
@@ -598,6 +467,47 @@ class Institute {
                 // check error
             }
         }
+    }
+    
+    func updateImage(media: Media){
+        DispatchQueue.global(qos: .background).async {
+            media.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("MediaUpdateSucceded")
+                }
+                
+                self.sereviceRequestObject!.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("ServicerequestUpdateSucceded")
+                    }
+                }
+            }
+        }
+        /*
+        Media.read(String(self.mediaObject!.id!.description), server: self.client!.server){ resource, error in
+            if let error = error as? FHIRError {
+                print(error)
+                //completion!(id, true)
+            } else if resource != nil {
+                var testMedia:Media = resource as! Media
+                //testMedia.status = EventStatus(rawValue: "preparation")
+                
+                 testMedia.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("MediaUpdateSucceded")
+                    }
+                }
+        
+                
+            }
+        }
+        */
     }
     
     /**
@@ -633,41 +543,6 @@ class Institute {
         return url!
     }
     
-    private func createObservationResource(createdFile: URL, resourceType: String) -> Observation{
-        
-        let data = NSData(contentsOf: createdFile)!
-        var ressource = Observation()
-        
-        do {
-            if let json = try JSONSerialization.jsonObject(with: data as Data, options: []) as? FHIRJSON {
-                
-                switch resourceType {
-                case "observation":
-                    var newObservation = try Observation(json: json)
-                    if let client = Institute.shared.client {
-                        newObservation.createAndReturn(client.server) { error in
-                            if let error = error as? FHIRError {
-                                print(error)
-                            } else {
-                                print("ObservationCreationSucceded")
-                                ressource = newObservation
-                            }
-                        }
-                        
-                        // check error
-                    }
-                default:
-                    print("Error in ResourceCreation")
-                }
-                
-            }
-        } catch{
-            print(error)
-        }
-        
-        return ressource
-        
-    }
     
     private func createResource(createdFile: URL, resourceType: String, reference: DomainResource?, completion: (() -> Void)? = nil){
         print("createResource")
@@ -760,23 +635,6 @@ class Institute {
                             returnID = newOrganization.id?.string ?? "noID"
                             print("I have created the organization with the ID:")
                             print(returnID)
-                        }
-                    }
-                    
-                    // check error
-                }
-                case "observation":
-                var newObservation = try Observation(json: json)
-                if let client = Institute.shared.client {
-                    newObservation.createAndReturn(client.server) { error in
-                        if let error = error as? FHIRError {
-                            print(error)
-                        } else {
-                            print("ObservationCreationSucceded")
-                            self.observationObject = newObservation
-                            print("I have created the Observation with the ID:")
-                            print(newObservation.id)
-                            completion?()
                         }
                     }
                     
@@ -963,12 +821,35 @@ class Institute {
     }
     
     
-    func mediaCall(allMedia:[String],completion: ((String, Bool) -> Void)? = nil){
+    func mediaCall(allMedia:[Media],completion: ((String, Bool) -> Void)? = nil){
         print("mediaCall")
         var mediaIDs = allMedia
         
-        for id in allMedia {
-            Media.read(String(id), server: self.client!.server){ resource, error in
+        for med in allMedia {
+            
+            if med != nil {
+                let imageData = med.content?.data
+                let decodedData = Data(base64Encoded: imageData!.value)!
+                self.safeImageInDirectory(imageData: decodedData, name:String(med.id!.description))
+                /*
+                testMedia.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("MediaUpdateSucceded")
+                    }
+                }
+                */
+                if(med.status!.rawValue == "completed"){
+                    completion!(med.id!.description, true)
+                }else {
+                    completion!(med.id!.description, false)
+                }
+                
+            }
+            
+            /*
+            Media.read(med.id!.description, server: self.client!.server){ resource, error in
                 if let error = error as? FHIRError {
                     print(error)
                     //completion!(id, true)
@@ -976,15 +857,26 @@ class Institute {
                     var testMedia:Media = resource as! Media
                     let imageData = testMedia.content?.data
                     let decodedData = Data(base64Encoded: imageData!.value)!
-                    self.safeImageInDirectory(imageData: decodedData, name:String(id))
+                    self.safeImageInDirectory(imageData: decodedData, name:String(med.id!.description))
+                    /*
+                    testMedia.update() { error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else {
+                            print("MediaUpdateSucceded")
+                        }
+                    }
+                    */
                     if(testMedia.status!.rawValue == "completed"){
-                        completion!(id, true)
+                        completion!(med.id!.description, true)
                     }else {
-                        completion!(id, false)
+                        completion!(med.id!.description, false)
                     }
                     
                 }
+                
             }
+            */
             
         }
         
@@ -1226,16 +1118,9 @@ class Institute {
     
     
     func loadImagesInBackground(type: String, completion: ((String, Bool) -> Void)? = nil){
-        self.observationObject = nil
-        getAllObservationsOfTypeForPatient(type: type, completion: { (observations) in
-            for observation in observations {
-                self.getAllImagesFromObservastion(observation: observation, completion: { (imageIDs) in
-                    print("I GOT THEEE IMAGE IDD")
-                    print(imageIDs.description)
-                    self.mediaCall(allMedia: imageIDs, completion: completion)
-                    
-                })
-            }
+        getAllImagesOfTypeForPatient(type: type, completion: { (medias) in
+            self.mediaCall(allMedia: medias, completion: completion)
+            
         })
     }
     
@@ -1271,6 +1156,47 @@ class Institute {
         }
     }
     */
+    
+    func countImages(type: String){
+        print("countImages")
+        
+        DispatchQueue.global(qos: .background).async {
+        
+            //let search = Media.search(["_summary": "count", "modality":["$text": type]])
+            //let search = Media.search(["modality":["$text": type],"_summary": "count"])
+            let search = FHIRSearch(type: Media.self, query: ["_summary": "count", "modality":["$text": type]])
+            /*
+            let search = FHIRSearch(query: [
+                "subject": [
+                    "$type": "Media",
+                    "_summary": "count",
+                    "modality":["$text": type]
+                ]
+            ])
+            */
+            print(search.construct())
+
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                search.perform(self.client!.server) { bundle, error in
+                           if nil != error {
+                               print("ERROR")
+                               print(error)
+                           }
+                           else {
+                               let med = bundle?.entry?
+                                   .filter() { return $0.resource is Media }
+                                   .map() { return $0.resource as! Media }
+                               
+                               print("We found som many cunts:")
+                               print(med?.count)
+                               
+                               
+                           }
+                       }
+            }
+        }
+        
+    }
     
     
 }

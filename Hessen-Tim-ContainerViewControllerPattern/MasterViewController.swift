@@ -106,25 +106,25 @@ class MasterViewController: UITableViewController {
             var type = ObservationType.NONE
             switch indexPath.row {
             case 1:
-                type = ObservationType.Anamnese
+                type = ObservationType.Anamnesis
             case 2:
-                type = ObservationType.Arztbriefe
+                type = ObservationType.MedicalLetter
             case 3:
-                type = ObservationType.Haemodynamik
+                type = ObservationType.Haemodynamics
             case 4:
-                type = ObservationType.Beatmung
+                type = ObservationType.Respiration
             case 5:
-                type = ObservationType.Blutgasanalyse
+                type = ObservationType.BloodGasAnalysis
             case 6:
-                type = ObservationType.Perfusoren
+                type = ObservationType.Perfusors
             case 7:
-                type = ObservationType.Infektiologie
+                type = ObservationType.InfectiousDisease
             case 8:
-                type = ObservationType.Radiologie
+                type = ObservationType.Radeology
             case 9:
-                type = ObservationType.Labor
+                type = ObservationType.Lab
             case 10:
-                type = ObservationType.Sonstige
+                type = ObservationType.Others
             default:
                 type = ObservationType.NONE
             }
