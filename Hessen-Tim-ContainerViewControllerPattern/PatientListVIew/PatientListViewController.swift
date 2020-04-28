@@ -8,6 +8,7 @@
 
 import UIKit
 import SMART
+import Foundation
 
 
 struct cellData {
@@ -44,6 +45,7 @@ fileprivate func parseDate(_ str : String) -> Date {
 
 class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var list: PatientList?
+    var newPatient: Patient?
     
     var selectedCellIndexPath: IndexPath?
     
@@ -91,6 +93,10 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
                          cellData(opened: false, firstName:"Paul", familyName: "panzer", sectionData: ["cell1","cell2","cell3", "cell4"]),
                          cellData(opened: false, firstName:"Heiko", familyName: "blümlein", sectionData: ["cell1","cell2"]),
                          cellData(opened: false, firstName:"Nikolai", familyName: "panke", sectionData: ["cell1","cell2","cell3"])]
+        
+        
+        Institute.shared.createPatientOnServer(firstName: "Miro", familyName: "Klose", gender: "male", birthday: "1982-01-23")
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -189,19 +195,51 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             for patientNumber in 0..<(Int(list!.patients!.count-1)) {
                 let patient = list?.patients?[Int(patientNumber)]
                 if let name = patient?.name?[0] {
-                    print(name.family?.string)
-                    print(name.given?[0].string)
-                    print("---")
+                    //print(name.family?.string)
+                    //print(name.given?[0].string)
+                    //print("---")
                     
-                    tableViewData.append(cellData(opened: false, vorname: name.family!.string, nachname: (name.given?[0].string)!, sectionData: ["cell1","cell2","cell3"]))
-                    
+                    tableViewData.append(cellData(opened: false, firstName: name.family!.string, familyName: (name.given?[0].string)!, sectionData: ["cell1","cell2","cell3"]))
+  
                 }
                 
             }
         }
- 
-            
+        
+        let search = Patient.search([
+            "gender": "male"
+        ])
+        if let client = Institute.shared.client {
+            search.perform(client.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let searchPatient = bundle?.entry?
+                        .filter() { return $0.resource is Patient }
+                        .map() { return $0.resource as! Patient }
+                        
+                        // now `bruces` holds all known Patient resources
+                        // named Bruce and born earlier than 1970
+                    
+                    print(searchPatient?.count)
+                    for patientMale in 0..<(Int(searchPatient!.count)) {
+                        let patient = searchPatient?[Int(patientMale)]
+                        print("id ")
+                        print(patient?.id)
+                        if let name = patient?.name?[0] {
+                            print(name.family?.string)
+                            print(name.given?[0].string)
+                            print("---")
+                            
+                        }
+                    }
+                }
+            }
+        // check error
+        }
+        
+               
     }
-
     
 }

@@ -27,6 +27,14 @@ class SplitViewController: UISplitViewController , UISplitViewControllerDelegate
         
     }
     
+    func setCategory(category: Int){
+        let masterVC = self.viewControllers.first as? MasterViewController
+        if let masterVC = masterVC {
+            let indexPath = IndexPath(row: category, section: 0)
+            masterVC.tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.middle)
+        }
+    }
+    
     func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode){
         
         print(self.displayMode.rawValue)

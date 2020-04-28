@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var splitView = false
     
+    var observID = ObservationType.NONE
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         setupRootViewController(animated: false)
         return true
@@ -45,18 +47,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 transition = .transitionFlipFromLeft
             
             }else{
-                let splitViewController = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "SplitVC") as! UISplitViewController
+                let medicalData = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "medicalDataVC") as! MedicalDataViewController
+                //let splitViewController = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "SplitVC") as! UISplitViewController
+                let splitViewController = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "SplitVC") as! SplitViewController
                 let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
                 navigationController.topViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
-                //splitViewController.delegate = self as! UISplitViewControllerDelegate
+                
+                
                 
                 let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
-                let controller = masterNavigationController.topViewController as! MasterViewController
+                let detailsNavigationController = splitViewController.viewControllers.last as? UINavigationController
+                let masterViewCOntroller = masterNavigationController.topViewController as! MasterViewController
+                let detailViewController = detailsNavigationController?.topViewController as! BaseViewController
                 
                 newRootViewController = splitViewController
                 transition = .transitionFlipFromRight
                 
                 splitView = false
+                
+                detailViewController.observationType = observID
+                //print("In APPdelegate I push the Value:" + String(splitViewController.selectedCategory.description))
                 
             }
             // update app's rootViewController

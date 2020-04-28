@@ -1,0 +1,23 @@
+{
+    "resourceType" : "ServiceRequest",
+    "status" : "replace_status",
+    "intent" : "replace_intent",
+    "category": [
+        {
+          "text": "replace_category"
+        }
+    ],
+    "priority" : "replace_priority",
+    "subject": {
+        "reference": "Patient/replace_patientID"
+    },
+    "authoredOn" : "replace_authoredOn",
+    "requester": {
+        "reference": "Organization/replace_organizationID"
+    },
+    "reasonReference": [
+        {
+            "reference": "Observation/replace_observationID"
+        }
+    ]
+}

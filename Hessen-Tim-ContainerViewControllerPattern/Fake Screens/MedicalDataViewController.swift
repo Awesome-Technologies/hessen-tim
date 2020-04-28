@@ -20,7 +20,9 @@ class MedicalDataViewController: UIViewController {
     var doctor: String = "Dr.Stein"
     var number: String = "017412345"
     
+    var serviceRequestID: String = ""
 
+    
     @IBOutlet weak var patientName: UILabel!
     @IBOutlet weak var patientBirthday: UILabel!
     @IBOutlet weak var patientSize: UILabel!
@@ -74,37 +76,41 @@ class MedicalDataViewController: UIViewController {
         contactNumber.text = number
         
         // Do any additional setup after loading the view.
+        
+        //Institute.shared.deleteAllImageMedia()
+        Institute.shared.clearAllFile()
+        //Institute.shared.loadAllMediaResource()
     }
     
     @IBAction func anamnesePictures(_ sender: Any) {
-        openPictureView(sender: sender, category: "Anamnese")
+        openPictureView(sender: sender, category: ObservationType.Anamnesis)
     }
     @IBAction func arztbriefePictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Arztbrief")
+        openPictureView(sender: sender,category: ObservationType.MedicalLetter)
     }
     @IBAction func haemodynamikPictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Haemodynamik")
+        openPictureView(sender: sender,category: ObservationType.Haemodynamics)
     }
     @IBAction func beatmungPictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Beatmung")
+        openPictureView(sender: sender,category: ObservationType.Respiration)
     }
     @IBAction func blutgasanalysePictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Blutgasanalyse")
+        openPictureView(sender: sender,category:ObservationType.BloodGasAnalysis)
     }
     @IBAction func perfusorenPictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Perfusoren")
+        openPictureView(sender: sender,category: ObservationType.Perfusors)
     }
     @IBAction func InfektiologiePictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Infektiologie")
+        openPictureView(sender: sender,category: ObservationType.InfectiousDisease)
     }
     @IBAction func radeologiePictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Radeologie")
+        openPictureView(sender: sender,category: ObservationType.Radeology)
     }
     @IBAction func laborPictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Labor")
+        openPictureView(sender: sender,category: ObservationType.Lab)
     }
     @IBAction func sonstigePictures(_ sender: Any) {
-        openPictureView(sender: sender,category: "Sonstige")
+        openPictureView(sender: sender,category: ObservationType.Others)
     }
     
     @IBAction func send(_ sender: Any) {
@@ -189,24 +195,30 @@ class MedicalDataViewController: UIViewController {
         performSegue(withIdentifier: "toPatientList", sender: sender)
     }
     
-    func openPictureView(sender: Any, category: String){
-        print("Call SplitView, from: " + category)
+    func openPictureView(sender: Any, category: ObservationType){
+        print("MedicalViewCon:Call SplitView, from openPictureView" )
+        
+        var observation = ObservationType.NONE
+
         let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.observID = category
         delegate.splitView = true
         delegate.setupRootViewController(animated: true)
-
+        
         self.performSegue(withIdentifier: "takePicturesForCategory", sender: sender)
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "takePicturesForCategory" {
+            
+            let destination = segue.destination as! SplitViewController
+            //destination.observationID = "TestObservationID"
+            //destination.setCategory(category: 3)
+            print("From Medical view I five the ID: 3")
+            
+            
+        }
     }
-    */
 
 }

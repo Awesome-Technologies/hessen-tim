@@ -22,7 +22,15 @@
 		8F5233EE223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233ED223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternTests.swift */; };
 		8F5233F9223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */; };
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
+		8F94A9F02404024900E96A06 /* createServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9EF2404024800E96A06 /* createServiceRequest.json */; };
+		8F94A9F22404200600E96A06 /* imageMedia.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9F12404200500E96A06 /* imageMedia.json */; };
 		8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */; };
+		8FAFC677240CFA12006A9DB1 /* ObservationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAFC676240CFA12006A9DB1 /* ObservationType.swift */; };
+		8FAFC679240D6688006A9DB1 /* createObservation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FAFC678240D6687006A9DB1 /* createObservation.json */; };
+		8FB03D2D2407C174007E7449 /* createOrganization.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2C2407C172007E7449 /* createOrganization.json */; };
+		8FB03D2F2407F27F007E7449 /* updateServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */; };
+		8FC274A123FD2CA400695E74 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FC274A023FD2CA300695E74 /* Patient.json */; };
+		8FC274A323FD542E00695E74 /* createPatient.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FC274A223FD542E00695E74 /* createPatient.json */; };
 		8FC39D9723D8410100FBD225 /* MedicalDataNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */; };
 		8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */; };
 		8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A722CA181E0034A913 /* OrderListViewController.swift */; };
@@ -81,7 +89,15 @@
 		8F5233F8223949D70020292F /* Hessen_Tim_ContainerViewControllerPatternUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hessen_Tim_ContainerViewControllerPatternUITests.swift; sourceTree = "<group>"; };
 		8F5233FA223949D70020292F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
+		8F94A9EF2404024800E96A06 /* createServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createServiceRequest.json; sourceTree = "<group>"; };
+		8F94A9F12404200500E96A06 /* imageMedia.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageMedia.json; sourceTree = "<group>"; };
 		8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataViewController.swift; sourceTree = "<group>"; };
+		8FAFC676240CFA12006A9DB1 /* ObservationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationType.swift; sourceTree = "<group>"; };
+		8FAFC678240D6687006A9DB1 /* createObservation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createObservation.json; sourceTree = "<group>"; };
+		8FB03D2C2407C172007E7449 /* createOrganization.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createOrganization.json; sourceTree = "<group>"; };
+		8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = updateServiceRequest.json; sourceTree = "<group>"; };
+		8FC274A023FD2CA300695E74 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
+		8FC274A223FD542E00695E74 /* createPatient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createPatient.json; sourceTree = "<group>"; };
 		8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataNotificationView.swift; sourceTree = "<group>"; };
 		8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		8FDE86A722CA181E0034A913 /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
@@ -175,13 +191,15 @@
 		8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */ = {
 			isa = PBXGroup;
 			children = (
+				8FAFC675240CF9FF006A9DB1 /* Enumeration */,
+				8FC2749F23FD2B2C00695E74 /* ResourceCreationFiles */,
+				8F5233DC223949D50020292F /* Main.storyboard */,
 				8FC39D9323D840B500FBD225 /* NotificationView */,
 				97BA9E6D238EC3F800AF5DDD /* SMART */,
 				8F4B241322C5020B00A8E678 /* iOSDropDown.swift */,
 				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
-				8F5233DC223949D50020292F /* Main.storyboard */,
 				8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */,
 				8F4B241022C500D100A8E678 /* Patientendaten */,
 				9724C7DE2256E26E006A67DF /* Fake Screens */,
@@ -222,12 +240,34 @@
 			path = PatientListVIew;
 			sourceTree = "<group>";
 		};
+		8FAFC675240CF9FF006A9DB1 /* Enumeration */ = {
+			isa = PBXGroup;
+			children = (
+				8FAFC676240CFA12006A9DB1 /* ObservationType.swift */,
+			);
+			path = Enumeration;
+			sourceTree = "<group>";
+		};
 		8FB9E65E22F0878000CE4FF6 /* OrderListView */ = {
 			isa = PBXGroup;
 			children = (
 				8FDE86A722CA181E0034A913 /* OrderListViewController.swift */,
 			);
 			path = OrderListView;
+			sourceTree = "<group>";
+		};
+		8FC2749F23FD2B2C00695E74 /* ResourceCreationFiles */ = {
+			isa = PBXGroup;
+			children = (
+				8FAFC678240D6687006A9DB1 /* createObservation.json */,
+				8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */,
+				8FB03D2C2407C172007E7449 /* createOrganization.json */,
+				8F94A9F12404200500E96A06 /* imageMedia.json */,
+				8F94A9EF2404024800E96A06 /* createServiceRequest.json */,
+				8FC274A223FD542E00695E74 /* createPatient.json */,
+				8FC274A023FD2CA300695E74 /* Patient.json */,
+			);
+			path = ResourceCreationFiles;
 			sourceTree = "<group>";
 		};
 		8FC39D9323D840B500FBD225 /* NotificationView */ = {
@@ -403,6 +443,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F5233E3223949D70020292F /* LaunchScreen.storyboard in Resources */,
+				8F94A9F22404200600E96A06 /* imageMedia.json in Resources */,
+				8FB03D2D2407C174007E7449 /* createOrganization.json in Resources */,
+				8FC274A323FD542E00695E74 /* createPatient.json in Resources */,
+				8F94A9F02404024900E96A06 /* createServiceRequest.json in Resources */,
+				8FC274A123FD2CA400695E74 /* Patient.json in Resources */,
+				8FAFC679240D6688006A9DB1 /* createObservation.json in Resources */,
+				8FB03D2F2407F27F007E7449 /* updateServiceRequest.json in Resources */,
 				8F5233E0223949D70020292F /* Assets.xcassets in Resources */,
 				8F5233DE223949D50020292F /* Main.storyboard in Resources */,
 			);
@@ -524,6 +571,7 @@
 				8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */,
 				9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */,
 				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
+				8FAFC677240CFA12006A9DB1 /* ObservationType.swift in Sources */,
 				9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */,
 				8FEB9B0A2264B24C00DD45CF /* PatientDataViewController.swift in Sources */,
 				8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */,

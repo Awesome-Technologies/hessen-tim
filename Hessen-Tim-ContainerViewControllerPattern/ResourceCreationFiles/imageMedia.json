@@ -1,0 +1,9 @@
+{
+  "resourceType": "Media",
+  "status": "completed",
+  "createdDateTime": "replace_createdDateTime",
+  "content": {
+    "contentType": "image/jpeg",
+    "data": "replace_data",
+  }
+}

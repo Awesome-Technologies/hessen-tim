@@ -1,0 +1,13 @@
+{
+    "resourceType" : "Observation",
+    "status": "final",
+    "code":
+        {
+          "text": "replace_category"
+        },
+    "derivedFrom": [
+        {
+            "reference": "Media/replace_mediaID"
+        }
+    ]
+}

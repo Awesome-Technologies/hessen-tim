@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMART
 
 class InsertPatientData: UIViewController {
     
@@ -26,6 +27,13 @@ class InsertPatientData: UIViewController {
     
     let datePicker = UIDatePicker()
     
+    var organizationID = ""
+    var patientID = ""
+    var serviceRequestID = ""
+    
+    var observation = Observation()
+    var serviceRequest = ServiceRequest()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,6 +50,11 @@ class InsertPatientData: UIViewController {
         }
         
         showDatePicker()
+        
+        
+        //Institute.shared.deleteAllImageMedia()
+        Institute.shared.deleteAllObservations()
+        //Institute.shared.deleteAllServiceRequests()
     }
     
     @IBAction func toPrevScreen(_ sender: Any) {
@@ -84,6 +97,22 @@ class InsertPatientData: UIViewController {
     @IBAction func `continue`(_ sender: Any) {
         //print("continue to Main View")
         //print("name: " +  String(self.patientName.text!))
+        //Institute.shared.deleteAllServiceRequests()
+        
+        //serviceRequestID =
+        
+        //serviceRequest = Institute.shared.searchServiceRequestWithID(id: "61")
+        //Institute.shared.deleteAllImageMedia()
+        //Institute.shared.deleteAllObservations()
+        //Institute.shared.deleteAllServiceRequests()
+        //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
+       
+        if(true){
+            //organizationID = Institute.shared.createOrganization(organizationName: "TestKlinik", contactName: "DR.Sommer", contactNumber: "123456s")
+            //serviceRequestID = Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
+            //Institute.shared.updateServiceRequest(id: "61", status: "draft", intent: "proposal", category: "Weaning", priority: "asap", authoredOn: "2020-02-23", patientID: "7", organizationID: "51")
+            
+        }
     }
     
     
@@ -112,6 +141,35 @@ class InsertPatientData: UIViewController {
             controller.clinic = self.clinicName.text!
             controller.doctor = self.contactDoctor.text!
             controller.number = self.contactNumber.text!
+            
+            controller.serviceRequestID = self.serviceRequestID
+            
+            //Institute.shared.createServiceRequest(status: "draft", intent: "proposal", priority: "asap", authoredOn: "2020-02-23")
+            //Institute.shared.searchAllServiceRequests()
+            //Institute.shared.searchAllPatientRequests()
+            //Institute.shared.createObservation(category: "Blutgasanalyse")
+            /*
+            Institute.shared.searchObservationWithID(id: "67", completion: {(value) in
+                
+                DispatchQueue.main.async {
+                    self.observation = value
+                    print(self.observation)
+                }
+                
+                print(self.observation.id)
+                
+            })
+            */
+            //print("IPrintTheObservation:")
+            //print(observation)
+            //Institute.shared.searchServiceRequestWithID(id: "61")
+            //Institute.shared.searchOnePatient()
+            //print("ServiceRequest.ID")
+            //print(serviceRequest.id)
+            //Institute.shared.addObservationToServiceRequest()
+            
+            
+            
         }
     }
 

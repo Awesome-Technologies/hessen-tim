@@ -11,6 +11,8 @@ import UIKit
 class MasterViewController: UITableViewController {
 
     var addButton: UIBarButtonItem!
+    
+    var selectedCategory = 4
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +29,24 @@ class MasterViewController: UITableViewController {
         tableView.rowHeight = 65
 
         self.view.backgroundColor = UIColor.init(red: 38/255, green: 47/255, blue: 83/255, alpha: 1)
+        
+        /*
+        var initialIndexPath = IndexPath(row: selectedCategory, section: 0)
+        //self.performSegue(withIdentifier: "mySegue", sender: initialIndexPath)
+        self.tableView.selectRow(at: initialIndexPath, animated: true, scrollPosition:UITableView.ScrollPosition.none)
+        self.performSegue(withIdentifier: "cameraData", sender: initialIndexPath)
+        */
+        
 
 
     }
+    /*
+    override func viewDidAppear(_ animated: Bool) {
+      // ...
+        var initialIndexPath = IndexPath(row: selectedCategory, section: 0)
+        //self.tableView.selectRow(at: initialIndexPath, animated: true, scrollPosition:UITableView.ScrollPosition.none)
+    }
+    */
 
     // MARK: - Table view data source
     /*

@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SMART
 
 /**
  //Camera View tutorial from here: https://guides.codepath.com/ios/Creating-a-Custom-Camera-View
@@ -45,6 +46,8 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     
     
     var photoName = 0
+    
+    var currentObservation:ObservationType = .NONE
     
     
     override func viewDidLoad() {
@@ -159,7 +162,9 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
     }
     
     //Function called by the photo button from the base View
-    func makePhoto(){
+    func makePhoto(observation: ObservationType){
+        
+        currentObservation = observation
         
         photoName = photoName+1
         
@@ -185,6 +190,8 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
         let data = image.jpegData(compressionQuality: 1)
         //store it in the document directory
         fileManager.createFile(atPath: imagePath as String, contents: data, attributes: nil)
+        
+        Institute.shared.saveImage(imageData: data!, observationType: currentObservation)
     }
     
     func getImage(imageName: String){

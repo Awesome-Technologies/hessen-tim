@@ -1,0 +1,17 @@
+{
+  "resourceType": "Organization",
+  "name": "replace_organizationName",
+  "contact": [
+    {
+      "name": {
+        "text": "replace_contactName"
+      },
+      "telecom": [
+        {
+          "system": "phone",
+          "value": "replace_contactNumber"
+        }
+      ]
+    }
+  ]
+}

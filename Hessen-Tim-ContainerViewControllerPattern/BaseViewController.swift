@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMART
 
 /*
  Helping Tutorials:
@@ -20,7 +21,17 @@ class BaseViewController: UIViewController {
     //UIView that overlays the BaseView in a light gray, when splitView bar is visible
     var customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
     let window = UIApplication.shared.keyWindow!
-
+    
+    var observationType: ObservationType? {
+      didSet {
+        loadViewIfNeeded()
+      }
+    }
+    
+    var currentObservation: ObservationType = .NONE
+    
+    var observationObject:Observation? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -31,6 +42,8 @@ class BaseViewController: UIViewController {
         self.navigationItem.leftItemsSupplementBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(toPrevScreen))
         
+        setTitle(type: observationType!)
+        
         //initialization information for the gray sidebar
         customView = UIView(frame: window.bounds)
         self.customView.backgroundColor = UIColor.gray.withAlphaComponent(0.0)
@@ -40,6 +53,69 @@ class BaseViewController: UIViewController {
         //Notifications to get information from the sidebar, when the gray overlay has to be turned on or off
         NotificationCenter.default.addObserver(self, selector: #selector(addGraySubview(_:)), name: Notification.Name(rawValue: "addGraySubview"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(removeGraySubview(_:)), name: Notification.Name(rawValue: "removeGraySubview"), object: nil)
+        
+        //Institute.shared.searchAllServiceRequests()
+        
+        //print("The received Observation ID:")
+        //print(observationType)
+        
+        
+        //Institute.shared.searchObservationTypeInServiceRequestWithID(id: Institute.shared.serviceRequestID, type: self.navigationItem.title!)
+        
+        
+        Institute.shared.loadImagesInBackground(type: self.navigationItem.title!, background: {
+            //Institute.shared.loadAllMediaResource()
+            /*
+            for n in 0...1000{
+                print("some bullshit" + String(n))
+            }
+            */
+        }, completion: {
+            DispatchQueue.main.async {
+                /*
+                print(Institute.shared.photoName)
+                if(Institute.shared.photoName > 0){
+                    for imageItem in 0...Institute.shared.photoName {
+                        //print("I add the image:")
+                        print(imageItem)
+                        self.addGalleryImage(imageName: "\(imageItem).jpg")
+                    }
+                }
+                */
+                
+                
+                // Get the document directory url
+                let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+
+                do {
+                    // Get the directory contents urls (including subfolders urls)
+                    let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil)
+                    print(directoryContents)
+
+                    // if you want to filter the directory contents you can do like this:
+                    let mp3Files = directoryContents.filter{ $0.pathExtension == "jpg" }
+                    print("jpeg:",mp3Files)
+                    let imageFilenames = mp3Files.map{ $0.deletingPathExtension().lastPathComponent }
+                    print("jpeg:", imageFilenames)
+                    for image in imageFilenames{
+                        //print("I add the image:")
+                        print(image)
+                        self.addGalleryImage(imageName: "\(image).jpg")
+                    }
+
+                } catch {
+                    print(error)
+                }
+                
+                Institute.shared.photoName = 0
+                
+                //print("I start this, when all Images are loaded!")
+            }
+            
+        })
+
+        
+        
       
     }
     
@@ -83,7 +159,15 @@ class BaseViewController: UIViewController {
     
     //Action
     @IBAction func takePicture(_ sender: Any) {
-        cameraVC?.makePhoto()
+        cameraVC?.makePhoto(observation: observationType!)
+        /*
+        Institute.shared.searchAllMediaResource()
+        for imageItem in 0...Institute.shared.photoName {
+            print("I add the image:")
+            print(imageItem)
+            addGalleryImage(imageName: "\(imageItem).jpg")
+        }
+ */
     }
     
     @IBAction func toPrevScreen(_ sender: Any) {
@@ -182,6 +266,42 @@ class BaseViewController: UIViewController {
         //https://stackoverflow.com/questions/35005887/trouble-using-a-custom-image-for-splitviewcontroller-displaymodebuttonitem-uiba
         UIApplication.shared.sendAction(splitViewController!.displayModeButtonItem.action!, to: splitViewController!.displayModeButtonItem.target, from: nil, for: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
+    
+    func setTitle(type:ObservationType){
+        switch type {
+        case .Anamnesis:
+            self.navigationItem.title = "Anamnese"
+        case .MedicalLetter:
+            self.navigationItem.title = "Arztbriefe"
+        case .Haemodynamics:
+            self.navigationItem.title = "Haemodynamik"
+        case .Respiration:
+            self.navigationItem.title = "Beatmung"
+        case .BloodGasAnalysis:
+            self.navigationItem.title = "Blutgasanalyse"
+        case .Perfusors:
+            self.navigationItem.title = "Perfusoren"
+        case .InfectiousDisease:
+            self.navigationItem.title = "Infektiologie"
+        case .Radeology:
+            self.navigationItem.title = "Radiologie"
+        case .Lab:
+            self.navigationItem.title = "Labor"
+        case .Others:
+            self.navigationItem.title = "Sonstige"
+        case .NONE:
+            self.navigationItem.title = "NONE"
+        default:
+            self.navigationItem.title = ""
+        }
+        
+        let attrs = [
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+            NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 25)!
+        ]
+
+        UINavigationBar.appearance().titleTextAttributes = attrs
     }
     
     @objc func drawButtonFunction(_ notification: Notification) {
@@ -293,6 +413,7 @@ class BaseViewController: UIViewController {
 extension BaseViewController: GalleryDelegate {
     func addGalleryImage(imageName: String) {
         //print("added an Image")
+        //print(imageName)
         galleryVC?.insertItemTest(imageName: imageName)
     }
 }
