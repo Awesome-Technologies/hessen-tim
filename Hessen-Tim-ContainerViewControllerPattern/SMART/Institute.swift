@@ -1153,6 +1153,38 @@ class Institute {
         }
     }
     
+    
+    func deleteAllImageMediaForServicerequest(serviceRequest: ServiceRequest){
+        let search = Media.search(["based-on": ["$type": "ServiceRequest", "_id": serviceRequest.id?.description]]  )
+        DispatchQueue.global(qos: .background).async {
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let allMedia = bundle?.entry?
+                        .filter() { return $0.resource is Media }
+                        .map() { return $0.resource as! Media }
+                        
+                        // now `bruces` holds all known Patient resources
+                        // named Bruce and born earlier than 1970
+                        if allMedia != nil {
+                            //print(allMedia)
+                            for imageMedia in allMedia! {
+                                imageMedia.delete {error in
+                                    if nil != error {
+                                        print(error)
+                                    }
+                                }
+                            }
+                        }
+                        
+                }
+            }
+            
+        }
+    }
+    
     func deleteAllServiceRequests(){
         print("deleteAllServiceRequests")
         let search = ServiceRequest.search([])
@@ -1186,6 +1218,27 @@ class Institute {
                         }
                     }
                     
+            }
+        }
+    }
+    
+    func deleteServiceRequestWithID(serviceRequest: ServiceRequest){
+        
+        DispatchQueue.global(qos: .background).async {
+            ServiceRequest.read(serviceRequest.id!.description, server: self.client!.server){ resource, error in
+                if let error = error as? FHIRError {
+                    print(error)
+                    //completion!(id, true)
+                } else if resource != nil {
+                    var request:ServiceRequest = resource as! ServiceRequest
+                    request.delete {error in
+                        if nil != error {
+                            print(error)
+                        }else{
+                            print("deletedServicerequest")
+                        }
+                    }
+                }
             }
         }
     }
@@ -1237,6 +1290,35 @@ class Institute {
                         //print(allMedia)
                         for patient in allPatients! {
                             patient.delete {error in
+                                if nil != error {
+                                    print(error)
+                                }
+                            }
+                        }
+                    }
+                    
+            }
+        }
+    }
+    
+    func deleteAllDiagnosticReports(){
+        let search = DiagnosticReport.search([])
+        
+        search.perform(client!.server) { bundle, error in
+            if nil != error {
+                // there was an error
+            }
+            else {
+                let allReports = bundle?.entry?
+                    .filter() { return $0.resource is DiagnosticReport }
+                    .map() { return $0.resource as! DiagnosticReport }
+                    
+                    // now `bruces` holds all known Patient resources
+                    // named Bruce and born earlier than 1970
+                    if allReports != nil {
+                        //print(allMedia)
+                        for report in allReports! {
+                            report.delete {error in
                                 if nil != error {
                                     print(error)
                                 }
@@ -1362,46 +1444,195 @@ class Institute {
     }
     
     
-    func countImages(type: String){
+    func countImages(completion: @escaping ((ObservationType, Int) -> Void)){
         print("countImages")
         
-        DispatchQueue.global(qos: .background).async {
+        for type in ObservationType.allCases {
+            switch type {
+            case .Anamnesis:
+                countImagesCustom(obsType: .Anamnesis, type: "Anamnese", completion: completion)
+            case .MedicalLetter:
+                countImagesCustom(obsType: .MedicalLetter, type: "Arztbriefe", completion: completion)
+            case .Haemodynamics:
+                countImagesCustom(obsType: .Haemodynamics, type: "Haemodynamik", completion: completion)
+            case .Respiration:
+                countImagesCustom(obsType: .Respiration, type: "Beatmung", completion: completion)
+            case .BloodGasAnalysis:
+                countImagesCustom(obsType: .BloodGasAnalysis, type: "Blutgasanalyse", completion: completion)
+            case .Perfusors:
+                countImagesCustom(obsType: .Perfusors, type: "Perfusoren", completion: completion)
+            case .InfectiousDisease:
+                countImagesCustom(obsType: .InfectiousDisease, type: "Infektiologie", completion: completion)
+            case .Radeology:
+                countImagesCustom(obsType: .Radeology, type: "Radiologie", completion: completion)
+            case .Lab:
+                countImagesCustom(obsType: .Lab, type: "Labor", completion: completion)
+            case .Others:
+                countImagesCustom(obsType: .Others, type: "Sonstige", completion: completion)
+            case .NONE:
+                print("case NONE")
+                //countImagesCustom(obsType: .NONE, type: "NONE", completion: completion)
+            
+            
+            }
+            
+        }
         
-            //let search = Media.search(["_summary": "count", "modality":["$text": type]])
-            //let search = Media.search(["modality":["$text": type],"_summary": "count"])
-            let search = FHIRSearch(type: Media.self, query: ["_summary": "count", "modality":["$text": type]])
-            /*
-            let search = FHIRSearch(query: [
-                "subject": [
-                    "$type": "Media",
-                    "_summary": "count",
-                    "modality":["$text": type]
-                ]
-            ])
-            */
-            print(search.construct())
-
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                search.perform(self.client!.server) { bundle, error in
-                           if nil != error {
-                               print("ERROR")
-                               print(error)
-                           }
-                           else {
-                               let med = bundle?.entry?
-                                   .filter() { return $0.resource is Media }
-                                   .map() { return $0.resource as! Media }
-                               
-                               print("We found som many cunts:")
-                               print(med?.count)
-                               
-                               
-                           }
-                       }
+    }
+    
+    func countImagesCustom(obsType: ObservationType, type: String, completion: @escaping ((ObservationType, Int) -> Void)){
+        
+        DispatchQueue.global(qos: .background).async {
+            var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
+            request?.options = [.lenient]
+            if let request = request {
+                var headers = FHIRRequestHeaders()
+                headers.customHeaders = ["Cache-Control":"no-cache"]
+                request.add(headers: headers)
+                self.client!.server.performRequest(against: "Media?modality:text=" + type + "&_summary=count", handler: request) { (response) in
+                    do {
+                        let bundle = try response.responseResource(ofType: Bundle.self)
+                        print("Antwort: \(bundle.total ?? "Fehler!")")
+                        completion(obsType, Int(String(bundle.total!.description))! )
+                        
+                        
+                    }
+                    catch let error {
+                        print(error.localizedDescription)
+                    }
+                }
             }
         }
         
     }
+    
+    func saveDiagnosticReport(text: String){
+        self.createDiagnosticReport(reportText: text, completion: { report in
+            self.updateDiagnosticReport(report: report)
+        })
+    }
+    
+    
+    func createDiagnosticReport(reportText: String, completion: @escaping (DiagnosticReport) -> Void){
+        print("createDiagnosticReport")
+        DispatchQueue.global(qos: .background).async {
+            var report = DiagnosticReport()
+            report.status = DiagnosticReportStatus(rawValue: "final")
+            report.conclusion = FHIRString(reportText)
+            report.code = CodeableConcept()
+            report.code?.coding = [Coding()]
+            var coding = Coding()
+            coding.system = FHIRURL("http://loinc.org")
+            coding.code = FHIRString("12345")
+            coding.display = FHIRString("Diagnostic Report")
+            report.code?.coding?.append(coding)
+            print("DateTimeNOWW:")
+            print(DateTime.now.description)
+            report.issued = Instant(string: DateTime.now.description)
+            report.basedOn = [Reference()]
+            do {
+                var ref = try report.reference(resource: self.sereviceRequestObject!)
+                report.basedOn?.append(ref)
+            } catch {
+                print(error)
+            }
+            
+            if let client = Institute.shared.client {
+                report.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("DiagnosticReportCreationSucceded")
+                        completion(report)
+                    }
+                }
+                
+                // check error
+            }
+        }
+    }
+    
+    func updateDiagnosticReport(report: DiagnosticReport){
+        DispatchQueue.global(qos: .background).async {
+            report.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("ReportUpdateSucceded")
+                }
+            }
+        }
+    }
+    
+    func getAllDiagnosticReportsForPatient(completion: @escaping (([DiagnosticReport]) -> Void)) {
+        print("getAllDiagnosticReportsForPatient")
+        
+        let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":self.patientObject?.id?.description]], "_sort": "-issued"])
+        print(search.construct())
+        
+        search.perform(self.client!.server) { bundle, error in
+            if nil != error {
+                // there was an error
+            }
+            else {
+                let reports = bundle?.entry?
+                    .filter() { return $0.resource is DiagnosticReport }
+                    .map() { return $0.resource as! DiagnosticReport }
+                
+                print("We found some Reports:")
+                print(reports?.count)
+                
+                if reports != nil {
+                    if(!reports!.isEmpty){
+                        completion(reports!)
+                        for observation in reports! {
+                            print(observation.id)
+                            //self.searchObservationTypeInServiceRequestWithID(id: sRequest.id!.string, type: type, completion: completion)
+                        }
+
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    
+    func sendServiceRequest(){
+        print("sendServiceRequest")
+        if(self.sereviceRequestObject != nil){
+            self.sereviceRequestObject?.status = RequestStatus(rawValue: "active")
+            DispatchQueue.global(qos: .background).async {
+                self.sereviceRequestObject!.update() { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("ServicerequestUpdateSucceded")
+                        
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+    
+    func clearData(){
+        self.sereviceRequestObject = nil
+        self.patientObject = nil
+        self.observationWeight = nil
+        self.observationHeight = nil
+    }
+    
+    func deleteAllDataForServiceRequest(){
+        if(self.sereviceRequestObject != nil){
+            deleteAllImageMediaForServicerequest(serviceRequest: self.sereviceRequestObject!)
+            deleteServiceRequestWithID(serviceRequest: self.sereviceRequestObject!)
+            clearData()
+        }
+        
+    }
+    
     
     
 }

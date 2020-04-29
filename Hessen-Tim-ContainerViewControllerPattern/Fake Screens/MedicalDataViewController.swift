@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import SMART
 
-class MedicalDataViewController: UIViewController {
+
+class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var pName: String = "Hans Müller"
     var pBirthday: String = "15.02.1956"
@@ -22,6 +24,14 @@ class MedicalDataViewController: UIViewController {
     
     var serviceRequestID: String = ""
 
+    @IBOutlet weak var patientDataView: UIView!
+    @IBOutlet weak var dataView: UIView!
+    @IBOutlet weak var noteView: UIView!
+    
+    @IBOutlet weak var imageCategoryView: UIView!
+    @IBOutlet weak var noteLabel: UILabel!
+    @IBOutlet weak var noteTextField: UITextField!
+    @IBOutlet weak var historyView: UIView!
     
     @IBOutlet weak var patientName: UILabel!
     @IBOutlet weak var patientBirthday: UILabel!
@@ -37,6 +47,7 @@ class MedicalDataViewController: UIViewController {
     
     @IBOutlet weak var editPatientData: UIButton!
     @IBOutlet weak var pictureCategory: UIButton!
+    @IBOutlet weak var historyButton: UIButton!
     @IBOutlet weak var communicationTimeline: UIButton!
     @IBOutlet weak var anamnesebutton: UIButton!
     @IBOutlet weak var medicalLetterButton: UIButton!
@@ -52,15 +63,11 @@ class MedicalDataViewController: UIViewController {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var normalCall: UIButton!
     @IBOutlet weak var videoCall: UIButton!
-    @IBOutlet weak var hangUp: UIButton!
-    @IBOutlet weak var createCaseReport: UIButton!
-    @IBOutlet weak var grayOverlay: UIView!
-    @IBOutlet weak var dataSendView: UIView!
-    @IBOutlet weak var normalCallView: UIView!
-    @IBOutlet weak var hangUpView: UIView!
-    @IBOutlet weak var caseReportView: UIView!
-    @IBOutlet weak var caseReportSendView: UIView!
+
     
+    @IBOutlet weak var historyTableView: UITableView!
+    
+    var historyData = [DiagnosticReport]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,11 +82,66 @@ class MedicalDataViewController: UIViewController {
         contactDoctor.text = doctor
         contactNumber.text = number
         
-        // Do any additional setup after loading the view.
+        if(Institute.shared.sereviceRequestObject == nil || Institute.shared.sereviceRequestObject?.status != RequestStatus(rawValue: "draft")){
+            editPatientData.isHidden = true
+            send.isHidden = true
+        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            editPatientData.isHidden = false
+            send.isHidden = false
+        }
         
+        patientDataView.layer.cornerRadius = 10
+        patientDataView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        
+        imageCategoryView.layer.cornerRadius = 10
+        imageCategoryView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        
+        historyView.layer.cornerRadius = 10
+        historyView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        historyTableView.register(DiagnosticReportTableViewCell.self, forCellReuseIdentifier: "cellId")
+        
+        pictureCategory.layer.cornerRadius = 10
+        pictureCategory.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        historyButton.layer.cornerRadius = 10
+        historyButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        noteLabel.layer.masksToBounds = true
+        noteLabel.layer.cornerRadius = 10
+        noteLabel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        noteTextField.layer.cornerRadius = 10
+        noteTextField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         //Institute.shared.deleteAllImageMedia()
         Institute.shared.clearAllFile()
         //Institute.shared.loadAllMediaResource()
+        
+        Institute.shared.countImages(completion: { observation, count  in
+            self.setNumberOfImages(observation: observation, count: count)
+        })
+        Institute.shared.getAllDiagnosticReportsForPatient(completion: { items in
+            self.historyData = items
+            DispatchQueue.main.async {
+                self.historyTableView.reloadData()
+            }
+            
+            
+        })
+        
+        
+        self.historyTableView.delegate = self
+        self.historyTableView.dataSource = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toHomeScreen(_:)), name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
+        
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     @IBAction func anamnesePictures(_ sender: Any) {
@@ -113,83 +175,7 @@ class MedicalDataViewController: UIViewController {
         openPictureView(sender: sender,category: ObservationType.Others)
     }
     
-    @IBAction func send(_ sender: Any) {
-        view.bringSubviewToFront(grayOverlay)
-        grayOverlay.isHidden = false
-        //view.bringSubviewToFront(dataSendView)
-        //var notificationView = MedicalDataNotificationView(frame: CGRect(x: self.view.frame.width/2, y: self.view.frame.height/2, width: self.view.frame.width/2, height: self.view.frame.height/2))
-        var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 400, height: 400))
-        notificationView.addLabel()
-        notificationView.addButtonToPatientenListe()
-        notificationView.addOKbutton()
-        notificationView.addTimelineInformation()
-        self.view.addSubview(notificationView)
-        notificationView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            //notificationView.widthAnchor.constraint(equalToConstant: 64),
-            //notificationView.widthAnchor.constraint(equalTo: testView.heightAnchor),
-            notificationView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.5, constant: 1),
-            notificationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4, constant: 1),
-            notificationView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            notificationView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-        ])
-        
-        view.bringSubviewToFront(notificationView)
-        
-    }
     
-    @IBAction func normalCall(_ sender: Any) {
-        view.bringSubviewToFront(grayOverlay)
-        grayOverlay.isHidden = false
-        view.bringSubviewToFront(normalCallView)
-    }
-    @IBAction func continueNormalCall(_ sender: Any) {
-        view.sendSubviewToBack(grayOverlay)
-        grayOverlay.isHidden = true
-        view.sendSubviewToBack(normalCallView)
-        view.sendSubviewToBack(save)
-        view.sendSubviewToBack(send)
-        view.sendSubviewToBack(normalCall)
-        view.sendSubviewToBack(videoCall)
-        view.sendSubviewToBack(createCaseReport)
-        view.bringSubviewToFront(hangUp)
-    }
-    
-    @IBAction func hangUp(_ sender: Any) {
-        
-        view.bringSubviewToFront(normalCall)
-        view.bringSubviewToFront(videoCall)
-        view.bringSubviewToFront(createCaseReport)
-        view.bringSubviewToFront(grayOverlay)
-        grayOverlay.isHidden = false
-        view.sendSubviewToBack(hangUp)
-        view.bringSubviewToFront(hangUpView)
-        
-    }
-    
-    @IBAction func createCaseReport(_ sender: Any) {
-        view.sendSubviewToBack(hangUpView)
-        view.bringSubviewToFront(grayOverlay)
-        grayOverlay.isHidden = false
-        view.bringSubviewToFront(caseReportView)
-    }
-    
-    @IBAction func sendCaseReport(_ sender: Any) {
-        view.bringSubviewToFront(grayOverlay)
-        grayOverlay.isHidden = false
-        view.sendSubviewToBack(caseReportView)
-        view.bringSubviewToFront(caseReportSendView)
-    }
-    
-    @IBAction func closeNotificationWIndow(_ sender: Any) {
-        view.sendSubviewToBack(grayOverlay)
-        grayOverlay.isHidden = true
-        view.sendSubviewToBack(caseReportView)
-        view.sendSubviewToBack(dataSendView)
-        view.sendSubviewToBack(normalCallView)
-        view.sendSubviewToBack(hangUpView)
-        view.sendSubviewToBack(caseReportSendView)
-    }
     
     @IBAction func goToPatientListView(_ sender: Any) {
         performSegue(withIdentifier: "toPatientList", sender: sender)
@@ -208,7 +194,102 @@ class MedicalDataViewController: UIViewController {
         self.performSegue(withIdentifier: "takePicturesForCategory", sender: sender)
     }
     
+    func setNumberOfImages(observation: ObservationType, count: Int){
+        DispatchQueue.main.async {
+            switch observation {
+            case .Anamnesis:
+                self.anamnesebutton.setTitle(String(count), for: .normal)
+            case .MedicalLetter:
+                self.medicalLetterButton.setTitle(String(count), for: .normal)
+            case .Haemodynamics:
+                self.haemodynamics.setTitle(String(count), for: .normal)
+            case .Respiration:
+                self.ventilationButton.setTitle(String(count), for: .normal)
+            case .BloodGasAnalysis:
+                self.bloodGasAnalysisButton.setTitle(String(count), for: .normal)
+            case .Perfusors:
+                self.perfusorsButton.setTitle(String(count), for: .normal)
+            case .InfectiousDisease:
+                self.infectiousDiseasesButton.setTitle(String(count), for: .normal)
+            case .Radeology:
+                self.radeologyButton.setTitle(String(count), for: .normal)
+            case .Lab:
+                self.labButon.setTitle(String(count), for: .normal)
+            case .Others:
+                self.otherButton.setTitle(String(count), for: .normal)
+            case .NONE:
+                print("NONE")
+            default:
+                print("DEFAULT")
+            }
+        }
+    }
+    @IBAction func openPictureCategoryView(_ sender: Any) {
+        print("openPictureCategoryView")
+        dataView.bringSubviewToFront(imageCategoryView)
+        dataView.sendSubviewToBack(historyView)
+        
+    }
+    
+    @IBAction func openHistoryView(_ sender: Any) {
+        print("openHistoryView")
+        dataView.bringSubviewToFront(historyView)
+        dataView.sendSubviewToBack(imageCategoryView)
 
+    }
+    
+    @IBAction func cancelInput(_ sender: Any) {
+        print("I quit the input")
+        if(Institute.shared.sereviceRequestObject == nil || Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+            self.view.addSubview(notificationView)
+            notificationView.addGrayBackPanel()
+            notificationView.addSendViewLayoutConstraints()
+            notificationView.addNotificationLabel(text: "Wollen Sie die Eingabe beenden")
+            notificationView.addHomeIcon()
+            notificationView.addCloseNotification()
+            notificationView.addCancelbutton()
+            notificationView.addDeletebutton()
+            view.bringSubviewToFront(notificationView)
+        }else{
+            //self.performSegue(withIdentifier: "unwindToCaseSelection", sender: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
+        }
+        
+    }
+    
+    @IBAction func send(_ sender: Any) {
+        Institute.shared.sendServiceRequest()
+        var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.view.addSubview(notificationView)
+        notificationView.addGrayBackPanel()
+        notificationView.addSendViewLayoutConstraints()
+        notificationView.addNotificationLabel(text: "Die Informationen wurden gesendet")
+        notificationView.addPatientInforamtion()
+        notificationView.addRequestSendInformation()
+        notificationView.addCancelbutton()
+        notificationView.addOKbutton()
+        
+        view.bringSubviewToFront(notificationView)
+        
+    }
+    
+    @IBAction func createConsultationReport(_ sender: Any) {
+        //createConsilView.isHidden = false
+        //view.bringSubviewToFront(createConsilView)
+        var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 700, height: 500))
+        self.view.addSubview(notificationView)
+        notificationView.addGrayBackPanel()
+        notificationView.addLayoutConstraints()
+        notificationView.addConsilLabel(text: "Konsilbericht erstellen:")
+        notificationView.addConsilReportTextView(editable: true, consilText: "")
+        notificationView.addSendConsilReportButton()
+        notificationView.addCancelbutton()
+        
+        view.bringSubviewToFront(notificationView)
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "takePicturesForCategory" {
             
@@ -220,5 +301,74 @@ class MedicalDataViewController: UIViewController {
             
         }
     }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return historyData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //https://blog.usejournal.com/easy-tableview-setup-tutorial-swift-4-ad48ec4cbd45
+        let cell = historyTableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! DiagnosticReportTableViewCell
+        cell.backgroundColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
+        cell.dateIssued.text = DiagnosticReportDateFormater(report: historyData[indexPath.row])
+        cell.preview.text = historyData[indexPath.row].conclusion?.description
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showDiagosticReport(report: historyData[indexPath.row])
+    }
+    
+    func DiagnosticReportDateFormater(report: DiagnosticReport)->String{
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
 
+        let clockTime = DateFormatter()
+        clockTime.dateFormat = "HH:mm"
+        
+        let dateTime = DateFormatter()
+        dateTime.dateFormat = "dd.MM.yyyy"
+        
+        var printdate = ""
+        if let date = dateFormatterGet.date(from: (report.issued?.description)!) {
+            
+            var clock = clockTime.string(from: date)
+            var date = dateTime.string(from: date)
+            printdate = clock + "     " + date
+            
+        } else {
+           print("There was an error decoding the string")
+        }
+        return printdate
+    }
+    
+    func showDiagosticReport(report: DiagnosticReport){
+        
+        var notificationView = MedicalDataNotificationView(frame: CGRect(x: 0, y: 0, width: 700, height: 500))
+        self.view.addSubview(notificationView)
+        notificationView.addGrayBackPanel()
+        notificationView.addLayoutConstraints()
+        notificationView.addConsilLabel(text: "Konsilbericht:")
+        notificationView.addConsilDateLabel(text: DiagnosticReportDateFormater(report: report))
+        notificationView.addConsilReportTextView(editable: false, consilText: report.conclusion!.description)
+        notificationView.addCancelbutton()
+        
+        view.bringSubviewToFront(notificationView)
+        
+    }
+
+    @IBAction func editPatientData(_ sender: Any) {
+        performSegue(withIdentifier: "editPatientData", sender: nil)
+    }
+    
+    
+    @objc func toHomeScreen(_ notification: Notification) {
+        self.performSegue(withIdentifier: "unwindToCaseSelection", sender: self)
+    }
+    
 }

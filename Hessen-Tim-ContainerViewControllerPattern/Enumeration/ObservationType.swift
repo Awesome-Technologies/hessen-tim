@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ObservationType{
+enum ObservationType: CaseIterable{
     case Anamnesis
     case MedicalLetter
     case Haemodynamics

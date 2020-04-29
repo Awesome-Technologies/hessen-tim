@@ -24,11 +24,13 @@
 		8F523407223951800020292F /* CameraPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F523406223951800020292F /* CameraPictureViewController.swift */; };
 		8F94A9F02404024900E96A06 /* createServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9EF2404024800E96A06 /* createServiceRequest.json */; };
 		8F94A9F22404200600E96A06 /* imageMedia.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F94A9F12404200500E96A06 /* imageMedia.json */; };
+		8FA1A382242B934A00049A3F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA1A381242B934A00049A3F /* Extensions.swift */; };
 		8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */; };
 		8FAFC677240CFA12006A9DB1 /* ObservationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAFC676240CFA12006A9DB1 /* ObservationType.swift */; };
 		8FAFC679240D6688006A9DB1 /* createObservation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FAFC678240D6687006A9DB1 /* createObservation.json */; };
 		8FB03D2D2407C174007E7449 /* createOrganization.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2C2407C172007E7449 /* createOrganization.json */; };
 		8FB03D2F2407F27F007E7449 /* updateServiceRequest.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */; };
+		8FB1C1D3242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB1C1D2242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift */; };
 		8FC274A123FD2CA400695E74 /* Patient.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FC274A023FD2CA300695E74 /* Patient.json */; };
 		8FC39D9723D8410100FBD225 /* MedicalDataNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */; };
 		8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */; };
@@ -90,11 +92,13 @@
 		8F523406223951800020292F /* CameraPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPictureViewController.swift; sourceTree = "<group>"; };
 		8F94A9EF2404024800E96A06 /* createServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createServiceRequest.json; sourceTree = "<group>"; };
 		8F94A9F12404200500E96A06 /* imageMedia.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageMedia.json; sourceTree = "<group>"; };
+		8FA1A381242B934A00049A3F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8FA4B5D723D0538200B5844C /* MedicalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataViewController.swift; sourceTree = "<group>"; };
 		8FAFC676240CFA12006A9DB1 /* ObservationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationType.swift; sourceTree = "<group>"; };
 		8FAFC678240D6687006A9DB1 /* createObservation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createObservation.json; sourceTree = "<group>"; };
 		8FB03D2C2407C172007E7449 /* createOrganization.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = createOrganization.json; sourceTree = "<group>"; };
 		8FB03D2E2407F27E007E7449 /* updateServiceRequest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = updateServiceRequest.json; sourceTree = "<group>"; };
+		8FB1C1D2242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticReportTableViewCell.swift; sourceTree = "<group>"; };
 		8FC274A023FD2CA300695E74 /* Patient.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Patient.json; sourceTree = "<group>"; };
 		8FC39D9623D8410100FBD225 /* MedicalDataNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDataNotificationView.swift; sourceTree = "<group>"; };
 		8FDE86A322C9F2360034A913 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
@@ -195,7 +199,9 @@
 				8FC39D9323D840B500FBD225 /* NotificationView */,
 				97BA9E6D238EC3F800AF5DDD /* SMART */,
 				8F4B241322C5020B00A8E678 /* iOSDropDown.swift */,
+				8FB1C1D1242F7CB100C07DAD /* HistoryTabelView */,
 				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
+				8FA1A381242B934A00049A3F /* Extensions.swift */,
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
 				8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */,
@@ -244,6 +250,14 @@
 				8FAFC676240CFA12006A9DB1 /* ObservationType.swift */,
 			);
 			path = Enumeration;
+			sourceTree = "<group>";
+		};
+		8FB1C1D1242F7CB100C07DAD /* HistoryTabelView */ = {
+			isa = PBXGroup;
+			children = (
+				8FB1C1D2242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift */,
+			);
+			path = HistoryTabelView;
 			sourceTree = "<group>";
 		};
 		8FB9E65E22F0878000CE4FF6 /* OrderListView */ = {
@@ -558,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FA1A382242B934A00049A3F /* Extensions.swift in Sources */,
 				8F5233DB223949D50020292F /* BaseViewController.swift in Sources */,
 				97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */,
 				8F01870623CDE27200C9CDD6 /* InsertPatientData.swift in Sources */,
@@ -575,6 +590,7 @@
 				8F4B241222C500F000A8E678 /* PatientendatenViewController.swift in Sources */,
 				8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */,
 				97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */,
+				8FB1C1D3242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift in Sources */,
 				8F523407223951800020292F /* CameraPictureViewController.swift in Sources */,
 				9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */,
 				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,
