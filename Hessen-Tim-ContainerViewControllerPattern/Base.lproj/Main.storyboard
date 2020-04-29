@@ -320,29 +320,63 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7C7-X5-PY5" userLabel="Touch Area">
-                                <rect key="frame" x="269" y="93" width="178" height="129"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XLB-9U-fQu">
+                                <rect key="frame" x="165" y="138" width="355" height="359"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vlx-Td-nOX">
-                                <rect key="frame" x="859" y="296" width="356" height="138"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="oYd-70-H1E" appends="YES" id="ekz-uL-anE"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyq-9Q-Ez4" userLabel="InsertPatientData">
-                                <rect key="frame" x="267" y="367" width="178" height="129"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="qMG-BQ-Ska" appends="YES" id="GV4-L1-8pp"/>
-                                </connections>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="konsil_zweitmeinung_background" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vba-d5-Odm">
+                                        <rect key="frame" x="-39" y="-32" width="357" height="503"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9W-l2-zS4">
+                                        <rect key="frame" x="21" y="520" width="62" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Zurück"/>
+                                        <connections>
+                                            <action selector="closeKonsilView:" destination="SU6-Eh-hR5" eventType="touchUpInside" id="NAF-wz-9qs"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSX-N7-dB1">
+                                        <rect key="frame" x="21" y="125" width="143" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="INFEKTIOLOGIE">
+                                            <color key="titleColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="insertPatientData:" destination="SU6-Eh-hR5" eventType="touchUpInside" id="lCy-CF-EfF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5b0-z6-zWZ">
+                                        <rect key="frame" x="21" y="169" width="167" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="INTENSIVMEDIZIN"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEj-LC-Gel">
+                                        <rect key="frame" x="21" y="215" width="236" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="KINDERINTENSIVMEDIZIN"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0s-bK-qKB">
+                                        <rect key="frame" x="21" y="259" width="252" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="PHARMAZEUTISCHE VISITE"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MY5-zw-pPG">
+                                        <rect key="frame" x="21" y="303" width="363" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="DIAGNOSTIK HIRNFUNKTIONSAUSFALL"/>
+                                        <connections>
+                                            <action selector="testAction:" destination="SU6-Eh-hR5" eventType="touchUpInside" id="FI7-7l-HzC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcO-Zd-r48">
                                 <rect key="frame" x="49" y="112" width="150" height="87"/>
@@ -361,6 +395,32 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="notfall_direktkontakt"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIe-Z7-LZY">
+                                <rect key="frame" x="837" y="514" width="288" height="121"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="ecmo"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DI2-We-bOt">
+                                <rect key="frame" x="170" y="523" width="292" height="115"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="sonstiges"/>
+                                <connections>
+                                    <action selector="sonstigeAction:" destination="SU6-Eh-hR5" eventType="touchUpInside" id="Aja-QU-8Xj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FsA-8C-mWa" userLabel="Weaning">
+                                <rect key="frame" x="830" y="135" width="335" height="167"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="weaning"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welche Abteilung soll den Fall bearbeiten?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1pG-BX-yLl">
+                                <rect key="frame" x="353" y="22" width="559" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.1803921568627451" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -373,29 +433,26 @@
                     </view>
                     <navigationItem key="navigationItem" id="0Oj-O5-srU"/>
                     <connections>
+                        <outlet property="back" destination="W9W-l2-zS4" id="K7u-x8-61u"/>
+                        <outlet property="childIntensiveCare" destination="yEj-LC-Gel" id="miF-yO-6u2"/>
+                        <outlet property="diagnostic" destination="MY5-zw-pPG" id="36o-Tw-FQ8"/>
+                        <outlet property="ecls" destination="LIe-Z7-LZY" id="9jR-wp-srb"/>
                         <outlet property="emergencyContact" destination="p7C-p8-UF5" id="Plc-jR-AEt"/>
-                        <outlet property="insertPatientData" destination="Gyq-9Q-Ez4" id="dr6-mY-331"/>
+                        <outlet property="infectiousDisease" destination="dSX-N7-dB1" id="6fF-7O-PYv"/>
+                        <outlet property="intensiveCare" destination="5b0-z6-zWZ" id="Vvp-aj-beW"/>
+                        <outlet property="konsilSubview" destination="XLB-9U-fQu" id="z64-p8-IuA"/>
+                        <outlet property="others" destination="DI2-We-bOt" id="vwb-Ix-km1"/>
                         <outlet property="patientList" destination="qcO-Zd-r48" id="Uut-aB-AGc"/>
-                        <outlet property="patientListView" destination="7C7-X5-PY5" id="x5B-md-BN1"/>
+                        <outlet property="pharmaceuticalVisit" destination="K0s-bK-qKB" id="wdx-Pi-uhb"/>
                         <outlet property="screen2ImageView" destination="PTF-ar-H5h" id="hgu-lF-tA7"/>
-                        <outlet property="splitView" destination="vlx-Td-nOX" id="NAn-NL-vHc"/>
+                        <outlet property="weaning" destination="FsA-8C-mWa" id="lYu-DE-OdI"/>
                         <segue destination="2u6-Fy-Fpw" kind="unwind" identifier="exitToRoot" unwindAction="exitViewToRootViewWithSegue:" id="rjB-Ep-x3s"/>
-                        <segue destination="UNo-Bw-Gvo" kind="show" identifier="showSplitScreenVC" id="icf-tn-bRX"/>
                         <segue destination="ETs-MS-wP6" kind="show" identifier="toPatientListView" id="7yx-zQ-vMn"/>
+                        <segue destination="rN7-kR-hsP" kind="show" identifier="insertPatientData" id="Sa7-Yb-i21"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JHd-Sq-wqO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="2u6-Fy-Fpw" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="oYd-70-H1E" userLabel="Show SplitView">
-                    <connections>
-                        <action selector="splitShow:" destination="SU6-Eh-hR5" id="8yu-ZR-hmY"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="qMG-BQ-Ska" userLabel="Show InsertPatientInformation">
-                    <connections>
-                        <segue destination="rN7-kR-hsP" kind="show" id="Wae-9Y-kp2"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="67.222222222222214" y="141.48148148148147"/>
         </scene>
@@ -2947,10 +3004,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="BHA-SK-YWl"/>
+        <segue reference="jmv-j2-Fyf"/>
         <segue reference="7yx-zQ-vMn"/>
-        <segue reference="EzM-g7-taV"/>
-        <segue reference="icf-tn-bRX"/>
+        <segue reference="nxV-jW-LDg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anruf" width="88" height="83"/>
@@ -2983,14 +3039,18 @@
         <image name="close-Button" width="530" height="530"/>
         <image name="comment-Button" width="530" height="530"/>
         <image name="createCaseReportButton" width="110" height="100"/>
+        <image name="ecmo" width="382" height="161"/>
         <image name="foto-Button" width="530" height="530"/>
         <image name="hangUpNotificationWindow" width="578" height="301"/>
         <image name="insert_patient_Data" width="897" height="671"/>
+        <image name="konsil_zweitmeinung_background" width="463" height="592"/>
         <image name="malen-button" width="530" height="530"/>
         <image name="normalCallNotificationWindow" width="579" height="301"/>
         <image name="notfall_direktkontakt" width="289" height="121"/>
         <image name="patientDataView" width="950" height="675"/>
         <image name="savePaint-Button" width="530" height="530"/>
+        <image name="sonstiges" width="390" height="158"/>
         <image name="trash" width="400" height="400"/>
+        <image name="weaning" width="407" height="218"/>
     </resources>
 </document>
