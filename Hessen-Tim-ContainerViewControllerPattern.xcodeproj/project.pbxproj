@@ -792,6 +792,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 98C45TS5UN;
 				INFOPLIST_FILE = "Hessen-Tim-ContainerViewControllerPattern/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -799,7 +800,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2019.12;
+				MARKETING_VERSION = 2020.04;
 				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv;
 				PRODUCT_NAME = AMP.intensiv;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -816,6 +817,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 98C45TS5UN;
 				INFOPLIST_FILE = "Hessen-Tim-ContainerViewControllerPattern/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -823,7 +825,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2019.12;
+				MARKETING_VERSION = 2020.04;
 				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv;
 				PRODUCT_NAME = AMP.intensiv;
 				PROVISIONING_PROFILE_SPECIFIER = "";
