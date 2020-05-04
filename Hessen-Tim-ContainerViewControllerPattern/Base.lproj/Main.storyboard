@@ -2802,6 +2802,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="lpe-lb-bok"/>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="QVj-xf-d6w" kind="show" identifier="showMedicalDataView" id="Z3I-Kn-Gbj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31E-aH-y7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2832,9 +2835,10 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="7yx-zQ-vMn"/>
+        <segue reference="P0c-ED-fSW"/>
         <segue reference="EzM-g7-taV"/>
-        <segue reference="Sa7-Yb-i21"/>
+        <segue reference="Z3I-Kn-Gbj"/>
+        <segue reference="8Jz-la-XWu"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anruf" width="88" height="83"/>
