@@ -792,7 +792,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 98C45TS5UN;
 				INFOPLIST_FILE = "Hessen-Tim-ContainerViewControllerPattern/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -817,7 +817,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = 98C45TS5UN;
 				INFOPLIST_FILE = "Hessen-Tim-ContainerViewControllerPattern/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
