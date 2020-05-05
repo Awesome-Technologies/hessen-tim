@@ -109,6 +109,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         //Institute.shared.deleteAllServiceRequests()
         //Institute.shared.deleteAllDiagnosticReports()
         //Institute.shared.deleteAllPatients()
+        //Institute.shared.createProfileOrganization(profile: "consultationClinic", token: "testToken")
         
     }
     

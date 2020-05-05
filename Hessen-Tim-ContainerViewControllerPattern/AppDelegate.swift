@@ -24,6 +24,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func goToLoginScreen(animated: Bool) {
+        
+        if let window = self.window {
+            var newRootViewController: UIViewController? = nil
+            var transition: UIView.AnimationOptions
+            
+            let loginViewController = window.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginScreenViewController
+            
+            newRootViewController = loginViewController
+            transition = .transitionCurlUp
+            
+            // update app's rootViewController
+            if let rootVC = newRootViewController {
+                if animated {
+                    UIView.transition(with: window, duration: 0.5, options: transition, animations: { () -> Void in
+                        window.rootViewController = rootVC
+                    }, completion: nil)
+                } else {
+                    window.rootViewController = rootVC
+                }
+            }
+        }
+        
+        
+    }
+    
     //https://stackoverflow.com/questions/4213097/best-way-to-switch-between-uisplitviewcontroller-and-other-view-controllers/25979945#25979945
     func setupRootViewController(animated: Bool) {
         if let window = self.window {
@@ -86,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Handle Push Notifications, when app is not running
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        application.unregisterForRemoteNotifications()
         IQKeyboardManager.shared.enable = true
         registerForPushNotifications()
         // Check if launched from notification
@@ -160,7 +185,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //https://forums.developer.apple.com/thread/52224
         let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenParts.joined()
-        print("Device Token: \(token)")
+        /**
+         Checks if a token is still present from the previouse use, and if it is still the same
+         */
+        if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
+            if(oldPushDeviceToken != token){
+                UserDefaults.standard.set(token, forKey: "current_device_token")
+            }
+        } else {
+            UserDefaults.standard.set(token, forKey: "current_device_token")
+        }
+        print("User default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
     }
     
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {

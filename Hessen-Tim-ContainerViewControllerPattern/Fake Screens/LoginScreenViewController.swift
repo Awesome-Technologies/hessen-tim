@@ -10,7 +10,7 @@ import UIKit
 
 class LoginScreenViewController: UIViewController {
     
-    var isConsultationClinic:Bool? = nil
+    var selectedProfile:ProfileType = .NONE
 
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var loginName: UITextField! {
@@ -60,7 +60,7 @@ class LoginScreenViewController: UIViewController {
         peripheralClinic.layer.borderColor = UIColor.green.cgColor
         consultationClinic.layer.borderWidth = 0
         
-        isConsultationClinic = false
+        selectedProfile = .PeripheralClinic
         
     }
     
@@ -70,19 +70,32 @@ class LoginScreenViewController: UIViewController {
         consultationClinic.layer.borderColor = UIColor.green.cgColor
         peripheralClinic.layer.borderWidth = 0
         
-        isConsultationClinic = true
+        selectedProfile = .ConsultationClinic
     }
     
     
     @IBAction func loginAction(_ sender: Any) {
-        if(isConsultationClinic == nil){
+        if(selectedProfile == .NONE){
             highlightAllMissingElements()
         }else{
             Institute.shared.connect { error in
                 if error == nil {
+                    /**
+                     Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
+                     and wants to logg in once aggain
+                     */
+                    if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
+                        
+                    }else{
+                        UIApplication.shared.registerForRemoteNotifications()
+                        print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
+                    }
+                    UserLoginCredentials.shared.selectedProfile = self.selectedProfile
+                    Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "mainView", sender: self)
-                    }
+                        }
+                    })
                 }
             }
         }

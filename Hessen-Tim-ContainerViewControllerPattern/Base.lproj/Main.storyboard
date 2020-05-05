@@ -417,12 +417,24 @@
                                 <state key="normal" image="weaning"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welche Abteilung soll den Fall bearbeiten?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1pG-BX-yLl">
-                                <rect key="frame" x="353" y="22" width="559" height="37"/>
+                                <rect key="frame" x="240" y="22" width="559" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                 <color key="textColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5tn-bQ-ZfZ">
+                                <rect key="frame" x="931" y="20" width="100" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.91494351630000004" green="0.35178798439999998" blue="0.17955422400000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="logout:" destination="SU6-Eh-hR5" eventType="touchUpInside" id="N9v-p7-37R"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.1803921568627451" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -443,6 +455,7 @@
                         <outlet property="infectiousDisease" destination="dSX-N7-dB1" id="6fF-7O-PYv"/>
                         <outlet property="intensiveCare" destination="5b0-z6-zWZ" id="Vvp-aj-beW"/>
                         <outlet property="konsilSubview" destination="XLB-9U-fQu" id="z64-p8-IuA"/>
+                        <outlet property="logout" destination="5tn-bQ-ZfZ" id="Q5y-Fo-ibX"/>
                         <outlet property="others" destination="DI2-We-bOt" id="vwb-Ix-km1"/>
                         <outlet property="patientList" destination="qcO-Zd-r48" id="Uut-aB-AGc"/>
                         <outlet property="pharmaceuticalVisit" destination="K0s-bK-qKB" id="wdx-Pi-uhb"/>
@@ -1134,6 +1147,7 @@
                         <outlet property="bloodGasAnalysisButton" destination="mMi-Qj-vO4" id="ILj-2l-yqD"/>
                         <outlet property="clinicName" destination="qeX-75-oFy" id="2Im-ac-mCO"/>
                         <outlet property="communicationTimeline" destination="qrT-bl-JiP" id="syU-aB-G7Z"/>
+                        <outlet property="consultationReport" destination="1Ce-O3-Pdn" id="rf6-Uf-chb"/>
                         <outlet property="contactDoctor" destination="KQS-zp-wXo" id="LoZ-eb-J5v"/>
                         <outlet property="contactNumber" destination="iaw-m8-EhS" id="CpK-iQ-8sH"/>
                         <outlet property="dataView" destination="egg-2S-ndZ" id="XDU-ks-wqI"/>
@@ -2515,7 +2529,7 @@
         <!--Login Screen View Controller-->
         <scene sceneID="TQg-vc-U3L">
             <objects>
-                <viewController id="tQb-Xs-GmT" userLabel="Login Screen View Controller" customClass="LoginScreenViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" id="tQb-Xs-GmT" userLabel="Login Screen View Controller" customClass="LoginScreenViewController" customModule="AMP_intensiv" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DIU-U9-3aL">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -23,6 +23,7 @@ class SecondScreenViewController: UIViewController {
     @IBOutlet weak var pharmaceuticalVisit: UIButton!
     @IBOutlet weak var diagnostic: UIButton!
     @IBOutlet weak var back: UIButton!
+    @IBOutlet weak var logout: UIButton!
     
     var eclsStart:CGPoint!
     var weaningStart:CGPoint!
@@ -67,6 +68,10 @@ class SecondScreenViewController: UIViewController {
         patientList.clipsToBounds = true
         patientList.layer.cornerRadius = 10
         patientList.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner] // Top right corner, Top left corner respectively
+        
+        logout.clipsToBounds = true
+        logout.layer.cornerRadius = 10
+        
 
         
         ecls.alpha = 0.0
@@ -227,6 +232,22 @@ class SecondScreenViewController: UIViewController {
     @IBAction func insertPatientData(_ sender: Any) {
         print("InsertPatientData")
         performSegue(withIdentifier: "insertPatientData", sender: nil)
+    }
+    
+    
+    @IBAction func logout(_ sender: Any) {
+        UIApplication.shared.unregisterForRemoteNotifications()
+        Institute.shared.removeContactPointFromEndpoint(completion:{
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                let delegate = UIApplication.shared.delegate as! AppDelegate
+                delegate.splitView = false
+                delegate.goToLoginScreen(animated: true)
+                //Remove token from user defaults
+                UserDefaults.standard.removeObject(forKey: "current_device_token")
+            }
+        })
+        //toLoginScreen
+        
     }
     
     @IBAction func unwindToStart(segue:UIStoryboardSegue) {

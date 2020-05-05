@@ -48,6 +48,7 @@ class Institute {
     var observationHeight: Observation? = nil
     var images:Dictionary<String, Media> = [:]
     
+    
     //let serverUrl = "http://hapi.fhir.org/baseR4"
     let serverUrl = "https://tim.amp.institute/hapi-fhir-jpaserver/fhir/"
     
@@ -375,7 +376,6 @@ class Institute {
     
     }
     
-    
     func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String, completion:@escaping (() -> Void)){
         
         DispatchQueue.global(qos: .background).async {
@@ -401,6 +401,23 @@ class Institute {
             }
             serv.authoredOn = DateTime.now
             serv.requester = Reference()
+            
+            do {
+                try serv.requester = serv.reference(resource: UserLoginCredentials.shared.organizationProfile!)
+            } catch {
+                print(error)
+            }
+            
+            serv.performer = [Reference()]
+            
+            do {
+                var ref = Reference()
+                try ref = serv.reference(resource: UserLoginCredentials.shared.performerOrganizationProfile!)
+                serv.performer?.append(ref)
+            } catch {
+                print(error)
+            }
+            
             serv.reasonReference = [Reference()]
             
             if let client = Institute.shared.client {
@@ -801,6 +818,9 @@ class Institute {
         
         med.note = [Annotation()]
         med.note![0].text = FHIRString("test")
+        
+        //Create a local UUID to replace the local image with the mediafile from the server
+        med.note![1].text = FHIRString(UUID().uuidString)
         /*
         var annotation = Annotation()
         annotation.text = FHIRString("test")
@@ -2016,13 +2036,240 @@ class Institute {
         for patient in list.patients!{
             getHistoryForPatient(patient: patient, completion: { history in
                 historyData[patient.id!.description] = history
-                
             })
             
         }
         
     }
     
+    func registerProfile(profileType: ProfileType, completion: @escaping (() -> Void)) {
+        var clinicType = ""
+        var performerClinicType = ""
+        if(profileType == .ConsultationClinic){
+            clinicType = "consultationClinic"
+            performerClinicType = "peripheralClinic"
+        }else {
+            clinicType = "peripheralClinic"
+            performerClinicType = "consultationClinic"
+        }
+        getOrganizationForProfile(profileType: clinicType, completion: { organization in
+            UserLoginCredentials.shared.organizationProfile = organization
+            self.getEndpointForProfile(organization: organization, completion: completion)
+            self.getOrganizationForProfile(profileType: performerClinicType, completion: { organization in
+                UserLoginCredentials.shared.performerOrganizationProfile = organization
+                
+            })
+            
+        })
+    }
     
+    func getOrganizationForProfile(profileType: String, completion: @escaping ((Organization) -> Void)) {
+        DispatchQueue.global(qos: .background).async {
+            
+            //Get the Organizaition Profile for the Login
+            let search = Organization.search(["type": ["$text": profileType]])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }else {
+                    let organization = bundle?.entry?
+                        .filter() { return $0.resource is Organization }
+                        .map() { return $0.resource as! Organization }
+                    
+                    //Save the Organization profile in the UserCredentials
+                    completion((organization?.first)!)
+                }
+            }
+        }
+    }
+    
+    func getEndpointForProfile(organization: Organization, completion: @escaping (() -> Void)) {
+        
+        DispatchQueue.global(qos: .background).async {
+            //Get the Endpoint for the Login
+            var stringReference = organization.endpoint![0].reference?.string
+            if let range = stringReference!.range(of: "/") {
+                let newID = stringReference![range.upperBound...]
+                DispatchQueue.global(qos: .background).async {
+                    
+                    Endpoint.read(String(newID), server: self.client!.server){ resource, error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else if resource != nil {
+                            var ep = resource as! Endpoint
+                            
+                            //Check if the current pushDeviceToken is already registered
+                            if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
+                                let results = ep.contact?.filter { $0.value == FHIRString(currentToken) }
+                                if(results!.isEmpty){
+                                    //Our pushDeviceToken is not present and we have to add it to the Endpoint
+                                    self.addContactPointToEndpoint(endpoint: ep, completion: completion)
+                                } else{
+                                    UserLoginCredentials.shared.endpointProfile = ep
+                                    completion()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func addContactPointToEndpoint(endpoint: Endpoint, completion: @escaping (()->Void)){
+        
+        var cp = ContactPoint()
+        cp.system = ContactPointSystem(rawValue: "other")
+        cp.use = ContactPointUse(rawValue: "work")
+        cp.value = FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)
+        
+        endpoint.contact?.append(cp)
+        
+        DispatchQueue.global(qos: .background).async {
+            endpoint.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("EndpointUpdateSucceded")
+                    
+                    //Save the Endpoint in the UserLoginCredentials
+                    UserLoginCredentials.shared.endpointProfile = endpoint
+                    completion()
+                }
+            }
+        }
+    }
+    
+    func removeContactPointFromEndpoint(completion: @escaping (()->Void)){
+        
+        var endpoint = UserLoginCredentials.shared.endpointProfile
+        //We remove our pushDeviceToken from the endpoint
+        let filteredContaktPoints = endpoint?.contact!.filter {$0.value != FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)}
+        //We save the deminished list to the endpoint again
+        endpoint?.contact = filteredContaktPoints
+        
+        DispatchQueue.global(qos: .background).async {
+            endpoint!.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("EndpointUpdateSucceded")
+                    
+                    //Save the Endpoint in the UserLoginCredentials
+                    UserLoginCredentials.shared.endpointProfile = nil
+                    UserLoginCredentials.shared.organizationProfile = nil
+                    UserLoginCredentials.shared.selectedProfile = .NONE
+                    completion()
+                }
+            }
+        }
+    }
+    
+    func createProfileOrganization(profile: String, token: String){
+        createEndpoint(token: token, completion:{ endpoint in
+            self.createOrganziation(profile: profile, endpoint: endpoint, completion: { organization, endpoint in
+                self.updateOrganizationAndEndpoint(org: organization, ep: endpoint)
+            })
+        })
+    }
+    
+    func createEndpoint(token: String, completion: @escaping (Endpoint)->Void){
+        DispatchQueue.global(qos: .background).async {
+            
+            var endpoint = Endpoint()
+            endpoint.status = EndpointStatus(rawValue: "active")
+            endpoint.contact = [ContactPoint()]
+            
+            var cp = ContactPoint()
+            cp.system = ContactPointSystem(rawValue: "other")
+            cp.use = ContactPointUse(rawValue: "work")
+            cp.value = FHIRString(token)
+
+            endpoint.contact?.append(cp)
+            endpoint.connectionType = Coding()
+            
+            var coding = Coding()
+            coding.system = FHIRURL("https://developer.apple.com/notifications/")
+            
+            endpoint.connectionType = coding
+            
+            endpoint.payloadType = [CodeableConcept()]
+            
+            var cc = CodeableConcept()
+            cc.text = FHIRString("PushNotification")
+            endpoint.payloadType?.append(cc)
+            endpoint.address = FHIRURL("testAdress")
+            
+            if let client = Institute.shared.client {
+                endpoint.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("EndpointCreationSucceded")
+                        completion(endpoint)
+                    }
+                }
+            }
+        }
+    }
+    
+    func createOrganziation(profile: String, endpoint: Endpoint, completion:@escaping (Organization, Endpoint)->Void){
+        
+        DispatchQueue.global(qos: .background).async {
+            var org = Organization()
+            org.active = true
+            org.type = [CodeableConcept()]
+            
+            var cc = CodeableConcept()
+            cc.text = FHIRString(profile)
+            
+            org.type?.append(cc)
+            org.endpoint = [Reference()]
+            
+            var ref = Reference()
+            print(self.patientObject?._server?.baseURL)
+            do {
+                try ref = org.reference(resource: endpoint)
+            } catch {
+                print(error)
+            }
+            org.endpoint?.append(ref)
+            
+            if let client = Institute.shared.client {
+                org.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("profileOrganizationCreationSucceded")
+                        //self.updateOrganizationAndEndpoint(org: org, ep: endpoint)
+                        completion(org, endpoint)
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    func updateOrganizationAndEndpoint(org: Organization, ep: Endpoint){
+        DispatchQueue.global(qos: .background).async {
+            org.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("OrganizationUpdateSucceded")
+                }
+            }
+            
+            ep.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("EndpointUpdateSucceded")
+                }
+            }
+        }
+    }
     
 }

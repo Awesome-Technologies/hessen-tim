@@ -45,6 +45,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var additionalInformation: UITextField!
     
+    @IBOutlet weak var consultationReport: UIButton!
     @IBOutlet weak var editPatientData: UIButton!
     @IBOutlet weak var pictureCategory: UIButton!
     @IBOutlet weak var historyButton: UIButton!
@@ -130,13 +131,30 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         self.historyTableView.dataSource = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(toHomeScreen(_:)), name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
-        
+    /*
+        print("PROFILE!")
+    print(UserLoginCredentials.shared.selectedProfile)
+    if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+        consultationReport.isHidden = true
+    }else if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+        print("send is HIDDEN!!")
+        send.isHidden = true
+        editPatientData.isHidden = true
+    }
+        */
+    
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+            consultationReport.isHidden = true
+        }else if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+            send.isHidden = true
+            editPatientData.isHidden = true
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -438,7 +456,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             print("NO DRAFFT")
             editPatientData.isHidden = true
             send.isHidden = true
-        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft") && UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
             print("DRAFFT")
             editPatientData.isHidden = false
             send.isHidden = false

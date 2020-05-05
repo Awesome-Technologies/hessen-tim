@@ -137,6 +137,13 @@ class BaseViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+            takePictureButton.isHidden = true
+        }
+    }
+    
     
     var galleryVC:GalleryViewController?
     var cameraVC:CameraPictureViewController?
@@ -204,17 +211,22 @@ class BaseViewController: UIViewController {
         if(commentButton.currentImage == UIImage(named: "comment-Button")) {
             commentButton.setImage(UIImage(named: "comment-Button-green"), for: .normal)
             
-            saveComment.isHidden = false
-            clearComment.isHidden = false
-            
             textView = CommentTextView(frame: CGRect(x: 0, y: 0, width: 600, height: 400))
             textView.center = self.view.center
             textView.textAlignment = NSTextAlignment.justified
             textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             
             // Make UITextView web links clickable
-            textView.isSelectable = true
-            textView.dataDetectorTypes = UIDataDetectorTypes.link
+            if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+                saveComment.isHidden = false
+                clearComment.isHidden = false
+                
+                textView.isSelectable = true
+                textView.dataDetectorTypes = UIDataDetectorTypes.link
+            }else if (UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+                textView.isSelectable = false
+            }
+            
             
             // Make UITextView corners rounded
             textView.layer.cornerRadius = 5
@@ -238,9 +250,12 @@ class BaseViewController: UIViewController {
         } else {
             textView.removeFromSuperview()
             commentButton.setImage(UIImage(named: "comment-Button"), for: .normal)
-            saveComment.isHidden = true
-            clearComment.isHidden = true
-            paintButton.isHidden = false
+            if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+                saveComment.isHidden = true
+                clearComment.isHidden = true
+                paintButton.isHidden = false
+            }
+            
         }
         
         
@@ -370,7 +385,9 @@ class BaseViewController: UIViewController {
         paintButton.setImage(UIImage(named: "malen-button"), for: .normal)
         commentButton.setImage(UIImage(named: "comment-Button"), for: .normal)
         
-        paintButton.isHidden = false
+        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+            paintButton.isHidden = false
+        }
         closeButton.isHidden = false
         commentButton.isHidden = false
     }
@@ -478,7 +495,10 @@ class BaseViewController: UIViewController {
         clearComment.isHidden = true
         
         //Show photo button
-        takePictureButton.isHidden = false
+        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+            takePictureButton.isHidden = false
+        }
+
         
         cameraVC?.previewView.isHidden = false
     }
