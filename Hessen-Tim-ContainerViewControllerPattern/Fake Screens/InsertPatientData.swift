@@ -41,6 +41,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     var serviceRequestID = ""
     
     var list: PatientList?
+    var isEditMode:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +100,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         
         patientDropdown.delegate = self
         patientDropdown.inputView = pickerView
+        patientDropdown.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(doneButtonPatientList))
         
         
         //It is important that goes after de inputView assignation
@@ -129,6 +131,12 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             fillTextFields(id: (Institute.shared.patientObject?.id!.description)!)
         }
         
+        if(!isEditMode){
+            clearAllInput()
+        } else {
+            patientDropdown.isUserInteractionEnabled = false
+            allElementsOnGreen()
+        }
     }
     
     
@@ -137,14 +145,14 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    
-    
     /**
      Checks if text was text was inserted into TextField and highlight with green border
      */
     @objc func textFieldDidChange(_ textField: UITextField) {
         if(textField.text != ""){
             textField.layer.borderColor = UIColor.green.cgColor
+        }else{
+            textField.layer.borderColor = UIColor.red.cgColor
         }
     }
     
@@ -195,32 +203,32 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .date
-        
-        //ToolBar
-        let toolbar = UIToolbar();
-        toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donedatePicker));
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker));
-        
-        toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
-        
-        patientBirthday.inputAccessoryView = toolbar
         patientBirthday.inputView = datePicker
+        datePicker.addTarget(self, action: #selector(updateDateField(sender:)), for: .valueChanged)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        patientBirthday?.text = formatter.string(from: datePicker.date)
         
     }
     
-    
-    /**
-     Format the date output and highlight the selection with a green border
-     */
-    @objc func donedatePicker(){
-        
+    //Called when the DatePicker Changes
+    @objc func updateDateField(sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        patientBirthday.text = formatter.string(from: datePicker.date)
+        patientBirthday?.text = formatter.string(from: sender.date)
         patientBirthday.layer.borderColor = UIColor.green.cgColor
-        self.view.endEditing(true)
+    }
+    
+    /**
+     Custom functionality for the "done"-button, when opening the patient list
+     */
+    @objc func doneButtonPatientList() {
+        let row = pickerView?.selectedRow(inComponent: 0)
+        let itemselected = patientNames?[row!]
+        fillTextFields(id: patientIDs![row!])
+        patientDropdown.text = itemselected
+        allElementsOnGreen()
+
     }
     
     @objc func cancelDatePicker(){
@@ -301,6 +309,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
                 let itemselected = patientNames?[row]
                 fillTextFields(id: patientIDs![row])
                 patientDropdown.text = itemselected
+                allElementsOnGreen()
             }else{
                 patientDropdown.text = ""
             }
@@ -323,13 +332,30 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
                 self.patientSize.text = Institute.shared.observationHeight?.valueQuantity?.value?.description
                 self.patientWeight.text = Institute.shared.observationWeight?.valueQuantity?.value?.description
                 self.patientSex.text = patient.gender?.rawValue
-                //self.insurance.text = ...
+                self.insurance.text = Institute.shared.coverageObject?.class?[0].name?.description
                 self.clinicName.text = patient.contact?.first?.address?.text?.string
                 self.contactDoctor.text = patient.contact?.first?.name?.family?.string
                 self.contactNumber.text = patient.contact?.first?.telecom?.first?.value?.string
             }
             
         })
+    }
+    
+    /**
+     Sets all the text field borders to green after a patient is selected
+     */
+    func allElementsOnGreen(){
+        patientDropdown.layer.borderColor = UIColor.green.cgColor
+        patientSurname.layer.borderColor = UIColor.green.cgColor
+        patientFirstname.layer.borderColor = UIColor.green.cgColor
+        patientBirthday.layer.borderColor = UIColor.green.cgColor
+        patientSize.layer.borderColor = UIColor.green.cgColor
+        patientSex.layer.borderColor = UIColor.green.cgColor
+        patientWeight.layer.borderColor = UIColor.green.cgColor
+        insurance.layer.borderColor = UIColor.green.cgColor
+        clinicName.layer.borderColor = UIColor.green.cgColor
+        contactDoctor.layer.borderColor = UIColor.green.cgColor
+        contactNumber.layer.borderColor = UIColor.green.cgColor
     }
     
     
@@ -368,13 +394,15 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
      */
     @IBAction func `continue`(_ sender: Any) {
         if(Institute.shared.sereviceRequestObject != nil){
-            Institute.shared.updateExistingPatient(firstName: patientFirstname.text!, familyName: patientSurname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
-                Institute.shared.updateExistingServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "toMedicalData", sender: nil)
-                    }
+            if (!textElementsMissing()) {
+                Institute.shared.updateExistingPatient(firstName: patientFirstname.text!, familyName: patientSurname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,insuranceName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
+                    Institute.shared.updateExistingServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "toMedicalData", sender: nil)
+                        }
+                    })
                 })
-            })
+            }
         
         }else if(patientDropdown.text != ""){
             //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
@@ -387,7 +415,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         }else if (!textElementsMissing()) {
         //}else if (true) {
             
-            Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
+            Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,coverageName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
                 Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "toMedicalData", sender: nil)
@@ -477,6 +505,32 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     
     @IBAction func toHomeScreen(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindToHomeScreen", sender: self)
+        clearAllInput()
+    }
+    
+    /**
+     Clears all the input text fields as well as information stored in the cache concerning the last used patient
+     */
+    func clearAllInput(){
+        //Clear the patient object values
+        Institute.shared.patientObject = nil
+        Institute.shared.observationHeight = nil
+        Institute.shared.observationWeight = nil
+        Institute.shared.coverageObject = nil
+        
+        //Clear the patient text values
+        patientDropdown.text = ""
+        patientSurname.text = ""
+        patientFirstname.text = ""
+        patientBirthday.text = ""
+        patientSize.text = ""
+        patientSex.text = ""
+        patientWeight.text = ""
+        insurance.text = ""
+        clinicName.text = ""
+        contactDoctor.text = ""
+        contactNumber.text = ""
+        isEditMode = false
     }
 }
 

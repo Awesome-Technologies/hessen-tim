@@ -46,6 +46,7 @@ class Institute {
     var patientObject: Patient? = nil
     var observationWeight: Observation? = nil
     var observationHeight: Observation? = nil
+    var coverageObject:Coverage? = nil
     var images:Dictionary<String, Media> = [:]
     
     
@@ -77,7 +78,7 @@ class Institute {
     }
     
     
-    func createPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String,clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
+    func createPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String, coverageName: String, clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
         print("createPatient")
         
         DispatchQueue.global(qos: .background).async {
@@ -126,6 +127,7 @@ class Institute {
                         print("PatientCreationSucceded")
                         self.createWeightVitalSigns(weight: weight)
                         self.createHeightVitalSigns(height: height)
+                        self.createCoverage(name: coverageName)
                         completion()
                     }
                 }
@@ -135,7 +137,7 @@ class Institute {
         
     }
     
-    func updateExistingPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String,clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
+    func updateExistingPatient(firstName: String, familyName: String, gender: String, birthday: String, weight: String, height: String, insuranceName: String, clinicName: String,  doctorName: String, contactNumber: String, completion:@escaping (() -> Void)) {
         print("createPatient")
         
         
@@ -180,6 +182,7 @@ class Institute {
                         print("PatientResourceUpdateSucceded")
                         self.updateWeightVitalSigns(weight: weight)
                         self.updateHeightVitalSigns(height: height)
+                        self.updateCoverage(name: insuranceName)
                         completion()
                     }
                 }
@@ -375,6 +378,79 @@ class Institute {
         }
     
     }
+    
+    func createCoverage(name: String){
+        
+        DispatchQueue.global(qos: .background).async {
+            var cover = Coverage()
+            cover.status = FinancialResourceStatusCodes(rawValue: "active")
+            //cover.type = CodeableConcept()
+            //cover.type?.text = FHIRString("Insurance")
+            cover.class = [CoverageClass()]
+            cover.class![0].name = FHIRString(name)
+            cover.class![0].type = CodeableConcept()
+            cover.class![0].type?.text = FHIRString("Insurance")
+            cover.class![0].value = FHIRString("Insurance")
+            cover.policyHolder = Reference()
+            do {
+                try cover.policyHolder = cover.reference(resource: self.patientObject!)
+            } catch {
+                print(error)
+            }
+            
+            cover.beneficiary = Reference()
+            do {
+                try cover.beneficiary = cover.reference(resource: self.patientObject!)
+            } catch {
+                print(error)
+            }
+            
+            cover.payor = [Reference()]
+            do {
+                var ref = Reference()
+                try ref = cover.reference(resource: self.patientObject!)
+                cover.payor?.append(ref)
+            } catch {
+                print(error)
+            }
+            
+            if let client = Institute.shared.client {
+                cover.createAndReturn(client.server) { error in
+                    if let error = error as? FHIRError {
+                        print(error)
+                    } else {
+                        print("CoverageCreationSucceded")
+                        DispatchQueue.global(qos: .background).async {
+                            cover.update() { error in
+                                if let error = error as? FHIRError {
+                                    print(error)
+                                } else {
+                                    print("CoverageUpdateSucceded")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateCoverage(name: String) {
+        
+        self.coverageObject!.class![0].name = FHIRString(name)
+        
+        DispatchQueue.global(qos: .background).async {
+            self.coverageObject!.update() { error in
+                if let error = error as? FHIRError {
+                    print(error)
+                } else {
+                    print("CoverageUpdateSucceded")
+                }
+            }
+        }
+    
+    }
+    
     
     func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String, completion:@escaping (() -> Void)){
         
@@ -1661,8 +1737,30 @@ class Institute {
                         .map() { return $0.resource as! Observation }
                         
                     self.observationHeight = patientHeight?.first
-                    completion(patient)
+                    self.getCoverage(patient: patient, completion: completion)
+                    //completion(patient)
                     
+                }
+            }
+        }
+    }
+    
+    func getCoverage(patient:Patient, completion: @escaping ((Patient) -> Void)) {
+        print("getCoverageOfPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Coverage.search(["policy-holder":patient.id?.description])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let coverages = bundle?.entry?
+                        .filter() { return $0.resource is Coverage }
+                        .map() { return $0.resource as! Coverage }
+                        
+                    self.coverageObject = coverages?.first
+                    completion(patient)
                 }
             }
         }

@@ -234,6 +234,7 @@ class SecondScreenViewController: UIViewController {
         performSegue(withIdentifier: "insertPatientData", sender: nil)
     }
     
+
     
     @IBAction func logout(_ sender: Any) {
         UIApplication.shared.unregisterForRemoteNotifications()
@@ -247,7 +248,16 @@ class SecondScreenViewController: UIViewController {
             }
         })
         //toLoginScreen
+    }
         
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "insertPatientData" {
+            
+            let controller = segue.destination as! InsertPatientData
+            controller.isEditMode = false
+            
+        }
     }
     
     @IBAction func unwindToStart(segue:UIStoryboardSegue) {

@@ -317,6 +317,10 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             print("From Medical view I five the ID: 3")
             
             
+        } else if(segue.identifier == "editPatientData") { 
+            let controller = segue.destination as! InsertPatientData
+            controller.isEditMode = true
+            
         }
     }
     
