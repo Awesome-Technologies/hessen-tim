@@ -20,3 +20,11 @@ protocol GalleryDelegate:class {
     func setCategory() -> String
     func createDateLabel(media: Media)
 }
+
+/**
+ Protocol to give the Institute class access to the galleryView
+ */
+protocol GalleryImageReloadDelegate:class {
+    func reloadImage(newImageName: String)
+
+}

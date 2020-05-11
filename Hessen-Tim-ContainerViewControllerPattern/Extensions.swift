@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SMART
 
 
 extension UITextView: UITextViewDelegate {
@@ -79,4 +80,18 @@ extension UITextView: UITextViewDelegate {
         self.delegate = self
     }
     
+}
+
+/**
+ Extention because of a bug in DateTime.
+ Workaround to get a correct date for the comparison
+ */
+extension DateTime {
+    
+    func fixedNSDate(date: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSZ"
+        var date = dateFormatter.date(from: date)!
+        return date
+    }
 }

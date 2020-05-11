@@ -40,6 +40,7 @@ class Institute {
     
     public var photoName = 0
     
+    var galleryVC:GalleryViewController?
     var serviceRequestID = ""
     var serviceRequestDraftObject: ServiceRequest? = nil
     var sereviceRequestObject: ServiceRequest? = nil
@@ -837,8 +838,8 @@ class Institute {
         }
         
         self.createImageMedia(imageData: imageData,category: obsType, completion: { media in
-            self.updateImage(media: media)
-            completion(media.id!.description)
+            //completion(media.id!.description)
+            completion("test")
         })
         
     }
@@ -894,36 +895,44 @@ class Institute {
         
         med.note = [Annotation()]
         med.note![0].text = FHIRString("test")
-        
-        //Create a local UUID to replace the local image with the mediafile from the server
-        med.note![1].text = FHIRString(UUID().uuidString)
-        /*
-        var annotation = Annotation()
-        annotation.text = FHIRString("test")
-        med.note?.append(annotation)
-        */
-        
-        
-        
-            
 
+        //Create a UUID as a local ID, to replace this image with the image, that is processed througt the server
+        let uuid = UUID().uuidString
+        print("uuid: " + uuid )
+        //We create a new Note and save the uuid there
+        var annotation = Annotation()
+        annotation.text = FHIRString(uuid)
+        
+        med.note?.append(annotation)
+        //We add the local image to the dict
+        self.images[uuid] = med
+        //We display the local image in the gallery
+        completion(med)
+        
             if let client = Institute.shared.client {
                 med.createAndReturn(client.server) { error in
                     if let error = error as? FHIRError {
                         print(error)
                     } else {
                         print("MediaCreationSucceded")
-                        self.images[med.id!.description] = med
                         print(med.id)
-                        
-                        completion(med)
-                        
-                        
+                        //When the server finishes saving the image, the new image is loaded in the dict
+                        self.replaceMediaInCache(media: med)
+                        self.updateImage(media: med)
                     }
                 }
                 
                 // check error
             }
+        }
+    }
+    
+    func replaceMediaInCache(media: Media){
+        //The old image gets deleted
+        if let entry = images.removeValue(forKey: media.note![1].text!.description) {
+            //The new image is added
+            self.images[media.id!.description] = media
+            reloadImage(newImageName: media.id!.description)
         }
     }
     
@@ -2098,10 +2107,13 @@ class Institute {
             let merge = filteredForDraftPictures.merging(filteredForDate, uniquingKeysWith: { (first, _) in first })
             filteredForDate = merge
         }
-        //Sort the subset to an array by the imageNames/ids of the images (same order as date would be)
-        let sortedKeys = filteredForDate.keys.sorted(by: >)  // ["A", "D", "Z"]
-        //print(sortedKeys.description)
-        return sortedKeys
+        /**
+         Workaround for the bug: we use our own extention to get the correct formatted date for the comparison
+         */
+        let sortedDict = filteredForDate.sorted{$0.value.createdDateTime!.fixedNSDate(date: $0.value.createdDateTime!.description) > $1.value.createdDateTime!.fixedNSDate(date: $1.value.createdDateTime!.description)}
+        let keys = sortedDict.flatMap(){ $0.0 as? String }
+        return Array(keys)
+        
     }
     
     func openMedicalDataFromNotification(notification: [String: AnyObject], completion: @escaping (() -> Void)) {
@@ -2368,6 +2380,16 @@ class Institute {
                 }
             }
         }
+    }
+    
+}
+
+/**
+ Makes the GalleryView reload after a new Image was returned from the server
+ */
+extension Institute: GalleryImageReloadDelegate {
+    func reloadImage(newImageName: String) {
+        galleryVC?.reloadGalleryImages(newImage: newImageName)
     }
     
 }

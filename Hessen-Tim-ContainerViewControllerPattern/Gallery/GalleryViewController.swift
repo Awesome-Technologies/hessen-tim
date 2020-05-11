@@ -36,6 +36,8 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         
         category = self.baseDelegate?.setCategory() as! String
         
+        //Set the curent vc in the Institute class
+        Institute.shared.galleryVC = self
     }
     
     //var Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse") = [String]()
@@ -72,7 +74,7 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
             if(imageData != nil){
                 cell.loadingImage.isHidden = true
                 let decodedData = Data(base64Encoded: imageData.value)!
-                cell.galleryImage.image = getImage(imageName: Institute.shared.getOrderedImageSubset(category: category)[indexPath.item])
+                cell.galleryImage.image = getImage(imageName: cell.myLabel.text!)
                 cell.galleryImage.isHidden = false
                 
             }else{
@@ -145,8 +147,14 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         //if(cell.galleryImage.isHidden == false){
             print("loading screen visible")
             baseDelegate?.clearView()
-            delegate?.didSelectImage(photoName: Institute.shared.getOrderedImageSubset(category: category)[indexPath.row])
-            //NotificationCenter.default.post(name: Notification.Name(rawValue: "clearView"), object: nil)
+            /**
+             HINT: Because we base the selection of the image on the creation of a new subset, the replacement of the local image with the server image works.
+             Because the local image (that gets deleted) and the server Image (that replaces the local image) take the same index in the created subset, the right image is displayed,
+             even though the names of the images (here the keys in the dict) are completely different
+            **/
+            //delegate?.didSelectImage(photoName: Institute.shared.getOrderedImageSubset(category: category)[indexPath.row])
+            delegate?.didSelectImage(photoName: cell.myLabel.text!)
+            
         }
         
     }
@@ -293,6 +301,18 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
             print("Panic! No Image!")
         }
         return nil
+    }
+    
+    /**
+     Function gets by the Institute class, when the server finishes loading an image and the local image is replaced with the remote server image
+     In the getOrderedImageSubset the new/updated Image from the server has the same index as the still existing old image in the Gallery
+     So triggering the reload at that index will reload the right cell
+     */
+    func reloadGalleryImages(newImage:String) {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(item: Institute.shared.getOrderedImageSubset(category: self.category).firstIndex(of: newImage)!, section: 0)
+            self.collectionView.reloadItems(at: [indexPath])
+        }
     }
     
 }
