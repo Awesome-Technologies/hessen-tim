@@ -1824,7 +1824,9 @@ class Institute {
                 let expression1 = "Media?modality:text=" + type
                 let expression2 = "&_summary=count&created=le" + filterDate
                 let expression3 = "&based-on:ServiceRequest.status=active"
-                self.client!.server.performRequest(against: expression1 + expression2 + expression3, handler: request) { (response) in
+                let expression4 = "&based-on:ServiceRequest.subject:Patient._id=" + self.patientObject!.id!.description
+                self.client!.server.performRequest(against: expression1 + expression2 + expression3 + expression4, handler: request) { (response) in
+
                     do {
                         let bundle = try response.responseResource(ofType: Bundle.self)
                         //print("Antwort: \(bundle.total ?? "Fehler!")")
@@ -1876,10 +1878,14 @@ class Institute {
         
     }
     
-    func saveDiagnosticReport(text: String){
+    func saveDiagnosticReport(text: String, completion: @escaping ()->Void){
         self.createDiagnosticReport(reportText: text, completion: { report in
-            self.updateDiagnosticReport(report: report)
-            self.setServiceRequestActive()
+            self.updateDiagnosticReport(report: report, completion:{
+                self.setServiceRequestActive(completion:{
+                    completion()
+                })
+            })
+            
         })
     }
     
@@ -1923,19 +1929,20 @@ class Institute {
         }
     }
     
-    func updateDiagnosticReport(report: DiagnosticReport){
+    func updateDiagnosticReport(report: DiagnosticReport, completion: @escaping ()->Void){
         DispatchQueue.global(qos: .background).async {
             report.update() { error in
                 if let error = error as? FHIRError {
                     print(error)
                 } else {
                     print("ReportUpdateSucceded")
+                    completion()
                 }
             }
         }
     }
     
-    func setServiceRequestActive(){
+    func setServiceRequestActive(completion: @escaping ()->Void){
         if(self.sereviceRequestObject != nil){
             self.sereviceRequestObject?.authoredOn = DateTime.now
             self.sereviceRequestObject?.status = RequestStatus(rawValue: "active")
@@ -1945,7 +1952,7 @@ class Institute {
                         print(error)
                     } else {
                         print("ServicerequestUpdateSucceded")
-                        
+                        completion()
                     }
                     
                 }
@@ -2076,11 +2083,13 @@ class Institute {
     }
     
     func clearData(){
+        print("clearData")
         self.sereviceRequestObject = nil
+        self.serviceRequestDraftObject = nil
         self.patientObject = nil
         self.observationWeight = nil
         self.observationHeight = nil
-        self.serviceRequestDraftObject = nil
+        self.coverageObject = nil
     }
     
     func deleteAllDataForServiceRequest(){

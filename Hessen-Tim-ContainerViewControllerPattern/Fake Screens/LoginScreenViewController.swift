@@ -95,7 +95,7 @@ class LoginScreenViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "mainView", sender: self)
                         }
-                    })
+                    })    
                 }
             }
         }

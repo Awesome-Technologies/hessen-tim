@@ -507,15 +507,20 @@ class MedicalDataNotificationView: UIView {
     
     @objc func saveDiagnosticReport(sender: UIButton!) {
       print("Button tapped")
-        Institute.shared.saveDiagnosticReport(text: consilReportTextView.text)
-        grayPanel.removeFromSuperview()
-        self.removeFromSuperview()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
+        Institute.shared.saveDiagnosticReport(text: consilReportTextView.text, completion: {
+            DispatchQueue.main.async {
+                self.grayPanel.removeFromSuperview()
+                self.removeFromSuperview()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
+            }            
+        })
+        
     }
     
     @objc func cancelRequestCreation(sender: UIButton!) {
       print("Button tapped")
         Institute.shared.deleteAllDataForServiceRequest()
+        Institute.shared.clearData()
         grayPanel.removeFromSuperview()
         self.removeFromSuperview()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)

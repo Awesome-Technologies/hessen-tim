@@ -81,7 +81,12 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         contactDoctor.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         contactNumber.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         
-        
+        //Capitalize the first letter of words, when typing in the test fields
+        patientSurname.autocapitalizationType = .words
+        patientFirstname.autocapitalizationType = .words
+        insurance.autocapitalizationType = .words
+        clinicName.autocapitalizationType = .words
+        contactDoctor.autocapitalizationType = .words
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         
@@ -223,11 +228,14 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
      Custom functionality for the "done"-button, when opening the patient list
      */
     @objc func doneButtonPatientList() {
-        let row = pickerView?.selectedRow(inComponent: 0)
-        let itemselected = patientNames?[row!]
-        fillTextFields(id: patientIDs![row!])
-        patientDropdown.text = itemselected
-        allElementsOnGreen()
+        if(patientNames!.count > 0){
+            let row = pickerView?.selectedRow(inComponent: 0)
+            let itemselected = patientNames?[row!]
+            fillTextFields(id: patientIDs![row!])
+            patientDropdown.text = itemselected
+            allElementsOnGreen()
+        }
+        
 
     }
     
@@ -425,7 +433,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             
         }
     }
-    
+    /*
     /**
      The inputs are passed over to the next view
      */
@@ -448,7 +456,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             
         }
     }
-    
+    */
     /**
      Checks if inputs are missing and highlights all the respective Textfields
      */

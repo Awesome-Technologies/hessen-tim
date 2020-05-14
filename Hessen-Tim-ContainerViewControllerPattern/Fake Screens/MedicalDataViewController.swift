@@ -12,16 +12,6 @@ import SMART
 
 class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var pName: String = "Hans Müller"
-    var pBirthday: String = "15.02.1956"
-    var pSize: String = "180"
-    var pSex: String = "M"
-    var pWeight: String = "71"
-    var insuranceName: String = "Allianz"
-    var clinic: String = "Frankfurt"
-    var doctor: String = "Dr.Stein"
-    var number: String = "017412345"
-    
     var serviceRequestID: String = ""
 
     @IBOutlet weak var patientDataView: UIView!
@@ -64,26 +54,25 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var normalCall: UIButton!
     @IBOutlet weak var videoCall: UIButton!
-
+    @IBOutlet weak var historyUnwind: UIButton!
+    
     
     @IBOutlet weak var historyTableView: UITableView!
     
     var historyData = [DomainResource]()
     
+    var historyUnwindStart:CGPoint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        patientName.text = pName
-        patientBirthday.text = pBirthday
-        patientSize.text = pSize
-        patientSex.text = pSex
-        patientWeight.text = pWeight
-        insurance.text = insuranceName
-        clinicName.text = clinic
-        contactDoctor.text = doctor
-        contactNumber.text = number
-        
         toggleEditButtons()
+        
+        historyUnwindStart = historyUnwind.frame.origin
+        
+        historyUnwind.layer.cornerRadius = 5
+        historyUnwind.alpha = 0.0
+        historyUnwind.isEnabled = false
         
         patientDataView.layer.cornerRadius = 10
         patientDataView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -119,6 +108,13 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
                 self.historyData = items!
                 DispatchQueue.main.async {
                     self.historyTableView.reloadData()
+                    //Checks if we should display the unwind button
+                    if self.historyunwindButtonVisible(){
+                        self.animateHistoryUnwindButton(visible: true)
+                    }else{
+                        self.animateHistoryUnwindButton(visible: false)
+                        
+                    }
                 }
             }
             
@@ -155,6 +151,13 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             send.isHidden = true
             editPatientData.isHidden = true
         }
+        insertPatientData()
+        
+        print("INDEX")
+        print(historyTableView.indexPathForSelectedRow)
+        print(historyTableView.indexPathsForSelectedRows?.first?.row)
+        print(historyTableView.indexPathsForVisibleRows?.first?.row)
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -272,6 +275,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         }else{
             //self.performSegue(withIdentifier: "unwindToCaseSelection", sender: self)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
+            Institute.shared.clearData()
         }
         
     }
@@ -371,6 +375,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
         if let report = historyData[indexPath.row] as? DiagnosticReport {
             showDiagosticReport(report: report)
         }else{
@@ -384,9 +389,13 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             toggleEditButtons()
             //self.openPictureCategoryView(self)
             tableView.reloadData()
-            
         }
         
+        if(indexPath.row != 0){
+            animateHistoryUnwindButton(visible: true)
+        } else{
+            animateHistoryUnwindButton(visible: false)
+        }
         
     }
     
@@ -467,6 +476,55 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
     }
+    
+    func insertPatientData(){
+        self.patientName.text = (Institute.shared.patientObject!.name?[0].given?[0].string)! + " " + (Institute.shared.patientObject!.name?[0].family?.string)!
+        self.patientBirthday.text = Institute.shared.patientObject?.birthDate?.description
+        self.patientSize.text = Institute.shared.observationHeight?.valueQuantity?.value?.description
+        self.patientSex.text = Institute.shared.patientObject?.gender?.rawValue
+        self.patientWeight.text = Institute.shared.observationWeight?.valueQuantity?.value?.description
+        self.insurance.text = Institute.shared.coverageObject?.class![0].name?.description
+        self.clinicName.text = Institute.shared.patientObject!.contact![0].address?.text?.description
+        self.contactDoctor.text = Institute.shared.patientObject!.contact![0].name?.family?.description
+        self.contactNumber.text = Institute.shared.patientObject!.contact![0].telecom![0].value?.description
+    }
+    /**
+     Checks if the unwind button should be visible
+     We get the newest (firstest) Service request in the history Data
+     If our currently selected service Request is not the found newest one, it means, that we are not on the newest Element and should display the unwind button
+     */
+    func historyunwindButtonVisible() -> Bool {
+        let newestRequest = historyData.first{$0 is ServiceRequest} as! ServiceRequest
+        if(Institute.shared.sereviceRequestObject?.id == newestRequest.id){
+            return false
+        }else{
+            return true
+        }
+    }
+    
+    /**
+     Animate the appearence of the unwind button
+     */
+    func animateHistoryUnwindButton(visible: Bool){
+        if (visible){
+            //Only animate if the button is NOT already visible
+            if(historyUnwind.alpha != 1.0){
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.historyUnwind.frame.origin = CGPoint(x: self.historyUnwind.frame.origin.x+50, y: self.historyUnwind.frame.origin.y)
+                    self.historyUnwind.alpha = 1.0
+                    
+                }, completion: {(value: Bool) in
+                    self.historyUnwind.isEnabled = true
+                })
+            }
+            
+        }else{
+            historyUnwind.isEnabled = false
+            historyUnwind.alpha = 0.0
+            historyUnwind.frame.origin = historyUnwindStart
+        }
+    }
+
 
     @IBAction func editPatientData(_ sender: Any) {
         performSegue(withIdentifier: "editPatientData", sender: nil)
@@ -475,6 +533,14 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     @objc func toHomeScreen(_ notification: Notification) {
         self.performSegue(withIdentifier: "unwindToCaseSelection", sender: self)
+        Institute.shared.clearData()
     }
     
+    @IBAction func unwindHistory(_ sender: Any) {
+        print("unwind")
+        let selectedIndex = IndexPath(row: 0, section: 0)
+        print(selectedIndex)
+        historyTableView.selectRow(at: selectedIndex, animated: true, scrollPosition: .none)
+        historyTableView.delegate?.tableView!(historyTableView, didSelectRowAt: selectedIndex)
+    }
 }
