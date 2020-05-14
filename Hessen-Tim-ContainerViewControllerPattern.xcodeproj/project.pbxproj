@@ -47,11 +47,11 @@
 		9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */; };
 		9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */; };
 		9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */; };
+		97B5B6EC246E0147003421C3 /* SMART in Frameworks */ = {isa = PBXBuildFile; productRef = 97B5B6EB246E0147003421C3 /* SMART */; };
 		97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA9E6E238EC41A00AF5DDD /* Institute.swift */; };
 		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
 		97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */; };
 		97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8062254C63B0055EBCE /* GalleryViewController.swift */; };
-		97FA7F3A2396A37500DBBEB3 /* SMART in Frameworks */ = {isa = PBXBuildFile; productRef = 97FA7F392396A37500DBBEB3 /* SMART */; };
 		E13F8841AF06A9CCC04E9833 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97DAC4DC424232B4C9168E3 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97FA7F3A2396A37500DBBEB3 /* SMART in Frameworks */,
+				97B5B6EC246E0147003421C3 /* SMART in Frameworks */,
 				2BC97409584C0A23E0E67AAB /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,7 +389,7 @@
 			);
 			name = "Hessen-Tim-ContainerViewControllerPattern";
 			packageProductDependencies = (
-				97FA7F392396A37500DBBEB3 /* SMART */,
+				97B5B6EB246E0147003421C3 /* SMART */,
 			);
 			productName = "Hessen-Tim-ContainerViewControllerPattern";
 			productReference = 8F5233D5223949D50020292F /* AMP.intensiv.app */;
@@ -466,7 +466,7 @@
 			);
 			mainGroup = 8F5233CC223949D50020292F;
 			packageReferences = (
-				97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */,
+				97B5B6EA246E0147003421C3 /* XCRemoteSwiftPackageReference "Swift-SMART" */,
 			);
 			productRefGroup = 8F5233D6223949D50020292F /* Products */;
 			projectDirPath = "";
@@ -978,20 +978,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */ = {
+		97B5B6EA246E0147003421C3 /* XCRemoteSwiftPackageReference "Swift-SMART" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Awesome-Technologies/Swift-SMART/";
+			repositoryURL = "git@github.com:Awesome-Technologies/Swift-SMART.git";
 			requirement = {
-				kind = revision;
-				revision = a1bca00b2ee1207766625106b98fd5c370227eb2;
+				branch = "AMP.institute/4.2.0(3)";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		97FA7F392396A37500DBBEB3 /* SMART */ = {
+		97B5B6EB246E0147003421C3 /* SMART */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97FA7F382396A37500DBBEB3 /* XCRemoteSwiftPackageReference "Swift-SMART" */;
+			package = 97B5B6EA246E0147003421C3 /* XCRemoteSwiftPackageReference "Swift-SMART" */;
 			productName = SMART;
 		};
 /* End XCSwiftPackageProductDependency section */

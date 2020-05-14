@@ -2307,7 +2307,7 @@ class Institute {
         /**
          Workaround for the bug: we use our own extention to get the correct formatted date for the comparison
          */
-        let sortedDict = filteredForDate.sorted{$0.value.createdDateTime!.fixedNSDate(date: $0.value.createdDateTime!.description) > $1.value.createdDateTime!.fixedNSDate(date: $1.value.createdDateTime!.description)}
+        let sortedDict = filteredForDate.sorted{$0.value.createdDateTime!.nsDate > $1.value.createdDateTime!.nsDate}
         let keys = sortedDict.flatMap(){ $0.0 as? String }
         return Array(keys)
         
