@@ -500,6 +500,9 @@ class Institute {
             
             serv.reasonReference = [Reference()]
             
+            serv.note = [Annotation()]
+            serv.note![0].text = FHIRString("")
+            
             if let client = Institute.shared.client {
                 serv.createAndReturn(client.server) { error in
                     if let error = error as? FHIRError {

@@ -8,6 +8,7 @@
 
 import UIKit
 import SMART
+import IQKeyboardManagerSwift
 
 class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
@@ -46,6 +47,8 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        IQKeyboardManager.shared.previousNextDisplayMode = .alwaysShow
         
         //add round cornes to Textfields and Buttons
         addUIcorners(item: patientDropdown)

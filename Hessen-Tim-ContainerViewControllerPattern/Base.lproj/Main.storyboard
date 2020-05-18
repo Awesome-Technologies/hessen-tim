@@ -1108,14 +1108,14 @@
                                 <rect key="frame" x="8" y="600" width="532" height="197"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AQ4-o9-ltQ" userLabel="Additional Information">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="LyS-di-Ldt">
                                         <rect key="frame" x="5" y="36" width="519" height="153"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.12663191560000001" green="0.14348280429999999" blue="0.26868420840000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.12549019607843137" green="0.14509803921568626" blue="0.27058823529411763" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anmerkungen" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0xc-8G-wY0">
                                         <rect key="frame" x="5" y="0.0" width="150" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1154,7 +1154,6 @@
                     <navigationItem key="navigationItem" id="ooM-gU-hfx"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="additionalInformation" destination="AQ4-o9-ltQ" id="huo-RF-k84"/>
                         <outlet property="anamnesebutton" destination="b1u-kN-U7R" id="z8Z-oz-1gM"/>
                         <outlet property="bloodGasAnalysisButton" destination="mMi-Qj-vO4" id="ILj-2l-yqD"/>
                         <outlet property="clinicName" destination="qeX-75-oFy" id="2Im-ac-mCO"/>
@@ -1176,7 +1175,7 @@
                         <outlet property="medicalLetterButton" destination="B03-6f-M2X" id="1jM-gx-yrU"/>
                         <outlet property="normalCall" destination="nFb-ty-CWi" id="9cg-jC-Nff"/>
                         <outlet property="noteLabel" destination="0xc-8G-wY0" id="dRq-UO-m2Y"/>
-                        <outlet property="noteTextField" destination="AQ4-o9-ltQ" id="FlM-QQ-gO3"/>
+                        <outlet property="noteTextView" destination="LyS-di-Ldt" id="0f2-M4-7z1"/>
                         <outlet property="noteView" destination="iDd-dE-Wru" id="RN8-Dd-WtK"/>
                         <outlet property="otherButton" destination="wLC-4l-eDv" id="P9p-oI-gvx"/>
                         <outlet property="patientBirthday" destination="nIB-mo-Vhk" id="8u0-5C-ePm"/>

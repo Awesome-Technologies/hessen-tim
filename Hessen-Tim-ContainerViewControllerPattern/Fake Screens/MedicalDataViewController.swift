@@ -8,9 +8,10 @@
 
 import UIKit
 import SMART
+import IQKeyboardManagerSwift
 
 
-class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     
     var serviceRequestID: String = ""
 
@@ -20,8 +21,11 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var imageCategoryView: UIView!
     @IBOutlet weak var noteLabel: UILabel!
-    @IBOutlet weak var noteTextField: UITextField!
+    //@IBOutlet weak var noteTextField: UITextField!
     @IBOutlet weak var historyView: UIView!
+    @IBOutlet weak var noteTextView: UITextView!
+    var commentTextView: UITextView!
+    var grayPanel: UIView!
     
     @IBOutlet weak var patientName: UILabel!
     @IBOutlet weak var patientBirthday: UILabel!
@@ -32,8 +36,6 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var clinicName: UILabel!
     @IBOutlet weak var contactDoctor: UILabel!
     @IBOutlet weak var contactNumber: UILabel!
-    
-    @IBOutlet weak var additionalInformation: UITextField!
     
     @IBOutlet weak var consultationReport: UIButton!
     @IBOutlet weak var editPatientData: UIButton!
@@ -66,6 +68,8 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        IQKeyboardManager.shared.previousNextDisplayMode = .alwaysHide
+        
         toggleEditButtons()
         
         historyUnwindStart = historyUnwind.frame.origin
@@ -92,8 +96,21 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         noteLabel.layer.masksToBounds = true
         noteLabel.layer.cornerRadius = 10
         noteLabel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        noteTextField.layer.cornerRadius = 10
-        noteTextField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        
+        commentTextView =  UITextView(frame: CGRect(x: 10, y: 220, width: 1060, height: 130))
+        view.addSubview(commentTextView)
+        commentTextView.delegate = self
+        commentTextView.keyboardToolbar.doneBarButton.setTarget(self, action: #selector(doneNoteButton))
+        commentTextView.isEditable = false
+        commentTextView.isHidden = true
+        commentTextView.font = .systemFont(ofSize: 18)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapFromTextView))
+        noteTextView.addGestureRecognizer(tapGestureRecognizer)
+        noteTextView.layer.cornerRadius = 10
+        noteTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        noteTextView.font = .systemFont(ofSize: 18)
+        
         //Institute.shared.deleteAllImageMedia()
         Institute.shared.clearAllFile()
         //Institute.shared.loadAllMediaResource()
@@ -108,6 +125,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
                 self.historyData = items!
                 DispatchQueue.main.async {
                     self.historyTableView.reloadData()
+                    self.showHistoryNotes()
                     //Checks if we should display the unwind button
                     if self.historyunwindButtonVisible(){
                         self.animateHistoryUnwindButton(visible: true)
@@ -389,6 +407,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             toggleEditButtons()
             //self.openPictureCategoryView(self)
             tableView.reloadData()
+            showHistoryNotes()
         }
         
         if(historyunwindButtonVisible()){
@@ -532,6 +551,58 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             historyUnwind.frame.origin = historyUnwindStart
         }
     }
+    
+    func showCommentTextField(){
+        view.bringSubviewToFront(commentTextView)
+        commentTextView.isEditable = true
+        commentTextView.isHidden = false
+        commentTextView.layer.cornerRadius = 10
+        commentTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        commentTextView.text = Institute.shared.sereviceRequestObject?.note![0].text?.description
+        commentTextView.backgroundColor = UIColor.orange
+    }
+    
+    /**
+     Adds a comment marker, when enter is pressed on the keyboard
+     */
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            var updatedText: String = textView.text! + ("\n\u{2022} ")
+            textView.text = updatedText
+            return false
+            
+        }
+        return true
+        
+    }
+    
+    /**
+     Triggers the closing of the comment view, when the keyboard is dismissed.
+     */
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if(textView == commentTextView){
+            doneNoteButton()
+        }
+    }
+    /**
+     Adds a gray UIView in the background, when showing the comment view
+     */
+    func addGrayBackPanel(){
+        grayPanel = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        //grayPanel.backgroundColor = UIColor.darkGray
+        grayPanel.backgroundColor = UIColor.init(red: 49.0/255.0, green: 49.0/255.0, blue: 49.0/255.0, alpha: 0.5)
+                
+        self.view?.addSubview(grayPanel)
+        grayPanel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            grayPanel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0),
+            grayPanel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+            grayPanel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0),
+            grayPanel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0),
+        ])
+    }
+    
 
 
     @IBAction func editPatientData(_ sender: Any) {
@@ -550,5 +621,120 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         print(selectedIndex)
         historyTableView.selectRow(at: selectedIndex, animated: true, scrollPosition: .none)
         historyTableView.delegate?.tableView!(historyTableView, didSelectRowAt: selectedIndex)
+    }
+    /**
+     Function, that gets called to close the details view of the comments and saves the comment text
+     */
+    @objc func doneNoteButton() {
+        print("doneNoteButton")
+        print(commentTextView.text)
+        print("---")
+        
+        commentTextView.isEditable = false
+        commentTextView.isHidden = true
+        formatCommentText()
+        
+        if let text = commentTextView.text{
+            //Check if comment mode was used without adding a note
+            if( text == "\u{2022} "){
+                commentTextView.text = ""
+            }
+            Institute.shared.sereviceRequestObject?.note![0].text = FHIRString(text)
+            //noteTextView.text = noteTextView.text + text
+        }
+        
+        self.grayPanel.removeFromSuperview()
+        UIView.animate(withDuration: 0.3, animations: {
+            let rect = CGRect(x: 15, y: 635, width: 519, height: 153)
+            //noteTextField.frame.size.height = noteTextField.frame.size.height+300
+            self.noteTextView.frame = rect
+            
+            
+        }, completion: {(value: Bool) in
+            self.noteTextView.layer.cornerRadius = 10
+            self.noteTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            
+            self.noteView.addSubview(self.noteTextView)
+            let rect = CGRect(x: 5, y: 36, width: 519, height: 153)
+            self.noteTextView.frame = rect
+            self.commentTextView.resignFirstResponder()
+            self.showHistoryNotes()
+        })
+    }
+    
+    /**
+     Formats the text in the comment textView
+     */
+    func formatCommentText(){
+        // When commentTextView is visible
+        if(self.commentTextView.isEditable){
+            if(self.commentTextView.text == ""){
+                self.commentTextView.text = "\n\u{2022} "
+                
+            }else{
+                if (!self.commentTextView.text.description.hasSuffix("\u{2022} ")) {
+                    self.commentTextView.text = self.commentTextView.text! + ("\n\u{2022} ")
+                }
+            }
+        // When commentTextView is not visible
+        }else{
+            if(self.commentTextView.text != ""){
+                if (self.commentTextView.text.description.hasSuffix("\u{2022} ")) {
+                    self.commentTextView.text.removeLast(3)
+                }
+            }
+        }
+    }
+    
+    /**
+     Shows all the notes, that have been saved up to the selected ServiceRequest
+     */
+    func showHistoryNotes(){
+        noteTextView.text = ""
+        for item in historyData{
+            if let request = item as? ServiceRequest {
+                if(request.authoredOn!.nsDate <= Institute.shared.sereviceRequestObject!.authoredOn!.nsDate){
+                    if(request.note != nil){
+                        if(request.note![0].text != nil){
+                            noteTextView.text = noteTextView.text + request.note![0].text!.description
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /**
+     Start the animation and display and adding of the notes, when the user is on a draft Servicerequest
+     */
+    @objc func handleTapFromTextView(recognizer : UITapGestureRecognizer)
+    {
+        
+        if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            if(noteTextView.superview == noteView){
+                self.view.addSubview(noteTextView)
+                let rect = CGRect(x: 15, y: 635, width: 519, height: 153)
+                noteTextView.frame = rect
+                
+                addGrayBackPanel()
+                view.addSubview(noteTextView)
+                view.bringSubviewToFront(noteTextView)
+                UIView.animate(withDuration: 0.3, animations: {
+                    let rect = CGRect(x: 10, y: 20, width: 1060, height: 200)
+                    self.noteTextView.frame = rect
+                    
+                }, completion: {(value: Bool) in
+                    self.noteTextView.layer.cornerRadius = 10
+                    self.noteTextView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                    
+                    self.showHistoryNotes()
+                    self.showCommentTextField()
+                    self.commentTextView.becomeFirstResponder()
+                    self.formatCommentText()
+                })
+            }else{
+               doneNoteButton()
+            }
+            
+        }
     }
 }
