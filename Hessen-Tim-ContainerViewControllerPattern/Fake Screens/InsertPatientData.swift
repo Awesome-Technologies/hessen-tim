@@ -433,30 +433,20 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             
         }
     }
-    /*
-    /**
-     The inputs are passed over to the next view
-     */
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toMedicalData" {
-            
-            let controller = segue.destination as! MedicalDataViewController
-            print("name: " +  String(self.patientSurname.text!))
-            controller.pName = self.patientSurname.text!
-            controller.pBirthday = self.patientBirthday.text!
-            controller.pSize = self.patientSize.text!
-            controller.pSex = self.patientSex.text!
-            controller.pWeight = self.patientWeight.text!
-            controller.insuranceName = self.insurance.text!
-            controller.clinic = self.clinicName.text!
-            controller.doctor = self.contactDoctor.text!
-            controller.number = self.contactNumber.text!
-            
-            controller.serviceRequestID = self.serviceRequestID
+            /**
+             Clear all the images in the cache
+             This is a quick workaround for the problem, that right now, images in cache are displayed regardless of the patient
+             We will fix this in the upcoming DataLayer update
+             */
+            print("clear cache")
+            Institute.shared.images.removeAll()
             
         }
     }
-    */
+    
     /**
      Checks if inputs are missing and highlights all the respective Textfields
      */

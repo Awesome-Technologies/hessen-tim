@@ -130,6 +130,18 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         self.performSegue(withIdentifier: "showMedicalDataView", sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showMedicalDataView") {
+            /**
+             Clear all the images in the cache
+             This is a quick workaround for the problem, that right now, images in cache are displayed regardless of the patient
+             We will fix this in the upcoming DataLayer update
+             */
+            print("clear cache")
+            Institute.shared.images.removeAll()
+        }
+    }
+    
     
 }
 

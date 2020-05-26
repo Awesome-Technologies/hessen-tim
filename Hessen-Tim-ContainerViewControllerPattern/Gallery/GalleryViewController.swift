@@ -40,6 +40,12 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
         Institute.shared.galleryVC = self
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        Institute.shared.galleryVC = nil
+    }
+    
     //var Institute.shared.getOrderedImageSubset(category: "Blutgasanalyse") = [String]()
 
     
@@ -307,11 +313,19 @@ class GalleryViewController: UIViewController, UICollectionViewDataSource, UICol
      Function gets by the Institute class, when the server finishes loading an image and the local image is replaced with the remote server image
      In the getOrderedImageSubset the new/updated Image from the server has the same index as the still existing old image in the Gallery
      So triggering the reload at that index will reload the right cell
+     
+     We have to check, if the returned image is parth of the subset, because the image could have been taken in an other category
+     and we already swiched to an other category, while the image is still updating in the background.
+     on finish uploading, the app will try to reload the current category with an image from a different category
      */
     func reloadGalleryImages(newImage:String) {
         DispatchQueue.main.async {
-            let indexPath = IndexPath(item: Institute.shared.getOrderedImageSubset(category: self.category).firstIndex(of: newImage)!, section: 0)
-            self.collectionView.reloadItems(at: [indexPath])
+            let subset = Institute.shared.getOrderedImageSubset(category: self.category)
+            if(subset.contains(newImage)){
+                let indexPath = IndexPath(item: subset.firstIndex(of: newImage)!, section: 0)
+                self.collectionView.reloadItems(at: [indexPath])
+            }
+            
         }
     }
     

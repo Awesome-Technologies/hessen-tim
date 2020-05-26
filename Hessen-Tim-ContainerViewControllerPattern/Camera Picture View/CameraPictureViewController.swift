@@ -163,8 +163,8 @@ class CameraPictureViewController: UIViewController , AVCapturePhotoCaptureDeleg
             })
         }else {
             print("updateImage")
-            Institute.shared.updateImageMedia(name: imageName!, imageData: image.jpegData(compressionQuality: 1.0)!, completion: {
-                self.delegate?.addGalleryUpdateImage(imageName: imageName!)
+            Institute.shared.updateImageMedia(name: imageName!, imageData: image.jpegData(compressionQuality: 1.0)!, completion: { newImageName in
+                self.delegate?.addGalleryUpdateImage(imageName: newImageName)
             })
         }
         

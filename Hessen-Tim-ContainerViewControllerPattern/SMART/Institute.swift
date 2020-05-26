@@ -844,21 +844,59 @@ class Institute {
         
     }
     
-    func updateImageMedia(name: String, imageData: Data, completion: @escaping () -> Void){
+    func updateImageMedia(name: String, imageData: Data, completion: @escaping (String) -> Void){
+        print("updateImageMedia")
         var media = images[name]
         let base64Encoded = imageData.base64EncodedString()
-        media?.content?.data = Base64Binary(value:base64Encoded)
-        images[name] = media
-        self.updateImage(media: media!)
-        completion()
+        if media != nil {
+            media?.content?.data = Base64Binary(value:base64Encoded)
+            images[name] = media
+            self.updateImage(media: media!)
+            completion(name)
+        }else{
+            /**
+             The Medie thet we are working on got replaced with an image from the server, and we are still working on the old one
+             So we try to update the new Image instead
+             */
+            let replacedMedia =  images.filter{ $0.value.note![1].text!.description == name }
+            if let med = replacedMedia.first?.value{
+                var medKey = replacedMedia.first?.key
+                med.content?.data = Base64Binary(value:base64Encoded)
+                images[medKey!] = med
+                self.updateImage(media: med)
+                completion(medKey!)
+            }else{
+                print("error: No media file presen for update")
+            }
+        }
     }
     
     func updateImageNote(name: String, imageNote: String, completion: @escaping () -> Void){
+        print("updateImageNote")
         var media = images[name]
-        media?.note![0].text = FHIRString(imageNote)
-        images[name] = media
-        self.updateImage(media: media!)
-        completion()
+        if media != nil {
+            media?.note![0].text = FHIRString(imageNote)
+            images[name] = media
+            self.updateImage(media: media!)
+            completion()
+        }else{
+            /**
+             The Medie thet we are working on got replaced with an image from the server, and we are still working on the old one
+             So we try to update the new Image instead
+             */
+            let replacedMedia =  images.filter{ $0.value.note![1].text!.description == name }
+            if let med = replacedMedia.first?.value{
+                var medKey = replacedMedia.first?.key
+                med.note![0].text = FHIRString(imageNote)
+                images[medKey!] = med
+                self.updateImage(media: med)
+                completion()
+            }else{
+                print("error: No media file presen for update")
+            }
+            
+        }
+        
     }
     
     func createImageMedia(imageData: Data, category: String, completion: @escaping (Media) -> Void){
@@ -944,14 +982,21 @@ class Institute {
                 } else {
                     print("MediaUpdateSucceded")
                 }
-                
-                self.sereviceRequestObject!.update() { error in
-                    if let error = error as? FHIRError {
-                        print(error)
-                    } else {
-                        print("ServicerequestUpdateSucceded")
+                /**
+                 Check if the Service Request was already deleted
+                 Wich means, that we already left te MedicalDataView and there are still unfinished background processes
+                 */
+                if let sr = self.sereviceRequestObject {
+                    sr.update() { error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else {
+                            print("ServicerequestUpdateSucceded")
+                        }
                     }
+                    
                 }
+                
             }
         }
         /*
@@ -2126,6 +2171,8 @@ class Institute {
     }
     
     func openMedicalDataFromNotification(notification: [String: AnyObject], completion: @escaping (() -> Void)) {
+        print("openMedicalDataFromNotification")
+        print(notification)
         if let serviceRequest_id = notification["serviceRequestID"] as? String {
             if let patient_id = notification["patientID"] as? String {
                 self.getServiceRequestByID(id: serviceRequest_id, completion: { (request) in
@@ -2398,7 +2445,12 @@ class Institute {
  */
 extension Institute: GalleryImageReloadDelegate {
     func reloadImage(newImageName: String) {
-        galleryVC?.reloadGalleryImages(newImage: newImageName)
+        if let gallery = galleryVC {
+            print("reload gallery")
+            gallery.reloadGalleryImages(newImage: newImageName)
+        }else{
+            print("gallery is nill")
+        }
     }
     
 }
