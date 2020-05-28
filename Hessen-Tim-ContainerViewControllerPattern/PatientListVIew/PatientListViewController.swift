@@ -9,46 +9,16 @@
 import UIKit
 import SMART
 import Foundation
-
-struct CellData {
-    var patient = Patient()
-}
-
-/**
- This struct is a Data type, that represents one section in the TableView
- Here, I group the section Items by family name (String)
- */
-struct PatientSection {
-    
-    var familyName : String
-    var patients : [CellData]
-    
-    /**
-     I create a dictionarry, where all my patient data are grouped together to sections
-     So I get: dict<key = First Name of Family/ value = All the patients with key as first letter in family name>
-     As a return, I just convert the dict to the PatientSection structure
-     */
-    static func group(patients : [CellData]) -> [PatientSection] {
-        let groups = Dictionary(grouping: patients) { (patient) -> String in
-            return (patient.patient.name?[0].family?.description.characters.first!.description)!
-        }
-        return groups.map(PatientSection.init(familyName:patients:))
-    }
-    
-}
-
-
+import RxSwift
+import RxCocoa
 
 //https://stackoverflow.com/questions/47963568/programmatically-creating-an-expanding-uitableviewcell
 //https://www.ralfebert.de/ios-examples/uikit/uitableviewcontroller/grouping-sections/
-class PatientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ExpandableCellDelegate, HistoryViewDelegate {
-    
-    
-    var list: PatientList?
-    var newPatient: Patient?
-    var data = [CellData]()
-    // The var section holds all of my data, that is grouped into different sections
-    var sections = [PatientSection]()
+class PatientListViewController: UIViewController, ExpandableCellDelegate, HistoryViewDelegate {
+    let bag = DisposeBag()
+    var selectedPatient: Patient?
+    var selectedServiceRequest: ServiceRequest?
+    var selectedLatestServiceRequest = false
     
     let tableView:UITableView = {
         let tb = UITableView()
@@ -65,17 +35,27 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         UINavigationBar.appearance().titleTextAttributes = attributes
         self.title = "Patientenliste"
         
-        
-        if let client = Institute.shared.client {
-            list = PatientListAll()
-            list?.onPatientUpdate = {
-                self.loadPatientData()
-                self.tableView.reloadData()
-            }
-            list?.retrieve(fromServer: client.server)
+        Repository.instance.getObservable(forType: Patient.self)
+            .bind(to: tableView.rx.items(cellIdentifier: "expandableCell", cellType: ExpandableHistoryCell.self)) { row, model, cell in
+                cell.delegate = self
+                cell.historyDelegate = self
+                cell.patient = model
         }
+        .disposed(by: bag)
         
+        tableView.rx.itemSelected.subscribe(onNext: { [unowned self] indexPath in
+            if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
+                selectedCell.isExpanded = !selectedCell.isExpanded
+            }
+        }).disposed(by: bag)
+        
+        tableView.rx.itemDeselected.subscribe(onNext: { [unowned self] indexPath in
+            if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
+                selectedCell.isExpanded = false
+            }
+        }).disposed(by: bag)
     }
+    
     override func loadView() {
         super.loadView()
         
@@ -84,43 +64,13 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        tableView.delegate = self
-        tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 500
         tableView.register(ExpandableHistoryCell.self, forCellReuseIdentifier: "expandableCell")
         
         createPatientListTitles()
+    }
         
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = self.sections[indexPath.section]
-        let patient = section.patients[indexPath.row]
-
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "expandableCell", for: indexPath) as! ExpandableHistoryCell
-        //cell.patient = data[indexPath.row].patient
-        cell.patient = patient.patient
-        cell.getPatientData()
-        cell.delegate = self
-        cell.historyDelegate = self
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
-            cell.isExpanded = !cell.isExpanded
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? ExpandableHistoryCell {
-            cell.isExpanded = false
-        }
-    }
-    
-    
     func expandableCellLayoutChanged(_ expandableCell: ExpandableHistoryCell) {
         refreshTableAfterCellExpansion()
     }
@@ -129,21 +79,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.beginUpdates()
         self.tableView.setNeedsDisplay()
         self.tableView.endUpdates()
-    }
-    
-    func loadPatientData(){
-        if list?.patients?.count != nil {
-            for patient in list!.patients!{
-                if let name = patient.name?[0] {
-                    self.data.append(CellData(patient: patient))
-                }
-            }
-        }
-        //Once all the available patient data is loaded, I group it to different sections
-        self.sections = PatientSection.group(patients: self.data)
-        self.sections.sort { (lhs, rhs) in lhs.familyName < rhs.familyName }
-        
-        print (self.sections)
     }
     
     func showDiagosticReport(historyView: UIView){
@@ -162,35 +97,22 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func showMedicalDataView() {
+    func showMedicalDataView(patient: Patient, serviceRequest: ServiceRequest, isLatest: Bool) {
+        selectedPatient = patient
+        selectedServiceRequest = serviceRequest
+        selectedLatestServiceRequest = isLatest
         self.performSegue(withIdentifier: "showMedicalDataView", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "showMedicalDataView") {
-            /**
-             Clear all the images in the cache
-             This is a quick workaround for the problem, that right now, images in cache are displayed regardless of the patient
-             We will fix this in the upcoming DataLayer update
-             */
-            print("clear cache")
-            Institute.shared.images.removeAll()
+        guard let selectedPatient = selectedPatient, let selectedServiceRequest = selectedServiceRequest else {
+            return
         }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let section = self.sections[section]
-        return section.familyName
-    }
-
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = self.sections[section]
-        return section.patients.count
+        if let medicalDataView = segue.destination as? MedicalDataViewController {
+            medicalDataView.patient = selectedPatient
+            medicalDataView.serviceRequest = selectedServiceRequest
+            medicalDataView.isLatestServiceRequest = selectedLatestServiceRequest
+        }
     }
     
     /*
@@ -218,7 +140,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
         patientNameButton.layer.borderWidth = 0
         patientNameButton.layer.borderColor = UIColor.blue.cgColor
         patientNameButton.backgroundColor = UIColor(red: 0/255, green: 96/255, blue: 167/255, alpha: 1)
-        patientNameButton.addTarget(self, action: #selector(sortFamilyName), for: .touchUpInside)
         
         self.view.addSubview(patientNameButton)
         
@@ -326,28 +247,8 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             patientClinicButton.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -10),
             patientClinicButton.leftAnchor.constraint(equalTo: patientWeightButton.rightAnchor, constant: 50),
         ])
-        
     }
-    
-    @objc func sortFamilyName(sender: UIButton!) {
-        print("SortName")
-        if(sections.count > 1){
-            if(sections.first!.familyName < sections.last!.familyName){
-                self.sections.sort { (lhs, rhs) in lhs.familyName > rhs.familyName }
-                tableView.reloadData()
-            }else{
-                self.sections.sort { (lhs, rhs) in lhs.familyName < rhs.familyName }
-                tableView.reloadData()
-            }
-        }else{
-            print("Only one section, nothing to sort")
-        }
-    }
-    
-    
 }
-
-
 
 protocol ExpandableCellDelegate: class {
     func expandableCellLayoutChanged(_ expandableCell: ExpandableHistoryCell)
@@ -355,9 +256,8 @@ protocol ExpandableCellDelegate: class {
 
 protocol HistoryViewDelegate: class {
     func showDiagosticReport(historyView: UIView)
-    func showMedicalDataView()
+    func showMedicalDataView(patient: Patient, serviceRequest: ServiceRequest, isLatest: Bool)
 }
-
 
 extension Patient: Hashable {
 

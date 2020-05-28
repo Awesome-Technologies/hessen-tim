@@ -18,6 +18,10 @@ class UserLoginCredentials{
     var organizationProfile:Organization? = nil
     var performerOrganizationProfile:Organization? = nil
     var endpointProfile:Endpoint? = nil
+    
+    func set(profile: ProfileType, complete: @escaping (Result<Void, Error>) -> Void) {
+        selectedProfile = profile
+    }
 }
 
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftGifOrigin
+import SMART
 
 class LoginScreenViewController: UIViewController {
     
@@ -117,37 +118,26 @@ class LoginScreenViewController: UIViewController {
     
     
     @IBAction func loginAction(_ sender: Any) {
-        if(selectedProfile == .NONE){
+        if (selectedProfile == .NONE) {
             highlightAllMissingElements()
-        }else{
-            Institute.shared.connect { error in
-                if error == nil {
-                    self.addLoadingView()
-                    /**
-                     Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
-                     and wants to logg in once aggain
-                     */
-                    if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
-                        print("We have a token already")
-                    }else{
-                        DispatchQueue.main.async {
-                            UIApplication.shared.registerForRemoteNotifications()
-                            print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
-                        }
+        } else {
+            Repository.instance.setup {
+                /**
+                 Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
+                 and wants to logg in once aggain
+                 */
+                if UserDefaults.standard.string(forKey: "current_device_token") == nil {
+                    callOnMainThread {
+                        UIApplication.shared.registerForRemoteNotifications()
                     }
-                    
-                    UserLoginCredentials.shared.selectedProfile = self.selectedProfile
-                    Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "mainView", sender: self)
-                        }
-                    })
-                } else {
-                    print("We have a connection error")
+                }
+                UserLoginCredentials.shared.set(profile: self.selectedProfile) { (result) in
+                    Repository.instance.registerProfile(profileType: self.selectedProfile)
+                }
+                callOnMainThread {
+                    self.performSegue(withIdentifier: "mainView", sender: self)
                 }
             }
-            
-            
         }
     }
     

@@ -9,7 +9,7 @@
 import UIKit
 import SMART
 import IQKeyboardManagerSwift
-
+import RxSwift
 
 class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     
@@ -65,6 +65,15 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     var historyUnwindStart:CGPoint!
     
+    let bag = DisposeBag()
+    var patient: Patient? {
+        didSet {
+            setupHistoryObservable()
+        }
+    }
+    var serviceRequest: ServiceRequest?
+    var isLatestServiceRequest = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,38 +120,21 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         noteTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         noteTextView.font = .systemFont(ofSize: 18)
         
-        //Institute.shared.deleteAllImageMedia()
         Institute.shared.clearAllFile()
-        //Institute.shared.loadAllMediaResource()
         
-        Institute.shared.countImages(completion: { observation, count  in
-            self.setNumberOfImages(observation: observation, count: count)
-        })
-        
-        //Display the communicagtion history for the patient
-        Institute.shared.getHistoryForPatient(patient:Institute.shared.patientObject!,  completion: { items in
-            if (items != nil){
-                self.historyData = items!
-                DispatchQueue.main.async {
-                    self.historyTableView.reloadData()
-                    self.showHistoryNotes()
-                    //Checks if we should display the unwind button
-                    if self.historyunwindButtonVisible(){
-                        self.animateHistoryUnwindButton(visible: true)
-                    }else{
-                        self.animateHistoryUnwindButton(visible: false)
-                        
-                    }
+        let repo = Repository.instance
+        for obs in ObservationType.allCases {
+            repo.numberOfImages(withObservationType: obs) { (result) in
+                switch result {
+                case .success(let count):
+                    self.setNumberOfImages(observation: obs, count: Int(count))
+                case .failure(_): break
+                self.showHistoryNotes()
                 }
             }
-            
-            
-            
-        })
+        }
         
-        
-        self.historyTableView.delegate = self
-        self.historyTableView.dataSource = self
+        self.animateHistoryUnwindButton(visible: !isLatestServiceRequest)
         
         NotificationCenter.default.addObserver(self, selector: #selector(toHomeScreen(_:)), name: Notification.Name(rawValue: "toHomeScreen"), object: nil)
     /*
@@ -214,7 +206,14 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         openPictureView(sender: sender,category: ObservationType.Others)
     }
     
-    
+    func setupHistoryObservable() {
+        guard let patient = patient else { return }
+        Repository.instance.getHistoryObservable(forPatient: patient)
+            .subscribe(onNext: { (resources) in
+                
+            })
+            .disposed(by: bag)
+    }
     
     @IBAction func goToPatientListView(_ sender: Any) {
         performSegue(withIdentifier: "toPatientList", sender: sender)
@@ -424,12 +423,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             showHistoryNotes()
         }
         
-        if(historyunwindButtonVisible()){
-            animateHistoryUnwindButton(visible: true)
-        } else{
-            animateHistoryUnwindButton(visible: false)
-        }
-        
+        self.animateHistoryUnwindButton(visible: !isLatestServiceRequest)
     }
     
     func DiagnosticReportDateFormater(item: DomainResource)->String{
@@ -518,38 +512,20 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    func insertPatientData(){
-        self.patientName.text = (Institute.shared.patientObject!.name?[0].given?[0].string)! + " " + (Institute.shared.patientObject!.name?[0].family?.string)!
-        self.patientBirthday.text = Institute.shared.patientObject?.birthDate?.description
+    func insertPatientData() {
+        guard let patient = patient else {
+            return
+        }
+        self.patientName.text = patient.name?[0].human
+        self.patientBirthday.text = patient.birthDate?.description
         self.patientSize.text = Institute.shared.observationHeight?.valueQuantity?.value?.description
-        self.patientSex.text = Institute.shared.patientObject?.gender?.rawValue
+        self.patientSex.text = patient.gender?.rawValue
         self.patientWeight.text = Institute.shared.observationWeight?.valueQuantity?.value?.description
         self.insurance.text = Institute.shared.coverageObject?.class![0].name?.description
-        self.clinicName.text = Institute.shared.patientObject!.contact![0].address?.text?.description
-        self.contactDoctor.text = Institute.shared.patientObject!.contact![0].name?.family?.description
-        self.contactNumber.text = Institute.shared.patientObject!.contact![0].telecom![0].value?.description
+        self.clinicName.text = patient.contact?[0].address?.text?.description
+        self.contactDoctor.text = patient.contact?[0].name?.family?.description
+        self.contactNumber.text = patient.contact?[0].telecom![0].value?.description
     }
-    /**
-     Checks if the unwind button should be visible
-     We get the newest (firstest) Service request in the history Data
-     If our currently selected service Request is not the found newest one, it means, that we are not on the newest Element and should display the unwind button
-     */
-    func historyunwindButtonVisible() -> Bool {
-        if(historyData != nil && historyData.count > 0){
-            let newestRequest = historyData.first{$0 is ServiceRequest} as! ServiceRequest
-            print("Vergleich")
-            print(Institute.shared.sereviceRequestObject?.id)
-            print(newestRequest.id)
-                if(Institute.shared.sereviceRequestObject?.id == newestRequest.id){
-                    return false
-                }else{
-                    return true
-                }
-        }else{
-            return false
-        }
-        }
-        
     
     /**
      Animate the appearence of the unwind button
@@ -771,7 +747,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     @objc func handleTapFromTextView(recognizer : UITapGestureRecognizer)
     {
         
-        if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+        if(Institute.shared.sereviceRequestObject?.status == RequestStatus.draft){
             if(noteTextView.superview == noteView){
                 self.view.addSubview(noteTextView)
                 let rect = CGRect(x: 15, y: 635, width: 519, height: 153)

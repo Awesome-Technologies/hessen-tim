@@ -121,7 +121,7 @@ class DiagnosticReportView: UIView {
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
-        print("I TAB IN The DiagReport")
+        print("Selected Diagnostic Report \(resource?.id?.string ?? "n/a")")
         delegate?.showDiagosticReport(historyView: self)
     }
     

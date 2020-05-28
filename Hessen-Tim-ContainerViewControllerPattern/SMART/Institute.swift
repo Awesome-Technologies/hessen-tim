@@ -2083,7 +2083,7 @@ class Institute {
     func getAllDiagnosticReportsForPatient(patient: Patient, completion: @escaping (([DiagnosticReport]?) -> Void)) {
         print("--- getAllDiagnosticReportsForPatient")
         
-        let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":patient.id?.description]], "_sort": "-issued"])
+        let search = DiagnosticReport.search(["based-on": ["$type": "ServiceRequest", "subject":["$type": "Patient", "_id":patient.id?.description]], "_sort": "issued"])
         print(search.construct())
         
         search.perform(self.client!.server) { bundle, error in
@@ -2108,7 +2108,7 @@ class Institute {
         print("--- getAllServiceRequestsForPatient")
         
         //ServiceRequest?subject:Patient._id=122&_sort=-authored&status=active
-        let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":patient.id?.description], "_sort": "-authored", "status": "active"])
+        let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":patient.id?.description], "_sort": "authored", "status": "active"])
         print(search.construct())
         
         search.perform(self.client!.server) { bundle, error in

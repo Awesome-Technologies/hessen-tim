@@ -8,23 +8,38 @@
 
 import UIKit
 import SMART
+import RxSwift
 
 class ExpandableHistoryCell: UITableViewCell {
     weak var delegate: ExpandableCellDelegate?
     weak var historyDelegate: HistoryViewDelegate?
     
-    var patient : Patient?
-    var history : [DomainResource]?
+    private var bag = DisposeBag()
+    
     var weight: Observation?
     var height: Observation?
     var coverage: Coverage?
+    var patient : Patient? {
+        didSet {
+            guard let patient = patient else { return }
+            
+            self.patientName.text = (patient.name?[0].family!.string)! + " " + (patient.name?[0].given?[0].string)!
+            if(patient.gender == AdministrativeGender(rawValue: "male")){
+                self.patientSex.text = "M"
+            }else{
+                self.patientSex.text = "W"
+            }
+            self.patientBirthday.text = patient.birthDate?.description
+            setupHistoryObservable()
+        }
+    }
     
     fileprivate let stack = UIStackView()
     
     var isExpanded: Bool = false {
         didSet {
             
-            for subview in stack.subviews{
+            for subview in stack.arrangedSubviews {
                 subview.isHidden = !isExpanded
             }
             if(isExpanded){
@@ -199,96 +214,80 @@ class ExpandableHistoryCell: UITableViewCell {
         stack.spacing = 0
     }
     
-    func getPatientData(){
-        print("getPatientData")
-        Institute.shared.getHistoryForPatient(patient: patient!, completion: { history in
-            Institute.shared.getWeight(patient: self.patient!, completion: { coverage, weight, height in
-                if (history != nil){
-                    DispatchQueue.main.async {
-                        self.history = history
-                        self.weight = weight
-                        self.height = height
-                        self.coverage = coverage
-                        self.patientName.text = (self.patient!.name?[0].family!.string)! + " " + (self.patient!.name?[0].given?[0].string)!
-                        if(self.patient!.gender == AdministrativeGender(rawValue: "male")){
-                            self.patientSex.text = "M"
-                        }else{
-                            self.patientSex.text = "W"
-                        }
-                        self.patientBirthday.text = self.patient!.birthDate?.description
-                        self.patientSize.text = (height.valueQuantity?.value!.description)! + " cm"
-                        self.patientWeight.text = (weight.valueQuantity?.value!.description)! + " kg"
-                        self.patientClinic.text = self.patient!.contact![0].address?.text?.description
-                        self.createStackHistorySubviews()
-                    }
-                }
-                
+    func setupHistoryObservable() {
+        guard let patient = patient else { return }
+        bag = DisposeBag()
+        
+        let repo = Repository.instance
+        repo.getHistoryObservable(forPatient: patient)
+            .subscribe(onNext: { (history) in
+                self.rebuildHistoryStackView(history)
             })
-        })
+            .disposed(by: bag)
     }
     
-    func createStackHistorySubviews(){
-        print("createStackHistorySubviews")
-        //We must remove all the subviews from the stack or else, on every reload, more subviews will be added
-        stack.subviews.forEach({ $0.removeFromSuperview() })
-        if(history != nil){
-            if(history?.isEmpty == false){
-                for item in history!{
-                    var containerView = UIView()
-                    stack.addArrangedSubview(containerView)
-                    containerView.backgroundColor = UIColor.clear
-                    containerView.layer.cornerRadius = 10
-                    containerView.leftAnchor.constraint(equalTo: stack.leftAnchor, constant: 0).isActive = true
-                    containerView.rightAnchor.constraint(equalTo: stack.rightAnchor, constant: 0).isActive = true
-                    containerView.isHidden = true
-                    containerView.translatesAutoresizingMaskIntoConstraints = false
-                    
-                    if let report = item as? DiagnosticReport {
-                        containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-                        var historyView = DiagnosticReportView()
-                        containerView.addSubview(historyView)
-                        historyView.resource = report
-                        historyView.delegate = self.historyDelegate
-                        historyView.translatesAutoresizingMaskIntoConstraints = false
-                        historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5).isActive = true
-                        historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5).isActive = true
-                        historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-                        historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-                        historyView.layer.cornerRadius = 10
-                        historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 200).isActive = true
-                        historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -50).isActive = true
-                        historyView.dateIssued.text = historyView.ReportDateFormater(item: report)
-                        historyView.preview.text = report.conclusion?.description
-                        historyView.translatesAutoresizingMaskIntoConstraints = false
-                        historyView.layer.borderWidth = 1
-                        historyView.layer.borderColor = UIColor.white.cgColor
-                        
-                    }else{
-                        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-                        let request = item as? ServiceRequest
-                        var historyView = ServiceRequestView()
-                        containerView.addSubview(historyView)
-                        historyView.delegate = self.historyDelegate
-                        historyView.resource = request
-                        historyView.patient = self.patient
-                        historyView.translatesAutoresizingMaskIntoConstraints = false
-                        historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-                        historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 1).isActive = true
-                        historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-                        historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-                        historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 50).isActive = true
-                        historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -200).isActive = true
-                        historyView.layer.cornerRadius = 10
-                        historyView.dateIssued.text = historyView.ReportDateFormater(item: request!)
-                        historyView.preview.text = (request?.id!.description)! + " Neue Informationen"
-                        historyView.translatesAutoresizingMaskIntoConstraints = false
-                        historyView.layer.borderWidth = 1
-                        historyView.layer.borderColor = UIColor.white.cgColor
-                    }
-                }
+    func rebuildHistoryStackView(_ history: [DomainResource]) {
+        let views = stack.arrangedSubviews
+        views.forEach { (view) in
+            stack.removeArrangedSubview(view)
+        }
+        
+        var firstServiceRequest = true
+        for item in history {
+            let containerView = UIView()
+            stack.addArrangedSubview(containerView)
+            containerView.backgroundColor = UIColor.clear
+            containerView.layer.cornerRadius = 10
+            containerView.leftAnchor.constraint(equalTo: stack.leftAnchor, constant: 0).isActive = true
+            containerView.rightAnchor.constraint(equalTo: stack.rightAnchor, constant: 0).isActive = true
+            containerView.isHidden = true
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            
+            if let report = item as? DiagnosticReport {
+                containerView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+                let historyView = DiagnosticReportView()
+                containerView.addSubview(historyView)
+                historyView.resource = report
+                historyView.delegate = self.historyDelegate
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10).isActive = true
+                historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10).isActive = true
+                historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+                historyView.layer.cornerRadius = 10
+                historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 200).isActive = true
+                historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -50).isActive = true
+                historyView.dateIssued.text = historyView.ReportDateFormater(item: report)
+                historyView.preview.text = report.conclusion?.description
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.layer.borderWidth = 1
+                historyView.layer.borderColor = UIColor.white.cgColor
+                
+            } else if let request = item as? ServiceRequest {
+                containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+                let historyView = ServiceRequestView()
+                containerView.addSubview(historyView)
+                historyView.delegate = self.historyDelegate
+                historyView.resource = request
+                historyView.patient = self.patient
+                historyView.isLatest = firstServiceRequest
+                firstServiceRequest = false
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+                historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 1).isActive = true
+                historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+                historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 50).isActive = true
+                historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -200).isActive = true
+                historyView.layer.cornerRadius = 10
+                historyView.dateIssued.text = historyView.ReportDateFormater(item: request)
+                historyView.preview.text = (request.id!.description) + " Neue Informationen"
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.layer.borderWidth = 1
+                historyView.layer.borderColor = UIColor.white.cgColor
             }else{
                 //Create a custom cell, when no communication history is present for the patient
-                var containerView = UIView()
+                let containerView = UIView()
                 stack.addArrangedSubview(containerView)
                 containerView.backgroundColor = UIColor.clear
                 containerView.layer.cornerRadius = 10
@@ -298,7 +297,7 @@ class ExpandableHistoryCell: UITableViewCell {
                 containerView.translatesAutoresizingMaskIntoConstraints = false
                 
                 containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-                var historyView = AddDataToPatientView()
+                let historyView = AddDataToPatientView()
                 containerView.addSubview(historyView)
                 historyView.delegate = self.historyDelegate
                 historyView.patient = self.patient
@@ -333,6 +332,10 @@ class ExpandableHistoryCell: UITableViewCell {
         Institute.shared.observationHeight = height
         Institute.shared.observationWeight = weight
         Institute.shared.coverageObject = coverage
+    }
+    
+    override func prepareForReuse() {
+        bag = DisposeBag()
     }
     
 }

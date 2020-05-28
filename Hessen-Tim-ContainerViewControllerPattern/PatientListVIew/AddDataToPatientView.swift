@@ -66,19 +66,10 @@ class AddDataToPatientView: UIView {
         addPatientData.widthAnchor.constraint(equalToConstant: 400).isActive = true
         addPatientData.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         addPatientData.centerXAnchor.constraint(equalTo: cellView.centerXAnchor).isActive = true
-        
-        
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
         print("I TAB IN STACKKK")
-        Institute.shared.patientObject = patient
-        Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
-            DispatchQueue.main.async {
-                self.delegate?.showMedicalDataView()
-            }
-        })
-        
     }
     
 }

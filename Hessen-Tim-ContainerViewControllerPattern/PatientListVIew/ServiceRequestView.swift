@@ -16,6 +16,7 @@ class ServiceRequestView: UIView {
     
     var resource: ServiceRequest?
     var patient: Patient?
+    var isLatest = false
     weak var delegate: HistoryViewDelegate?
     
     override init(frame: CGRect) {
@@ -124,15 +125,9 @@ class ServiceRequestView: UIView {
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
-        print("I TAB IN STACKKK")
+        print("Selected Service Request \(resource?.id?.string ?? "n/a")")
         Institute.shared.patientObject = patient
-        Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
-            DispatchQueue.main.async {
-                Institute.shared.sereviceRequestObject = self.resource
-                self.delegate?.showMedicalDataView()
-            }
-        })
-        
+        guard let patient = patient, let request = resource else { return }
+        self.delegate?.showMedicalDataView(patient: patient, serviceRequest: request, isLatest: isLatest)
     }
-    
 }
