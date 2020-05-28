@@ -22,7 +22,26 @@ class UserLoginCredentials{
 
 
 enum ProfileType: String {
-    case PeripheralClinic
-    case ConsultationClinic
+    case PeripheralClinic = "peripheralClinic"
+    case ConsultationClinic = "consultationClinic"
     case NONE
+    
+    func other() -> ProfileType {
+        switch self {
+        case .ConsultationClinic:
+            return .PeripheralClinic
+        case .PeripheralClinic:
+            return .ConsultationClinic
+        default:
+            return .NONE
+        }
+    }
+    
+    func clinic() -> String {
+        return rawValue
+    }
+    
+    func performer() -> String {
+        return other().clinic()
+    }
 }

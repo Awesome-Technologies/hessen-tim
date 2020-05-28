@@ -44,14 +44,30 @@
 		8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A722CA181E0034A913 /* OrderListViewController.swift */; };
 		8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDE86A922CA3F210034A913 /* PatientListViewController.swift */; };
 		8FEB9B0A2264B24C00DD45CF /* PatientDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEB9B092264B24C00DD45CF /* PatientDataViewController.swift */; };
+		9708840F247EA4C600FED8EE /* OrganizationQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9708840E247EA4C600FED8EE /* OrganizationQueryFilter.swift */; };
 		9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */; };
 		9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */; };
 		9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */; };
+		974DC6162460DBFF00EC216F /* CacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC60E2460DBFF00EC216F /* CacheProvider.swift */; };
+		974DC6172460DBFF00EC216F /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC60F2460DBFF00EC216F /* Cache.swift */; };
+		974DC6182460DBFF00EC216F /* RequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6102460DBFF00EC216F /* RequestResult.swift */; };
+		974DC6192460DBFF00EC216F /* SimpleServerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6122460DBFF00EC216F /* SimpleServerRequest.swift */; };
+		974DC61A2460DBFF00EC216F /* PagedServerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6132460DBFF00EC216F /* PagedServerRequest.swift */; };
+		974DC61B2460DBFF00EC216F /* RemoteDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */; };
+		974DC61C2460DBFF00EC216F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6152460DBFF00EC216F /* Repository.swift */; };
+		97562AB2247E604B00973DB4 /* MediaQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97562AB1247E604B00973DB4 /* MediaQueryFilter.swift */; };
+		976A454B247E666B0075175B /* PatientQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A454A247E666B0075175B /* PatientQueryFilter.swift */; };
+		976A454D247E67A60075175B /* ServiceRequestQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A454C247E67A60075175B /* ServiceRequestQueryFilter.swift */; };
 		97B5B6EC246E0147003421C3 /* SMART in Frameworks */ = {isa = PBXBuildFile; productRef = 97B5B6EB246E0147003421C3 /* SMART */; };
 		97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA9E6E238EC41A00AF5DDD /* Institute.swift */; };
 		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
 		97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */; };
 		97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8062254C63B0055EBCE /* GalleryViewController.swift */; };
+		97D8A27224659902002558D8 /* LocalEchoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D8A27124659902002558D8 /* LocalEchoStore.swift */; };
+		97D8A27C246C3749002558D8 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97D8A27B246C3749002558D8 /* RxSwift */; };
+		97D8A27E246C3749002558D8 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 97D8A27D246C3749002558D8 /* RxCocoa */; };
+		97FB471A246192DA0064CBAA /* ServerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB4719246192DA0064CBAA /* ServerRequest.swift */; };
+		97FB471C246494940064CBAA /* DomainResourceQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FB471B246494940064CBAA /* DomainResourceQueryFilter.swift */; };
 		E13F8841AF06A9CCC04E9833 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F97DAC4DC424232B4C9168E3 /* Pods_Hessen_Tim_ContainerViewControllerPatternUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,13 +136,27 @@
 		8FDE86A722CA181E0034A913 /* OrderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewController.swift; sourceTree = "<group>"; };
 		8FDE86A922CA3F210034A913 /* PatientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientListViewController.swift; sourceTree = "<group>"; };
 		8FEB9B092264B24C00DD45CF /* PatientDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientDataViewController.swift; sourceTree = "<group>"; };
+		9708840E247EA4C600FED8EE /* OrganizationQueryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationQueryFilter.swift; sourceTree = "<group>"; };
 		9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerPictureDelegate.swift; sourceTree = "<group>"; };
 		9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; };
 		9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondScreenViewController.swift; sourceTree = "<group>"; };
+		974DC60E2460DBFF00EC216F /* CacheProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProvider.swift; sourceTree = "<group>"; };
+		974DC60F2460DBFF00EC216F /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		974DC6102460DBFF00EC216F /* RequestResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestResult.swift; sourceTree = "<group>"; };
+		974DC6122460DBFF00EC216F /* SimpleServerRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleServerRequest.swift; sourceTree = "<group>"; };
+		974DC6132460DBFF00EC216F /* PagedServerRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagedServerRequest.swift; sourceTree = "<group>"; };
+		974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDataProvider.swift; sourceTree = "<group>"; };
+		974DC6152460DBFF00EC216F /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		97562AB1247E604B00973DB4 /* MediaQueryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaQueryFilter.swift; sourceTree = "<group>"; };
+		976A454A247E666B0075175B /* PatientQueryFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatientQueryFilter.swift; sourceTree = "<group>"; };
+		976A454C247E67A60075175B /* ServiceRequestQueryFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceRequestQueryFilter.swift; sourceTree = "<group>"; };
 		97BA9E6E238EC41A00AF5DDD /* Institute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institute.swift; sourceTree = "<group>"; };
 		97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDelegate.swift; sourceTree = "<group>"; };
 		97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPictureCollectionViewCell.swift; sourceTree = "<group>"; };
 		97BDA8062254C63B0055EBCE /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		97D8A27124659902002558D8 /* LocalEchoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalEchoStore.swift; sourceTree = "<group>"; };
+		97FB4719246192DA0064CBAA /* ServerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRequest.swift; sourceTree = "<group>"; };
+		97FB471B246494940064CBAA /* DomainResourceQueryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainResourceQueryFilter.swift; sourceTree = "<group>"; };
 		BEF3EB7AB996A3017B312937 /* Pods-Hessen-Tim-ContainerViewControllerPatternUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hessen-Tim-ContainerViewControllerPatternUITests.debug.xcconfig"; path = "Target Support Files/Pods-Hessen-Tim-ContainerViewControllerPatternUITests/Pods-Hessen-Tim-ContainerViewControllerPatternUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		DBD846E24BAC2645E484FB52 /* Pods_Hessen_Tim_ContainerViewControllerPatternTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hessen_Tim_ContainerViewControllerPatternTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28A71EEAE853289A291CFDB /* Pods-Hessen-Tim-ContainerViewControllerPatternTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hessen-Tim-ContainerViewControllerPatternTests.debug.xcconfig"; path = "Target Support Files/Pods-Hessen-Tim-ContainerViewControllerPatternTests/Pods-Hessen-Tim-ContainerViewControllerPatternTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +169,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B5B6EC246E0147003421C3 /* SMART in Frameworks */,
+				97D8A27C246C3749002558D8 /* RxSwift in Frameworks */,
+				97D8A27E246C3749002558D8 /* RxCocoa in Frameworks */,
 				2BC97409584C0A23E0E67AAB /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +240,7 @@
 		8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */ = {
 			isa = PBXGroup;
 			children = (
+				974DC60C2460DBFF00EC216F /* Data Layer */,
 				8F9E81C124486E1800EA8BCE /* AMP.intensiv.entitlements */,
 				8FB51F8124614779004DB903 /* Login */,
 				8FAFC675240CF9FF006A9DB1 /* Enumeration */,
@@ -342,6 +375,36 @@
 			path = "Fake Screens";
 			sourceTree = "<group>";
 		};
+		974DC60C2460DBFF00EC216F /* Data Layer */ = {
+			isa = PBXGroup;
+			children = (
+				97D8A270246597CC002558D8 /* Lochal Echo */,
+				974DC60D2460DBFF00EC216F /* Cache */,
+				974DC6112460DBFF00EC216F /* Server */,
+				974DC6102460DBFF00EC216F /* RequestResult.swift */,
+				974DC6152460DBFF00EC216F /* Repository.swift */,
+			);
+			path = "Data Layer";
+			sourceTree = "<group>";
+		};
+		974DC60D2460DBFF00EC216F /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				974DC60E2460DBFF00EC216F /* CacheProvider.swift */,
+				974DC60F2460DBFF00EC216F /* Cache.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		974DC6112460DBFF00EC216F /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				97FB4718246192C40064CBAA /* ServerRequest */,
+				974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */,
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
 		97BA9E6D238EC3F800AF5DDD /* SMART */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +421,29 @@
 				97BDA8062254C63B0055EBCE /* GalleryViewController.swift */,
 			);
 			path = Gallery;
+			sourceTree = "<group>";
+		};
+		97D8A270246597CC002558D8 /* Lochal Echo */ = {
+			isa = PBXGroup;
+			children = (
+				97D8A27124659902002558D8 /* LocalEchoStore.swift */,
+			);
+			path = "Lochal Echo";
+			sourceTree = "<group>";
+		};
+		97FB4718246192C40064CBAA /* ServerRequest */ = {
+			isa = PBXGroup;
+			children = (
+				974DC6122460DBFF00EC216F /* SimpleServerRequest.swift */,
+				974DC6132460DBFF00EC216F /* PagedServerRequest.swift */,
+				97FB4719246192DA0064CBAA /* ServerRequest.swift */,
+				97FB471B246494940064CBAA /* DomainResourceQueryFilter.swift */,
+				976A454C247E67A60075175B /* ServiceRequestQueryFilter.swift */,
+				97562AB1247E604B00973DB4 /* MediaQueryFilter.swift */,
+				976A454A247E666B0075175B /* PatientQueryFilter.swift */,
+				9708840E247EA4C600FED8EE /* OrganizationQueryFilter.swift */,
+			);
+			path = ServerRequest;
 			sourceTree = "<group>";
 		};
 		FF0DA66B16690C4B449937DE /* Frameworks */ = {
@@ -390,6 +476,8 @@
 			name = "Hessen-Tim-ContainerViewControllerPattern";
 			packageProductDependencies = (
 				97B5B6EB246E0147003421C3 /* SMART */,
+				97D8A27B246C3749002558D8 /* RxSwift */,
+				97D8A27D246C3749002558D8 /* RxCocoa */,
 			);
 			productName = "Hessen-Tim-ContainerViewControllerPattern";
 			productReference = 8F5233D5223949D50020292F /* AMP.intensiv.app */;
@@ -467,6 +555,7 @@
 			mainGroup = 8F5233CC223949D50020292F;
 			packageReferences = (
 				97B5B6EA246E0147003421C3 /* XCRemoteSwiftPackageReference "Swift-SMART" */,
+				97D8A27A246C3749002558D8 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 8F5233D6223949D50020292F /* Products */;
 			projectDirPath = "";
@@ -604,21 +693,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FA1A382242B934A00049A3F /* Extensions.swift in Sources */,
+				974DC61A2460DBFF00EC216F /* PagedServerRequest.swift in Sources */,
 				8F8A536D2449E1550016AA0B /* ServiceRequestTableViewCell.swift in Sources */,
 				8F5233DB223949D50020292F /* BaseViewController.swift in Sources */,
 				97BDA8092254C63C0055EBCE /* GalleryViewController.swift in Sources */,
 				8F01870623CDE27200C9CDD6 /* InsertPatientData.swift in Sources */,
+				976A454B247E666B0075175B /* PatientQueryFilter.swift in Sources */,
+				97D8A27224659902002558D8 /* LocalEchoStore.swift in Sources */,
+				97FB471A246192DA0064CBAA /* ServerRequest.swift in Sources */,
 				8F4E063E22B1058E002CBC95 /* MasterViewController.swift in Sources */,
+				974DC61C2460DBFF00EC216F /* Repository.swift in Sources */,
 				8F5233D9223949D50020292F /* AppDelegate.swift in Sources */,
+				97FB471C246494940064CBAA /* DomainResourceQueryFilter.swift in Sources */,
 				8FC39D9723D8410100FBD225 /* MedicalDataNotificationView.swift in Sources */,
 				8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */,
 				9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */,
 				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
+				97562AB2247E604B00973DB4 /* MediaQueryFilter.swift in Sources */,
 				8FAFC677240CFA12006A9DB1 /* ObservationType.swift in Sources */,
 				8F0F0A612458186700A3F852 /* ExpandableHistoryCell.swift in Sources */,
+				976A454D247E67A60075175B /* ServiceRequestQueryFilter.swift in Sources */,
 				9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */,
 				8FEB9B0A2264B24C00DD45CF /* PatientDataViewController.swift in Sources */,
 				8FDE86A422C9F2360034A913 /* LoginScreenViewController.swift in Sources */,
+				974DC6172460DBFF00EC216F /* Cache.swift in Sources */,
+				974DC61B2460DBFF00EC216F /* RemoteDataProvider.swift in Sources */,
 				8F4B241422C5020B00A8E678 /* iOSDropDown.swift in Sources */,
 				8F4B241222C500F000A8E678 /* PatientendatenViewController.swift in Sources */,
 				8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */,
@@ -626,14 +725,18 @@
 				97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */,
 				8F0A7B322490E3B9002E29CD /* AddDataToPatientView.swift in Sources */,
 				8FB1C1D3242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift in Sources */,
+				9708840F247EA4C600FED8EE /* OrganizationQueryFilter.swift in Sources */,
 				8FB51F83246147BA004DB903 /* UserLoginCredentials.swift in Sources */,
 				8FB3B2242486839E0047DCC9 /* LoadingView.swift in Sources */,
 				8F523407223951800020292F /* CameraPictureViewController.swift in Sources */,
+				974DC6162460DBFF00EC216F /* CacheProvider.swift in Sources */,
 				9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */,
 				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,
 				8F4E064022B10BCE002CBC95 /* SplitViewController.swift in Sources */,
 				8FA9052824543AE1006CD2C0 /* DiagnosticReportView.swift in Sources */,
 				8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */,
+				974DC6192460DBFF00EC216F /* SimpleServerRequest.swift in Sources */,
+				974DC6182460DBFF00EC216F /* RequestResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,6 +1089,14 @@
 				kind = branch;
 			};
 		};
+		97D8A27A246C3749002558D8 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -993,6 +1104,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 97B5B6EA246E0147003421C3 /* XCRemoteSwiftPackageReference "Swift-SMART" */;
 			productName = SMART;
+		};
+		97D8A27B246C3749002558D8 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97D8A27A246C3749002558D8 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		97D8A27D246C3749002558D8 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97D8A27A246C3749002558D8 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

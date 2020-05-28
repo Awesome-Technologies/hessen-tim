@@ -10,6 +10,137 @@ import Foundation
 import UIKit
 import SMART
 
+extension Media {
+    var image: UIImage? {
+        guard let imageData = content?.data?.value, let data = Data(base64Encoded: imageData), let decodedImage = UIImage(data: data) else {
+            return nil
+        }
+        return decodedImage
+    }
+}
+
+extension Media {
+    public enum MediaFilter {
+        case modality(String)
+        case created(String, DateTime)
+        case status(EventStatus)
+
+        func key() -> String {
+            switch self {
+            case .modality(_):
+                return "modality"
+            case .created(_, _):
+                return "created"
+            case .status(_):
+                return "status"
+            }
+        }
+    }
+}
+
+extension Patient {
+    public enum PatientFilter {
+        case practitioner(String)
+
+        func key() -> String {
+            switch self {
+            case .practitioner(_):
+                return "general-practitioner"
+            }
+        }
+    }
+}
+
+extension Organization {
+    public enum OrganizationFilter {
+        case type(String)
+
+        func key() -> String {
+            switch self {
+            case .type(_):
+                return "type"
+            }
+        }
+    }
+}
+
+extension ServiceRequest {
+    public enum ServiceRequestFilter {
+        case requester(type: DomainResource.Type, id: String)
+        case status(RequestStatus)
+
+        func key() -> String {
+            switch self {
+            case .requester(_, _):
+                return "requester"
+            case .status(_):
+                return "status"
+            }
+        }
+    }
+}
+
+extension DomainResource {
+    var isLocalEcho: Bool {
+        return localEchoId != nil ? true : false
+    }
+
+    var localEchoUrl: String {
+        "care.amp.institute.local-echo-id"
+    }
+
+    var localEchoId: String? {
+        return extensions(forURI: localEchoUrl)?.first?.valueString?.string
+    }
+
+    func makeLocalEcho() {
+        guard localEchoId == nil else {
+            return
+        }
+        let ext = Extension()
+        ext.url = localEchoUrl.fhir_string
+        ext.valueString = FHIRString(ProcessInfo.processInfo.globallyUniqueString)
+
+        var extensions: [Extension] = extension_fhir ?? []
+        extensions.append(ext)
+        extension_fhir = extensions
+    }
+
+    public enum SearchFilter {
+        case id(String)
+        case subject(type: DomainResource.Type, id: String)
+        case basedOn([String: Any]? = nil)
+        case summary(FHIRRequestParameterField.Summary)
+        case sort(String)
+        case has([String], String)
+
+        func sortString() -> String? {
+            switch self {
+            case .sort(let value):
+                return value
+            default:
+                return nil
+            }
+        }
+
+        func key() -> String {
+            switch self {
+            case .id(_):
+                return "_id"
+            case .subject(_, _):
+                return "subject"
+            case .basedOn(_):
+                return "based-on"
+            case .summary(_):
+                return FHIRRequestParameterField.summary.rawValue
+            case .sort(_):
+                return "_sort"
+            case .has(_, _):
+                return "$has"
+            }
+        }
+    }
+}
 
 extension UITextView: UITextViewDelegate {
     
@@ -80,4 +211,9 @@ extension UITextView: UITextViewDelegate {
         self.delegate = self
     }
     
+}
+
+extension String
+{
+    var digitString: String { filter { ("0"..."9").contains($0) } }
 }
