@@ -251,6 +251,7 @@ class Institute {
                                 print(error)
                             } else {
                                 print("WeightResourceUpdateSucceded")
+                                self.observationWeight = weightObserv
                             }
                         }
                     }
@@ -345,6 +346,7 @@ class Institute {
                                 print(error)
                             } else {
                                 print("HeightResourceUpdateSucceded")
+                                self.observationHeight = heightObserv
                             }
                         }
                     }
@@ -427,6 +429,7 @@ class Institute {
                                     print(error)
                                 } else {
                                     print("CoverageUpdateSucceded")
+                                    self.coverageObject = cover
                                 }
                             }
                         }
@@ -1815,6 +1818,74 @@ class Institute {
                         
                     self.coverageObject = coverages?.first
                     completion(patient)
+                }
+            }
+        }
+    }
+    
+    
+    
+    func getWeight(patient:Patient, completion: @escaping ((Coverage,Observation, Observation) -> Void)) {
+        print("getWeight")
+        var weight: Observation?
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Observation.search(["patient":patient.id?.description,"category":"vital-signs","code": "29463-7"])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let patientWeight = bundle?.entry?
+                        .filter() { return $0.resource is Observation }
+                        .map() { return $0.resource as! Observation }
+                    self.observationWeight = patientWeight?.first
+                    weight = patientWeight?.first
+                    self.getHeight(patient: patient, weight: weight!, completion: completion)
+                    
+                }
+            }
+        }
+    }
+    
+    func getHeight(patient:Patient, weight: Observation, completion: @escaping ((Coverage, Observation, Observation) -> Void)) {
+        print("getHeightOfPatient")
+        var height: Observation?
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Observation.search(["patient":patient.id?.description,"category":"vital-signs","code": "8302-2"])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let patientHeight = bundle?.entry?
+                        .filter() { return $0.resource is Observation }
+                        .map() { return $0.resource as! Observation }
+                    height = patientHeight?.first
+                    self.observationHeight = patientHeight?.first
+                    self.getInsurance(patient: patient, weight: weight, height: height, completion: completion)
+                }
+            }
+        }
+    }
+    
+    func getInsurance(patient:Patient, weight: Observation?, height: Observation?, completion: @escaping ((Coverage, Observation, Observation) -> Void)) {
+        print("getCoverageOfPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            let search = Coverage.search(["policy-holder":patient.id?.description])
+            search.perform(self.client!.server) { bundle, error in
+                if nil != error {
+                    // there was an error
+                }
+                else {
+                    let coverages = bundle?.entry?
+                        .filter() { return $0.resource is Coverage }
+                        .map() { return $0.resource as! Coverage }
+                        
+                    self.coverageObject = coverages?.first
+                    completion(self.coverageObject!, weight!, height!)
                 }
             }
         }

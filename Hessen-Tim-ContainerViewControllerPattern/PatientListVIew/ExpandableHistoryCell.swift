@@ -15,6 +15,9 @@ class ExpandableHistoryCell: UITableViewCell {
     
     var patient : Patient?
     var history : [DomainResource]?
+    var weight: Observation?
+    var height: Observation?
+    var coverage: Coverage?
     
     fileprivate let stack = UIStackView()
     
@@ -26,6 +29,7 @@ class ExpandableHistoryCell: UITableViewCell {
             }
             if(isExpanded){
                 self.greenBorder()
+                self.setPatientData()
             } else{
                 self.whiteBorder()
             }
@@ -42,6 +46,7 @@ class ExpandableHistoryCell: UITableViewCell {
     let patientName: UILabel = {
         let label = UILabel()
         label.text = "Name"
+        label.textAlignment = .left
         label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +56,7 @@ class ExpandableHistoryCell: UITableViewCell {
     let patientSex: UILabel = {
         let label = UILabel()
         label.text = "Sex"
+        label.textAlignment = .center
         label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +66,7 @@ class ExpandableHistoryCell: UITableViewCell {
     let patientBirthday: UILabel = {
         let label = UILabel()
         label.text = "Birthday"
+        label.textAlignment = .center
         label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +75,8 @@ class ExpandableHistoryCell: UITableViewCell {
     
     let patientSize: UILabel = {
         let label = UILabel()
-        label.text = "Size"
+        label.text = "Height"
+        label.textAlignment = .center
         label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +85,18 @@ class ExpandableHistoryCell: UITableViewCell {
     
     let patientWeight: UILabel = {
         let label = UILabel()
-        label.text = "Sex"
+        label.text = "Weight"
+        label.textAlignment = .center
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let patientClinic: UILabel = {
+        let label = UILabel()
+        label.text = "Clinic"
+        label.textAlignment = .right
         label.textColor = UIColor.white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -119,21 +138,21 @@ class ExpandableHistoryCell: UITableViewCell {
         patientView.addSubview(patientName)
         
         patientName.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        patientName.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        patientName.widthAnchor.constraint(equalToConstant: 150).isActive = true
         patientName.centerYAnchor.constraint(equalTo: patientView.centerYAnchor).isActive = true
         patientName.leftAnchor.constraint(equalTo: patientView.leftAnchor, constant: 50).isActive = true
         
         patientView.addSubview(patientSex)
         
         patientSex.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        patientSex.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        patientSex.widthAnchor.constraint(equalToConstant: 30).isActive = true
         patientSex.centerYAnchor.constraint(equalTo: patientView.centerYAnchor).isActive = true
         patientSex.leftAnchor.constraint(equalTo: patientName.rightAnchor, constant: 50).isActive = true
         
         patientView.addSubview(patientBirthday)
         
         patientBirthday.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        patientBirthday.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        patientBirthday.widthAnchor.constraint(equalToConstant: 150).isActive = true
         patientBirthday.centerYAnchor.constraint(equalTo: patientView.centerYAnchor).isActive = true
         patientBirthday.leftAnchor.constraint(equalTo: patientSex.rightAnchor, constant: 50).isActive = true
         
@@ -150,6 +169,13 @@ class ExpandableHistoryCell: UITableViewCell {
         patientWeight.widthAnchor.constraint(equalToConstant: 100).isActive = true
         patientWeight.centerYAnchor.constraint(equalTo: patientView.centerYAnchor).isActive = true
         patientWeight.leftAnchor.constraint(equalTo: patientSize.rightAnchor, constant: 50).isActive = true
+        
+        patientView.addSubview(patientClinic)
+        
+        patientClinic.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        patientClinic.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        patientClinic.centerYAnchor.constraint(equalTo: patientView.centerYAnchor).isActive = true
+        patientClinic.leftAnchor.constraint(equalTo: patientWeight.rightAnchor, constant: 50).isActive = true
         
         
         
@@ -174,24 +200,37 @@ class ExpandableHistoryCell: UITableViewCell {
     }
     
     func getPatientData(){
+        print("getPatientData")
         Institute.shared.getHistoryForPatient(patient: patient!, completion: { history in
-            if (history != nil){
-                DispatchQueue.main.async {
-                    self.history = history
-                    self.patientName.text = (self.patient!.name?[0].family!.string)! + " " + (self.patient!.name?[0].given?[0].string)!
-                    if(self.patient!.gender == AdministrativeGender(rawValue: "male")){
-                        self.patientSex.text = "M"
-                    }else{
-                        self.patientSex.text = "W"
+            Institute.shared.getWeight(patient: self.patient!, completion: { coverage, weight, height in
+                if (history != nil){
+                    DispatchQueue.main.async {
+                        self.history = history
+                        self.weight = weight
+                        self.height = height
+                        self.coverage = coverage
+                        self.patientName.text = (self.patient!.name?[0].family!.string)! + " " + (self.patient!.name?[0].given?[0].string)!
+                        if(self.patient!.gender == AdministrativeGender(rawValue: "male")){
+                            self.patientSex.text = "M"
+                        }else{
+                            self.patientSex.text = "W"
+                        }
+                        self.patientBirthday.text = self.patient!.birthDate?.description
+                        self.patientSize.text = (height.valueQuantity?.value!.description)! + " cm"
+                        self.patientWeight.text = (weight.valueQuantity?.value!.description)! + " kg"
+                        self.patientClinic.text = self.patient!.contact![0].address?.text?.description
+                        self.createStackHistorySubviews()
                     }
-                    self.patientBirthday.text = self.patient!.birthDate?.description
-                    self.createStackHistorySubviews()
                 }
-            }
+                
+            })
         })
     }
     
     func createStackHistorySubviews(){
+        print("createStackHistorySubviews")
+        //We must remove all the subviews from the stack or else, on every reload, more subviews will be added
+        stack.subviews.forEach({ $0.removeFromSuperview() })
         if(history != nil){
             for item in history!{
                 var containerView = UIView()
@@ -259,6 +298,12 @@ class ExpandableHistoryCell: UITableViewCell {
         //cellView.layer.cornerRadius = 15
         patientView.layer.borderWidth = 1
         patientView.layer.borderColor = UIColor.white.cgColor
+    }
+    
+    func setPatientData(){
+        Institute.shared.observationHeight = height
+        Institute.shared.observationWeight = weight
+        Institute.shared.coverageObject = coverage
     }
     
 }
