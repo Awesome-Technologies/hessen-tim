@@ -391,7 +391,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             tableView.reloadData()
         }
         
-        if(indexPath.row != 0){
+        if(historyunwindButtonVisible()){
             animateHistoryUnwindButton(visible: true)
         } else{
             animateHistoryUnwindButton(visible: false)
@@ -494,13 +494,21 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
      If our currently selected service Request is not the found newest one, it means, that we are not on the newest Element and should display the unwind button
      */
     func historyunwindButtonVisible() -> Bool {
-        let newestRequest = historyData.first{$0 is ServiceRequest} as! ServiceRequest
-        if(Institute.shared.sereviceRequestObject?.id == newestRequest.id){
-            return false
+        if(historyData != nil && historyData.count > 0){
+            let newestRequest = historyData.first{$0 is ServiceRequest} as! ServiceRequest
+            print("Vergleich")
+            print(Institute.shared.sereviceRequestObject?.id)
+            print(newestRequest.id)
+                if(Institute.shared.sereviceRequestObject?.id == newestRequest.id){
+                    return false
+                }else{
+                    return true
+                }
         }else{
-            return true
+            return false
         }
-    }
+        }
+        
     
     /**
      Animate the appearence of the unwind button

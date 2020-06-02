@@ -117,19 +117,12 @@ class BaseViewController: UIViewController {
                 print("Added Preview Imagessss")
                 //self.setCategory()
                 //Institute.shared.getOrderedImageSubset(category: category)
-                print(Institute.shared.getOrderedImageSubset(category: self.navigationItem.title!))
-                for media in Institute.shared.getOrderedImageSubset(category: self.navigationItem.title!) {
-                    self.addGalleryPreviewImage(imageName: media)
-                    /*
-                    if media != nil {
-                        //We put every preview Image in the cache
-                        Institute.shared.saveImageInDirectory(imageData: media, name:String(media.id!.description))
-                        self.addGalleryPreviewImage(imageName: media.id!.description)
-                        
-                    }
-                    */
-                    
+                if(Institute.shared.sereviceRequestObject != nil){
+                    for media in Institute.shared.getOrderedImageSubset(category: self.navigationItem.title!) {
+                        self.addGalleryPreviewImage(imageName: media)
+                    }   
                 }
+                
                 
             }
             
@@ -139,7 +132,7 @@ class BaseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+        if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic || Institute.shared.sereviceRequestObject?.status != RequestStatus(rawValue: "draft")){
             takePictureButton.isHidden = true
         }
     }
@@ -495,7 +488,7 @@ class BaseViewController: UIViewController {
         clearComment.isHidden = true
         
         //Show photo button
-        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic || Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
             takePictureButton.isHidden = false
         }
 

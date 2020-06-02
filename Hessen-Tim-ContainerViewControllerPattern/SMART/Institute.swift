@@ -126,10 +126,7 @@ class Institute {
                     } else {
                         self.patientObject = patient
                         print("PatientCreationSucceded")
-                        self.createWeightVitalSigns(weight: weight)
-                        self.createHeightVitalSigns(height: height)
-                        self.createCoverage(name: coverageName)
-                        completion()
+                        self.createWeightVitalSigns(weight: weight, height: height, coverage: coverageName, completion: completion)
                     }
                 }
                 
@@ -150,7 +147,7 @@ class Institute {
             patientName.given = [FHIRString(firstName)]
             
             self.patientObject!.name = [HumanName()]
-            self.patientObject!.name?.append(patientName)
+            self.patientObject!.name?[0] = patientName
             self.patientObject!.birthDate = FHIRDate(string: birthday)
             
             self.patientObject!.contact = [PatientContact()]
@@ -166,14 +163,14 @@ class Institute {
             var doctorNumber = ContactPoint()
             doctorNumber.value = FHIRString(contactNumber)
             
-            pc.telecom?.append(doctorNumber)
+            pc.telecom?[0] = doctorNumber
             
             var adress = Address()
             adress.use = AddressUse(rawValue: "work")
             adress.text = FHIRString(clinicName)
             pc.address = adress
             
-            self.patientObject!.contact?.append(pc)
+            self.patientObject!.contact?[0] = pc
             
             DispatchQueue.global(qos: .background).async {
                 self.patientObject!.update() { error in
@@ -193,7 +190,7 @@ class Institute {
     }
     
     
-    func createWeightVitalSigns(weight: String) {
+    func createWeightVitalSigns(weight: String, height: String, coverage: String, completion: @escaping ()->Void) {
         
         var weightObserv = Observation()
         weightObserv.status = ObservationStatus(rawValue: "preliminary")
@@ -252,6 +249,7 @@ class Institute {
                             } else {
                                 print("WeightResourceUpdateSucceded")
                                 self.observationWeight = weightObserv
+                                self.createHeightVitalSigns(height: height, coverage: coverage, completion: completion)
                             }
                         }
                     }
@@ -289,7 +287,7 @@ class Institute {
     
     
     
-    func createHeightVitalSigns(height: String) {
+    func createHeightVitalSigns(height: String, coverage: String, completion: @escaping()->Void) {
         
         var heightObserv = Observation()
         heightObserv.status = ObservationStatus(rawValue: "final")
@@ -347,6 +345,7 @@ class Institute {
                             } else {
                                 print("HeightResourceUpdateSucceded")
                                 self.observationHeight = heightObserv
+                                self.createCoverage(name: coverage, completion:completion)
                             }
                         }
                     }
@@ -382,7 +381,7 @@ class Institute {
     
     }
     
-    func createCoverage(name: String){
+    func createCoverage(name: String, completion: @escaping()->Void){
         
         DispatchQueue.global(qos: .background).async {
             var cover = Coverage()
@@ -430,6 +429,7 @@ class Institute {
                                 } else {
                                     print("CoverageUpdateSucceded")
                                     self.coverageObject = cover
+                                    completion()
                                 }
                             }
                         }
