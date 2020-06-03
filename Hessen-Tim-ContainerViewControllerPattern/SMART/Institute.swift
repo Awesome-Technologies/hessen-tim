@@ -2300,6 +2300,43 @@ class Institute {
         })
     }
     
+    func checkOrganizationsForLogin(completion: @escaping ((ProfileType) -> Void)){
+        //We first check if our device is registered in a peripheral Clinic
+        getOrganizationForProfile(profileType: "peripheralClinic", completion: { organization in
+            self.searchEndpointForProfileCustom(organization: organization, completion: { endpoint in
+                //When we find our Endpoint in the peripheral Clinic we wrap up the login
+                if endpoint != nil{
+                    print("We are registered in a peripheralClinic")
+                    UserLoginCredentials.shared.organizationProfile = organization
+                    self.getOrganizationForProfile(profileType: "consultationClinic", completion: { organization in
+                        UserLoginCredentials.shared.performerOrganizationProfile = organization
+                        completion(.PeripheralClinic)
+                        
+                    })
+                }else{
+                    //Wen we failed first, we try to check if we are registered in a consultationClinic
+                    self.getOrganizationForProfile(profileType: "consultationClinic", completion: { organization in
+                        self.searchEndpointForProfileCustom(organization: organization, completion: { endpoint in
+                            //When we find our Endpoint in the peripheral Clinic we wrap up the login
+                            if endpoint != nil{
+                                print("We are registered in a consultationClinic")
+                                UserLoginCredentials.shared.organizationProfile = organization
+                                self.getOrganizationForProfile(profileType: "peripheralClinic", completion: { organization in
+                                    UserLoginCredentials.shared.performerOrganizationProfile = organization
+                                    completion(.ConsultationClinic)
+                                })
+                            }else{
+                                print("We have a token but are not logged in")
+                                completion(.NONE)
+                            }
+                        })
+                    })
+                }
+            })
+        })
+        
+    }
+    
     func getOrganizationForProfile(profileType: String, completion: @escaping ((Organization) -> Void)) {
         DispatchQueue.global(qos: .background).async {
             
@@ -2354,6 +2391,144 @@ class Institute {
         
     }
     
+    func searchEndpointForProfile(organization: Organization, completion: @escaping ((Endpoint?) -> Void)) {
+        
+        DispatchQueue.global(qos: .background).async {
+            //Get the Endpoint for the Login
+            var stringReference = organization.endpoint![0].reference?.string
+            if let range = stringReference!.range(of: "/") {
+                let newID = stringReference![range.upperBound...]
+                DispatchQueue.global(qos: .background).async {
+                    
+                    print("read: " + String(newID))
+                    Endpoint.read(String(newID), server: self.client!.server){ resource, error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else if resource != nil {
+                            var ep = resource as! Endpoint
+                            print("Endpoint")
+                            print(ep)
+                            
+                            //Check if the current pushDeviceToken is already registered
+                            if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
+                                print("---")
+                                print(UserDefaults.standard.string(forKey: "current_device_token"))
+                                print(ep.contact)
+                                let results = ep.contact?.filter { $0.value == FHIRString(currentToken) }
+                                print("---filter")
+                                print(results)
+                                if(results!.isEmpty){
+                                    completion(nil)
+                                } else{
+                                    UserLoginCredentials.shared.endpointProfile = ep
+                                    completion(ep)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    /**
+     A lenient call to get the Endpoints
+     Because the normal read call still gets resources from the cache first, we ned a direct acess to the data
+     */
+    func searchEndpointForProfileCustom(organization: Organization, completion: @escaping ((Endpoint?) -> Void)) {
+        //Get the Endpoint for the Login
+        var stringReference = organization.endpoint![0].reference?.string
+        if let range = stringReference!.range(of: "/") {
+            let newID = stringReference![range.upperBound...]
+            DispatchQueue.global(qos: .background).async {
+                
+                var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
+                request?.options = [.lenient]
+                if let request = request {
+                    var headers = FHIRRequestHeaders()
+                    headers.customHeaders = ["Cache-Control":"no-cache"]
+                    request.add(headers: headers)
+                    let expression1 = "Endpoint?_id=" + newID
+                    self.client!.server.performRequest(against: expression1 , handler: request) { (response) in
+
+                        do {
+                            let bundle = try response.responseResource(ofType: Bundle.self)
+                            
+                            let endpoints = bundle.entry?
+                                .filter() { return $0.resource is Endpoint }
+                                .map() { return $0.resource as! Endpoint }
+                            
+                            if let endpoint = endpoints?.first{
+                                //Check if the current pushDeviceToken is already registered
+                                if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
+                                    let results = endpoint.contact?.filter { $0.value == FHIRString(currentToken) }
+                                    if(results!.isEmpty){
+                                        completion(nil)
+                                    } else{
+                                        UserLoginCredentials.shared.endpointProfile = endpoint
+                                        completion(endpoint)
+                                    }
+                                }
+                            }
+                        }
+                        catch let error {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        
+            
+            
+            
+            
+        
+        
+        /*
+        DispatchQueue.global(qos: .background).async {
+            //Get the Endpoint for the Login
+            var stringReference = organization.endpoint![0].reference?.string
+            if let range = stringReference!.range(of: "/") {
+                let newID = stringReference![range.upperBound...]
+                DispatchQueue.global(qos: .background).async {
+                    
+                    print("read: " + String(newID))
+                    Endpoint.read(String(newID), server: self.client!.server){ resource, error in
+                        if let error = error as? FHIRError {
+                            print(error)
+                        } else if resource != nil {
+                            var ep = resource as! Endpoint
+                            print("Endpoint")
+                            print(ep)
+                            
+                            //Check if the current pushDeviceToken is already registered
+                            if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
+                                print("---")
+                                print(UserDefaults.standard.string(forKey: "current_device_token"))
+                                print(ep.contact)
+                                let results = ep.contact?.filter { $0.value == FHIRString(currentToken) }
+                                print("---filter")
+                                print(results)
+                                if(results!.isEmpty){
+                                    completion(nil)
+                                } else{
+                                    UserLoginCredentials.shared.endpointProfile = ep
+                                    completion(ep)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        */
+        
+    }
+    
     func addContactPointToEndpoint(endpoint: Endpoint, completion: @escaping (()->Void)){
         
         var cp = ContactPoint()
@@ -2379,16 +2554,26 @@ class Institute {
     }
     
     func removeContactPointFromEndpoint(completion: @escaping (()->Void)){
+        print("removeContactPointFromEndpoint")
         
         var endpoint = UserLoginCredentials.shared.endpointProfile
         //We remove our pushDeviceToken from the endpoint
         let filteredContaktPoints = endpoint?.contact!.filter {$0.value != FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)}
         //We save the deminished list to the endpoint again
         endpoint?.contact = filteredContaktPoints
+        /**
+         We sometimes encounter an error, where the server instance is not set and the logout process gets in interupred
+         If this error occurs, we manually set the server instance
+         */
+        if(endpoint?._server == nil){
+            print("no server, manually adding")
+            endpoint?._server = self.client?.server
+        }
         
         DispatchQueue.global(qos: .background).async {
             endpoint!.update() { error in
                 if let error = error as? FHIRError {
+                    print("error")
                     print(error)
                 } else {
                     print("EndpointUpdateSucceded")

@@ -240,11 +240,13 @@ class SecondScreenViewController: UIViewController {
         UIApplication.shared.unregisterForRemoteNotifications()
         Institute.shared.removeContactPointFromEndpoint(completion:{
             DispatchQueue.main.asyncAfter(deadline: .now()) {
+                
+                //Remove token from user defaults
+                UserDefaults.standard.removeObject(forKey: "current_device_token")
+                
                 let delegate = UIApplication.shared.delegate as! AppDelegate
                 delegate.splitView = false
                 delegate.goToLoginScreen(animated: true)
-                //Remove token from user defaults
-                UserDefaults.standard.removeObject(forKey: "current_device_token")
             }
         })
         //toLoginScreen

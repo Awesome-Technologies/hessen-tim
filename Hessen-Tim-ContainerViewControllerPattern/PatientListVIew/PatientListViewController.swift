@@ -177,6 +177,7 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             Institute.shared.images.removeAll()
         }
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.sections.count
     }
@@ -342,7 +343,6 @@ class PatientListViewController: UIViewController, UITableViewDelegate, UITableV
             print("Only one section, nothing to sort")
         }
     }
-
     
     
 }

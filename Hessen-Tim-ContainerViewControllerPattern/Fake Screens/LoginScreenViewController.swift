@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import SwiftGifOrigin
 
 class LoginScreenViewController: UIViewController {
     
     var selectedProfile:ProfileType = .NONE
+    var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var loginName: UITextField! {
@@ -30,6 +32,46 @@ class LoginScreenViewController: UIViewController {
     @IBOutlet weak var consultationClinic: UIButton!
     
     @IBOutlet weak var loginButton: UIButton!
+    
+    override func viewDidLoad() {
+    super.viewDidLoad()
+        
+        /**
+         Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
+         and wants to logg in once aggain
+         */
+        if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
+            
+            addLoadingView()
+            
+            Institute.shared.connect { error in
+                if error == nil {
+                    //get my Organization Profile
+                    Institute.shared.checkOrganizationsForLogin(completion: { login in
+                        if(login != .NONE){
+                            UserLoginCredentials.shared.selectedProfile = login
+                            print("Login data complete")
+                            //get me to the next screen
+                            DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "mainView", sender: self)
+                            }
+                        }else{
+                            print("We are not registered and should log in")
+                            DispatchQueue.main.async {
+                                self.loadingView.removeGrayView()
+                                self.loadingView.removeFromSuperview()
+                            }
+                        }
+                    })
+                    
+                }
+            }
+            
+        }else{
+            print("We are not registered and should log in")
+        }
+    
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -78,26 +120,24 @@ class LoginScreenViewController: UIViewController {
         if(selectedProfile == .NONE){
             highlightAllMissingElements()
         }else{
-            Institute.shared.connect { error in
-                if error == nil {
-                    /**
-                     Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
-                     and wants to logg in once aggain
-                     */
-                    if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
-                        
-                    }else{
-                        UIApplication.shared.registerForRemoteNotifications()
-                        print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
-                    }
-                    UserLoginCredentials.shared.selectedProfile = self.selectedProfile
-                    Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "mainView", sender: self)
-                        }
-                    })    
-                }
+            
+            addLoadingView()
+            /**
+             Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
+             and wants to logg in once aggain
+             */
+            if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
+                
+            }else{
+                UIApplication.shared.registerForRemoteNotifications()
+                print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
             }
+            UserLoginCredentials.shared.selectedProfile = self.selectedProfile
+            Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "mainView", sender: self)
+                }
+            })
         }
     }
     
@@ -127,6 +167,15 @@ class LoginScreenViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func addLoadingView(){
+        //var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.view.addSubview(loadingView)
+        loadingView.addGrayBackPanel()
+        loadingView.addLayoutConstraints()
+        loadingView.addLoadingText(text: "Lade Profil")
+        view.bringSubviewToFront(loadingView)
+    }
 
 }
 
