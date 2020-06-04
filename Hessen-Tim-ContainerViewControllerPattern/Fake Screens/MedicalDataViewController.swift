@@ -359,6 +359,20 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             cell.backgroundColor = UIColor(red:45.0/255.0, green:55.0/255.0, blue:95.0/255.0, alpha:0.0)
             cell.dateIssued.text = DiagnosticReportDateFormater(item: report)
             cell.preview.text = report.conclusion?.description
+            
+            //Get the String of the Service request, that its based on
+            var stringReference = report.basedOn![0].reference?.string
+            if let range = stringReference!.range(of: "/") {
+                //get the ID of the ServiceRequest
+                let scID = stringReference![range.upperBound...]
+                
+                if(String(scID) == Institute.shared.sereviceRequestObject?.id?.description){
+                    cell.greenBorder()
+                }else{
+                    cell.noBorder()
+                }
+            }
+            
             return cell
         }
         else {

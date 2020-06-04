@@ -105,4 +105,16 @@ class DiagnosticReportTableViewCell: UITableViewCell {
         
     }
     
+    func greenBorder(){
+        //cellView.layer.cornerRadius = 15
+        cellView.layer.borderWidth = 2
+        cellView.layer.borderColor = UIColor.green.cgColor
+    }
+    
+    func noBorder(){
+        //cellView.layer.cornerRadius = 15
+        cellView.layer.borderWidth = 0
+        cellView.layer.borderColor = UIColor.green.cgColor
+    }
+    
 }
