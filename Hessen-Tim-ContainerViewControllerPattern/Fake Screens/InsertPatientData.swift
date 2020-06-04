@@ -27,6 +27,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
     @IBOutlet var deleteSelectedPatient: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     
+    var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 600, height: 200))
     let datePicker = UIDatePicker()
     weak var pickerView: UIPickerView?
     var sex = ["male", "female", "other", "unknown"]
@@ -401,6 +402,9 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
      Checks the inputs and triggers the creation of a patient/ServiceRequest - resource and segues to the next screen
      */
     @IBAction func `continue`(_ sender: Any) {
+        
+        addLoadingView()
+        
         if(Institute.shared.sereviceRequestObject != nil){
             if (!textElementsMissing()) {
                 Institute.shared.updateExistingPatient(firstName: patientFirstname.text!, familyName: patientSurname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,insuranceName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
@@ -421,8 +425,6 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             })
             
         }else if (!textElementsMissing()) {
-        //}else if (true) {
-            
             Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,coverageName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
                 Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
                     DispatchQueue.main.async {
@@ -529,6 +531,15 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         contactDoctor.text = ""
         contactNumber.text = ""
         isEditMode = false
+    }
+    
+    func addLoadingView(){
+        //var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.view.addSubview(loadingView)
+        loadingView.addGrayBackPanel()
+        loadingView.addLayoutConstraints()
+        loadingView.addLoadingText(text: "Erstelle Patient")
+        view.bringSubviewToFront(loadingView)
     }
 }
 

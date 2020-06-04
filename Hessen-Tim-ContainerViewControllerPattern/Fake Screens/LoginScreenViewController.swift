@@ -12,7 +12,7 @@ import SwiftGifOrigin
 class LoginScreenViewController: UIViewController {
     
     var selectedProfile:ProfileType = .NONE
-    var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 500, height: 200))
 
     @IBOutlet weak var screen2ImageView: UIImageView!
     @IBOutlet weak var loginName: UITextField! {

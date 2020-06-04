@@ -12,6 +12,7 @@ class LoadingView: UIView {
     
     var loadingtext: UITextField!
     var grayPanel: UIView!
+    var width: Int = 500
     
     
     //initWithFrame to init view from code
@@ -32,14 +33,12 @@ class LoadingView: UIView {
         self.layer.cornerRadius = 50
     }
     
+    //func setWidth()
+    
     func addLayoutConstraints(){
         backgroundColor = UIColor.white
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //notificationView.widthAnchor.constraint(equalToConstant: 64),
-            //notificationView.widthAnchor.constraint(equalTo: testView.heightAnchor),
-            self.heightAnchor.constraint(equalToConstant: 200),
-            self.widthAnchor.constraint(equalToConstant: 500),
             self.centerXAnchor.constraint(equalTo: self.superview!.centerXAnchor),
             self.centerYAnchor.constraint(equalTo: self.superview!.centerYAnchor),
         ])
