@@ -2329,9 +2329,25 @@ class Institute {
                     print(serviceRequestID)
                     self.getServiceRequestByID(id: String(serviceRequestID), completion: { (request) in
                         self.getPatientByID(id: String(patientID), completion: { (patient) in
-                            self.sereviceRequestObject = request
                             self.patientObject = patient
-                            completion()
+                            //login
+                            Institute.shared.connect { error in
+                                if error == nil {
+                                    //get my Organization Profile
+                                    self.checkOrganizationsForLogin(completion: { login in
+                                        if(login != .NONE){
+                                            UserLoginCredentials.shared.selectedProfile = login
+                                            print("Login data complete")
+                                            //createDraftServiceRequest
+                                            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                                                self.sereviceRequestObject = request
+                                                completion()
+                                            })
+                                        }
+                                    })
+                                }
+                            }
+                            
                         })
                     })
                 }else{
