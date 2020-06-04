@@ -2107,6 +2107,7 @@ class Institute {
     func getAllServiceRequestsForPatient(patient: Patient, completion: @escaping (([ServiceRequest]?) -> Void)) {
         print("--- getAllServiceRequestsForPatient")
         
+        //ServiceRequest?subject:Patient._id=122&_sort=-authored&status=active
         let search = ServiceRequest.search(["subject":["$type": "Patient", "_id":patient.id?.description], "_sort": "-authored", "status": "active"])
         print(search.construct())
         
@@ -2139,12 +2140,80 @@ class Institute {
         
     }
     
+    func getAllServiceRequestsForPatientCustom(patient: Patient, completion: @escaping (([ServiceRequest]?) -> Void)) {
+        print("--- getAllServiceRequestsForPatient")
+        
+        DispatchQueue.global(qos: .background).async {
+            var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
+            request?.options = [.lenient]
+            if let request = request {
+                var headers = FHIRRequestHeaders()
+                headers.customHeaders = ["Cache-Control":"no-cache"]
+                request.add(headers: headers)
+                //ServiceRequest?subject:Patient._id=122&_sort=-authored&status=active
+                let expression1 = "ServiceRequest?subject:Patient._id=" + patient.id!.description
+                let expression2 = "&_sort=-authored&status=active"
+                self.client!.server.performRequest(against: expression1 + expression2, handler: request) { (response) in
+                    
+                    do {
+                        let bundle = try response.responseResource(ofType: Bundle.self)
+                        if bundle != nil{
+                            let sRequests = bundle.entry?
+                                .filter() { return $0.resource is ServiceRequest }
+                                .map() { return $0.resource as! ServiceRequest }
+                            
+                            print("We found some ServiceRequests:")
+                            print(sRequests?.count)
+                            completion(sRequests)
+                        }
+                    }catch let error {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAllDiagnosticReportsForPatientCustom(patient: Patient, completion: @escaping (([DiagnosticReport]?) -> Void)) {
+        print("getDiagnosticReportsForPatientCustom")
+        
+        DispatchQueue.global(qos: .background).async {
+            var request = self.client!.server.handlerForRequest(withMethod: .GET, resource: nil)
+            request?.options = [.lenient]
+            if let request = request {
+                var headers = FHIRRequestHeaders()
+                headers.customHeaders = ["Cache-Control":"no-cache"]
+                request.add(headers: headers)
+                //DiagnosticReport?_sort=-issued&based-on:ServiceRequest.subject:Patient._id=554
+                let expression1 = "DiagnosticReport?based-on:ServiceRequest.subject:Patient._id=" + patient.id!.description
+                let expression2 = "&_sort=-issued"
+                self.client!.server.performRequest(against: expression1 + expression2, handler: request) { (response) in
+                    
+                    do {
+                        let bundle = try response.responseResource(ofType: Bundle.self)
+                        if bundle != nil{
+                            let report = bundle.entry?
+                                .filter() { return $0.resource is DiagnosticReport }
+                                .map() { return $0.resource as! DiagnosticReport }
+                            
+                            print("We found some Reports:")
+                            print(report?.count)
+                            completion(report)
+                        }
+                    }catch let error {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
     func getHistoryForPatient(patient: Patient, completion: @escaping (([DomainResource]?) -> Void)) {
     print("getHistoryForPatient")
         //Create Array for the communication history
         var patientHistory = [DomainResource]()
         //Put every Service Request in the history
-        self.getAllServiceRequestsForPatient(patient: patient, completion: { (requests) in
+        self.getAllServiceRequestsForPatientCustom(patient: patient, completion: { (requests) in
             if(requests != nil){
                 for request in requests!{
                 patientHistory.append(request)
@@ -2152,7 +2221,7 @@ class Institute {
             
             }
             //Get all DiagnosticReports
-            self.getAllDiagnosticReportsForPatient(patient: patient, completion: { (reports) in
+            self.getAllDiagnosticReportsForPatientCustom(patient: patient, completion: { (reports) in
                 if (reports != nil){
                     for rep in reports!{
                         //Get the String of the Service request, that its based on
@@ -2244,31 +2313,36 @@ class Institute {
         
     }
     
-    func openMedicalDataFromNotification(notification: [String: AnyObject], completion: @escaping (() -> Void)) {
+
+    func openMedicalDataFromNotification(notification: [AnyHashable : Any], completion: @escaping (() -> Void)) {
         print("openMedicalDataFromNotification")
         print(notification)
-        if let serviceRequest_id = notification["serviceRequestID"] as? String {
-            if let patient_id = notification["patientID"] as? String {
-                self.getServiceRequestByID(id: serviceRequest_id, completion: { (request) in
-                    self.getPatientByID(id: patient_id, completion: { (patient) in
-                        self.sereviceRequestObject = request
-                        self.patientObject = patient
-                        completion()
+        print("_____")
+        if let sound = notification["sound"] as? String{
+            print("sound")
+            print(sound)
+            if let patientID = notification["patientID"] as? Int{
+                print("patientID")
+                print(patientID)
+                if let serviceRequestID = notification["serviceRequestID"] as? Int{
+                    print("serviceRequestID")
+                    print(serviceRequestID)
+                    self.getServiceRequestByID(id: String(serviceRequestID), completion: { (request) in
+                        self.getPatientByID(id: String(patientID), completion: { (patient) in
+                            self.sereviceRequestObject = request
+                            self.patientObject = patient
+                            completion()
+                        })
                     })
-                    
-                })
+                }else{
+                    print("no serviceRequest")
+                }
+            }else{
+                print("no patient")
             }
-            
-            
-            
+        }else{
+            print("no Sound")
         }
-        /*
-        guard let serviceRequest = notification["serviceRequest_id"] as? String,
-          let url = notification["link_url"] as? String  else {
-            print("Bad notification info")
-            return nil
-        }
-         */
     }
     
     func createPatientListData(list: PatientList, completion: @escaping ((Dictionary<String,[DomainResource]>)) -> Void){

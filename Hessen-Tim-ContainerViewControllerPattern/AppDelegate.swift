@@ -213,7 +213,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         if let aps = userInfo["aps"] as? [String: AnyObject]{
             Institute.shared.connect { error in
                 if error == nil {
-                    Institute.shared.openMedicalDataFromNotification(notification: aps, completion: {
+                    Institute.shared.openMedicalDataFromNotification(notification: userInfo, completion: {
                         DispatchQueue.main.async {
                             self.setupRootViewController(animated: false)
                         }
