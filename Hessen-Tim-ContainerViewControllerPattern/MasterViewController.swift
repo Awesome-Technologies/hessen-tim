@@ -53,7 +53,9 @@ class MasterViewController: UITableViewController {
             //self.setNumberOfImagesInCategory(observation: observation, count: count)
             self.ImageCategoryCount[observation] = String(count)
             DispatchQueue.main.async {
-                self.tableView.reloadRows(at: [IndexPath(row: observation.ordinal()+1, section: 0)], with: .automatic)
+                if (self.splitViewController?.viewControllers != nil){
+                    self.tableView.reloadRows(at: [IndexPath(row: observation.ordinal()+1, section: 0)], with: .automatic)
+                }
             }
         })
         
