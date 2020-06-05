@@ -631,7 +631,14 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction func unwindHistory(_ sender: Any) {
         print("unwind")
-        let selectedIndex = IndexPath(row: 0, section: 0)
+        //gets the newest ServiceRequest
+        let newestRequest = historyData.first{$0 is ServiceRequest} as! DomainResource
+        print(newestRequest)
+        //get index of the ServiceRequest in the Array
+        let index = historyData.firstIndex{$0.id?.description == newestRequest.id?.description}
+        print(index)
+        
+        let selectedIndex = IndexPath(row: index!, section: 0)
         print(selectedIndex)
         historyTableView.selectRow(at: selectedIndex, animated: true, scrollPosition: .none)
         historyTableView.delegate?.tableView!(historyTableView, didSelectRowAt: selectedIndex)
