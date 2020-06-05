@@ -661,6 +661,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
                 commentTextView.text = ""
             }
             Institute.shared.sereviceRequestObject?.note![0].text = FHIRString(text)
+            Institute.shared.serviceRequestDraftObject?.note![0].text = FHIRString(text)
             //noteTextView.text = noteTextView.text + text
         }
         
@@ -712,18 +713,48 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
      */
     func showHistoryNotes(){
         noteTextView.text = ""
-        for item in historyData{
-            if let request = item as? ServiceRequest {
-                if(request.authoredOn!.nsDate <= Institute.shared.sereviceRequestObject!.authoredOn!.nsDate){
-                    if(request.note != nil){
-                        if(request.note![0].text != nil){
-                            noteTextView.text = noteTextView.text + request.note![0].text!.description
+        
+        //Get a List af all ServiceRequests in the order: newest -> oldest
+        Institute.shared.getAllServiceRequestsForPatientCustom(patient: Institute.shared.patientObject!, completion: { (requests) in
+            if(requests != nil){
+                for (idx, element) in requests!.enumerated() {
+                    //At the top od the commentView put the comment from the draftService request
+                    if idx == requests!.startIndex {
+                        if let serviceObj = Institute.shared.sereviceRequestObject{
+                            if(Institute.shared.sereviceRequestObject?.id?.description == Institute.shared.serviceRequestDraftObject?.id?.description){
+                                DispatchQueue.main.async {
+                                    if(self.noteTextView != nil){
+                                        self.noteTextView.text = self.noteTextView.text + Institute.shared.serviceRequestDraftObject!.note![0].text!.description
+                                    }
+                                }
+                            }
                         }
+                    }
+                    //Show all the other comments, if they fit the date sorting
+                    if(element.authoredOn!.nsDate <= Institute.shared.sereviceRequestObject!.authoredOn!.nsDate){
+                        if(element.note != nil){
+                            if(element.note![0].text != nil){
+                                DispatchQueue.main.async {
+                                    if(self.noteTextView != nil){
+                                        self.noteTextView.text = self.noteTextView.text + element.note![0].text!.description
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            //If we dont have a history jet, just display the comment from the draft
+            }else{
+                DispatchQueue.main.async {
+                    if let serviceObject = Institute.shared.sereviceRequestObject{
+                        self.noteTextView.text = (serviceObject.note![0].text!.description) + self.noteTextView.text
                     }
                 }
             }
-        }
+        })
     }
+    
     /**
      Start the animation and display and adding of the notes, when the user is on a draft Servicerequest
      */
