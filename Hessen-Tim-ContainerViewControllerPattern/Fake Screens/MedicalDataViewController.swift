@@ -502,10 +502,17 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             print("NO DRAFFT")
             editPatientData.isHidden = true
             send.isHidden = true
-        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft") && UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+        } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+            
             print("DRAFFT")
             editPatientData.isHidden = false
-            send.isHidden = false
+            
+            if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic){
+                send.isHidden = false
+            }else if(UserLoginCredentials.shared.selectedProfile == .ConsultationClinic){
+                consultationReport.isHidden = false
+            }
+            
         }
         
     }
