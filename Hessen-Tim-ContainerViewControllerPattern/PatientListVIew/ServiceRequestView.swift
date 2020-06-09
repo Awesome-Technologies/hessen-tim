@@ -126,8 +126,13 @@ class ServiceRequestView: UIView {
     @objc func checkAction(sender : UITapGestureRecognizer) {
         print("I TAB IN STACKKK")
         Institute.shared.patientObject = patient
-        Institute.shared.sereviceRequestObject = resource
-        delegate?.showMedicalDataView()
+        Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
+            DispatchQueue.main.async {
+                Institute.shared.sereviceRequestObject = self.resource
+                self.delegate?.showMedicalDataView()
+            }
+        })
+        
     }
     
 }
