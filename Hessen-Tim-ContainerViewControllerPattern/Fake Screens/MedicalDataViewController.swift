@@ -502,6 +502,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
             print("NO DRAFFT")
             editPatientData.isHidden = true
             send.isHidden = true
+            consultationReport.isHidden = true
         } else if(Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
             
             print("DRAFFT")
