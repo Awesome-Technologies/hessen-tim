@@ -456,21 +456,21 @@ class Institute {
     }
     
     
-    func createServiceRequest(status: String, intent: String, category: String, priority: String, patientID: String, organizationID: String, completion:@escaping (() -> Void)){
+    func createServiceRequest(category: String, completion:@escaping (() -> Void)){
         
         DispatchQueue.global(qos: .background).async {
             
             var serv = ServiceRequest()
             serv._server = self.client?.server
-            serv.status = RequestStatus(rawValue: status)
-            serv.intent = RequestIntent(rawValue: intent)
+            serv.status = RequestStatus(rawValue: "draft")
+            serv.intent = RequestIntent(rawValue: "proposal")
             serv.category = [CodeableConcept()]
             
             var cc = CodeableConcept()
             cc.text = FHIRString(category)
             
             serv.category?.append(cc)
-            serv.priority = RequestPriority(rawValue: priority)
+            serv.priority = RequestPriority(rawValue: "asap")
             serv.subject = Reference()
             
             print(self.patientObject?._server?.baseURL)
@@ -2339,7 +2339,7 @@ class Institute {
                                             UserLoginCredentials.shared.selectedProfile = login
                                             print("Login data complete")
                                             //createDraftServiceRequest
-                                            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                                            Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
                                                 self.sereviceRequestObject = request
                                                 completion()
                                             })

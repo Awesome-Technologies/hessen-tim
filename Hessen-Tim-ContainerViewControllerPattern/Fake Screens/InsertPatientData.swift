@@ -421,7 +421,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
         
         }else if(patientDropdown.text != ""){
             //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
-            Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+            Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "toMedicalData", sender: nil)
                 }
@@ -429,7 +429,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             
         }else if (!textElementsMissing()) {
             Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,coverageName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
-                Institute.shared.createServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
+                Institute.shared.createServiceRequest(category: "Intensivmedizin",  completion: {
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "toMedicalData", sender: nil)
                     }
