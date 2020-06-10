@@ -488,7 +488,7 @@ class BaseViewController: UIViewController {
         clearComment.isHidden = true
         
         //Show photo button
-        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic || Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
+        if(UserLoginCredentials.shared.selectedProfile == .PeripheralClinic && Institute.shared.sereviceRequestObject?.status == RequestStatus(rawValue: "draft")){
             takePictureButton.isHidden = false
         }
 
