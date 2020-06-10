@@ -10,6 +10,7 @@
 		1A48CDE5D58C5268BE87037C /* Pods_Hessen_Tim_ContainerViewControllerPatternTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD846E24BAC2645E484FB52 /* Pods_Hessen_Tim_ContainerViewControllerPatternTests.framework */; };
 		2BC97409584C0A23E0E67AAB /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D993B901B4A1FED71CB250D /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework */; };
 		8F01870623CDE27200C9CDD6 /* InsertPatientData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F01870523CDE27200C9CDD6 /* InsertPatientData.swift */; };
+		8F0A7B322490E3B9002E29CD /* AddDataToPatientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0A7B312490E3B9002E29CD /* AddDataToPatientView.swift */; };
 		8F0F0A612458186700A3F852 /* ExpandableHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0F0A602458186700A3F852 /* ExpandableHistoryCell.swift */; };
 		8F4B241222C500F000A8E678 /* PatientendatenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4B241122C500F000A8E678 /* PatientendatenViewController.swift */; };
 		8F4B241422C5020B00A8E678 /* iOSDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4B241322C5020B00A8E678 /* iOSDropDown.swift */; };
@@ -78,6 +79,7 @@
 		5D993B901B4A1FED71CB250D /* Pods_Hessen_Tim_ContainerViewControllerPattern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hessen_Tim_ContainerViewControllerPattern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E70DA57A756E179C2BDED4 /* Pods-Hessen-Tim-ContainerViewControllerPatternTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hessen-Tim-ContainerViewControllerPatternTests.release.xcconfig"; path = "Target Support Files/Pods-Hessen-Tim-ContainerViewControllerPatternTests/Pods-Hessen-Tim-ContainerViewControllerPatternTests.release.xcconfig"; sourceTree = "<group>"; };
 		8F01870523CDE27200C9CDD6 /* InsertPatientData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertPatientData.swift; sourceTree = "<group>"; };
+		8F0A7B312490E3B9002E29CD /* AddDataToPatientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDataToPatientView.swift; sourceTree = "<group>"; };
 		8F0F0A602458186700A3F852 /* ExpandableHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableHistoryCell.swift; sourceTree = "<group>"; };
 		8F4B241122C500F000A8E678 /* PatientendatenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientendatenViewController.swift; sourceTree = "<group>"; };
 		8F4B241322C5020B00A8E678 /* iOSDropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSDropDown.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				8FA9052524542CF3006CD2C0 /* ServiceRequestView.swift */,
 				8FA9052724543AE1006CD2C0 /* DiagnosticReportView.swift */,
 				8F0F0A602458186700A3F852 /* ExpandableHistoryCell.swift */,
+				8F0A7B312490E3B9002E29CD /* AddDataToPatientView.swift */,
 			);
 			path = PatientListVIew;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				8FDE86AA22CA3F210034A913 /* PatientListViewController.swift in Sources */,
 				8FA9052624542CF3006CD2C0 /* ServiceRequestView.swift in Sources */,
 				97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */,
+				8F0A7B322490E3B9002E29CD /* AddDataToPatientView.swift in Sources */,
 				8FB1C1D3242F7D6D00C07DAD /* DiagnosticReportTableViewCell.swift in Sources */,
 				8FB51F83246147BA004DB903 /* UserLoginCredentials.swift in Sources */,
 				8FB3B2242486839E0047DCC9 /* LoadingView.swift in Sources */,

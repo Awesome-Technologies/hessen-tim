@@ -232,7 +232,62 @@ class ExpandableHistoryCell: UITableViewCell {
         //We must remove all the subviews from the stack or else, on every reload, more subviews will be added
         stack.subviews.forEach({ $0.removeFromSuperview() })
         if(history != nil){
-            for item in history!{
+            if(history?.isEmpty == false){
+                for item in history!{
+                    var containerView = UIView()
+                    stack.addArrangedSubview(containerView)
+                    containerView.backgroundColor = UIColor.clear
+                    containerView.layer.cornerRadius = 10
+                    containerView.leftAnchor.constraint(equalTo: stack.leftAnchor, constant: 0).isActive = true
+                    containerView.rightAnchor.constraint(equalTo: stack.rightAnchor, constant: 0).isActive = true
+                    containerView.isHidden = true
+                    containerView.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    if let report = item as? DiagnosticReport {
+                        containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+                        var historyView = DiagnosticReportView()
+                        containerView.addSubview(historyView)
+                        historyView.resource = report
+                        historyView.delegate = self.historyDelegate
+                        historyView.translatesAutoresizingMaskIntoConstraints = false
+                        historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5).isActive = true
+                        historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5).isActive = true
+                        historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                        historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+                        historyView.layer.cornerRadius = 10
+                        historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 200).isActive = true
+                        historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -50).isActive = true
+                        historyView.dateIssued.text = historyView.ReportDateFormater(item: report)
+                        historyView.preview.text = report.conclusion?.description
+                        historyView.translatesAutoresizingMaskIntoConstraints = false
+                        historyView.layer.borderWidth = 1
+                        historyView.layer.borderColor = UIColor.white.cgColor
+                        
+                    }else{
+                        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+                        let request = item as? ServiceRequest
+                        var historyView = ServiceRequestView()
+                        containerView.addSubview(historyView)
+                        historyView.delegate = self.historyDelegate
+                        historyView.resource = request
+                        historyView.patient = self.patient
+                        historyView.translatesAutoresizingMaskIntoConstraints = false
+                        historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+                        historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 1).isActive = true
+                        historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                        historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+                        historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 50).isActive = true
+                        historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -200).isActive = true
+                        historyView.layer.cornerRadius = 10
+                        historyView.dateIssued.text = historyView.ReportDateFormater(item: request!)
+                        historyView.preview.text = (request?.id!.description)! + " Neue Informationen"
+                        historyView.translatesAutoresizingMaskIntoConstraints = false
+                        historyView.layer.borderWidth = 1
+                        historyView.layer.borderColor = UIColor.white.cgColor
+                    }
+                }
+            }else{
+                //Create a custom cell, when no communication history is present for the patient
                 var containerView = UIView()
                 stack.addArrangedSubview(containerView)
                 containerView.backgroundColor = UIColor.clear
@@ -242,48 +297,22 @@ class ExpandableHistoryCell: UITableViewCell {
                 containerView.isHidden = true
                 containerView.translatesAutoresizingMaskIntoConstraints = false
                 
-                if let report = item as? DiagnosticReport {
-                    containerView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-                    var historyView = DiagnosticReportView()
-                    containerView.addSubview(historyView)
-                    historyView.resource = report
-                    historyView.delegate = self.historyDelegate
-                    historyView.translatesAutoresizingMaskIntoConstraints = false
-                    historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10).isActive = true
-                    historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10).isActive = true
-                    historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-                    historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-                    historyView.layer.cornerRadius = 10
-                    historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 200).isActive = true
-                    historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -50).isActive = true
-                    historyView.dateIssued.text = historyView.ReportDateFormater(item: report)
-                    historyView.preview.text = report.conclusion?.description
-                    historyView.translatesAutoresizingMaskIntoConstraints = false
-                    historyView.layer.borderWidth = 1
-                    historyView.layer.borderColor = UIColor.white.cgColor
-                    
-                }else{
-                    containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-                    let request = item as? ServiceRequest
-                    var historyView = ServiceRequestView()
-                    containerView.addSubview(historyView)
-                    historyView.delegate = self.historyDelegate
-                    historyView.resource = request
-                    historyView.patient = self.patient
-                    historyView.translatesAutoresizingMaskIntoConstraints = false
-                    historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-                    historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 1).isActive = true
-                    historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-                    historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-                    historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 50).isActive = true
-                    historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -200).isActive = true
-                    historyView.layer.cornerRadius = 10
-                    historyView.dateIssued.text = historyView.ReportDateFormater(item: request!)
-                    historyView.preview.text = (request?.id!.description)! + " Neue Informationen"
-                    historyView.translatesAutoresizingMaskIntoConstraints = false
-                    historyView.layer.borderWidth = 1
-                    historyView.layer.borderColor = UIColor.white.cgColor
-                }
+                containerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+                var historyView = AddDataToPatientView()
+                containerView.addSubview(historyView)
+                historyView.delegate = self.historyDelegate
+                historyView.patient = self.patient
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5).isActive = true
+                historyView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 5).isActive = true
+                historyView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+                historyView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+                historyView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 150).isActive = true
+                historyView.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -150).isActive = true
+                historyView.layer.cornerRadius = 10
+                historyView.translatesAutoresizingMaskIntoConstraints = false
+                historyView.layer.borderWidth = 1
+                historyView.layer.borderColor = UIColor.white.cgColor
             }
         }
     }
