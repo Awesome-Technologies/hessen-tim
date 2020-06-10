@@ -723,13 +723,15 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
         noteTextView.text = ""
         
         //Get a List af all ServiceRequests in the order: newest -> oldest
-        Institute.shared.getAllServiceRequestsForPatientCustom(patient: Institute.shared.patientObject!, completion: { (requests) in
+        guard let patientObject = Institute.shared.patientObject else { return }
+        guard let serviceObject = Institute.shared.sereviceRequestObject else { return }
+        Institute.shared.getAllServiceRequestsForPatientCustom(patient: patientObject, completion: { (requests) in
             if(requests != nil){
                 for (idx, element) in requests!.enumerated() {
                     //At the top od the commentView put the comment from the draftService request
                     if idx == requests!.startIndex {
-                        if let serviceObj = Institute.shared.sereviceRequestObject{
-                            if(Institute.shared.sereviceRequestObject?.id?.description == Institute.shared.serviceRequestDraftObject?.id?.description){
+                        if let draftObj = Institute.shared.serviceRequestDraftObject{
+                            if(serviceObject.id?.description == draftObj.id?.description){
                                 DispatchQueue.main.async {
                                     if(self.noteTextView != nil){
                                         self.noteTextView.text = self.noteTextView.text + Institute.shared.serviceRequestDraftObject!.note![0].text!.description
@@ -739,7 +741,7 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
                         }
                     }
                     //Show all the other comments, if they fit the date sorting
-                    if(element.authoredOn!.nsDate <= Institute.shared.sereviceRequestObject!.authoredOn!.nsDate){
+                    if(element.authoredOn!.nsDate <= serviceObject.authoredOn!.nsDate){
                         if(element.note != nil){
                             if(element.note![0].text != nil){
                                 DispatchQueue.main.async {
@@ -749,15 +751,15 @@ class MedicalDataViewController: UIViewController, UITableViewDelegate, UITableV
                                 }
                             }
                         }
-                        
                     }
                 }
-            //If we dont have a history jet, just display the comment from the draft
+                //If we dont have a history jet, just display the comment from the draft
             }else{
                 DispatchQueue.main.async {
-                    if let serviceObject = Institute.shared.sereviceRequestObject{
-                        self.noteTextView.text = (serviceObject.note![0].text!.description) + self.noteTextView.text
+                    if(self.noteTextView != nil){
+                        self.noteTextView.text = serviceObject.note![0].text!.description
                     }
+                    
                 }
             }
         })
