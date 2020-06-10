@@ -2468,9 +2468,14 @@ class Institute {
                             //Check if the current pushDeviceToken is already registered
                             if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
                                 let results = ep.contact?.filter { $0.value == FHIRString(currentToken) }
-                                if(results!.isEmpty){
+                                
+                                guard let endpoint = results else {
+                                    self.addContactPointToEndpoint(endpoint: ep, create: true, completion: completion)
+                                    return
+                                }
+                                if(endpoint.isEmpty){
                                     //Our pushDeviceToken is not present and we have to add it to the Endpoint
-                                    self.addContactPointToEndpoint(endpoint: ep, completion: completion)
+                                    self.addContactPointToEndpoint(endpoint: ep, create: false, completion: completion)
                                 } else{
                                     UserLoginCredentials.shared.endpointProfile = ep
                                     completion()
@@ -2556,7 +2561,11 @@ class Institute {
                                 //Check if the current pushDeviceToken is already registered
                                 if let currentToken = UserDefaults.standard.string(forKey: "current_device_token") {
                                     let results = endpoint.contact?.filter { $0.value == FHIRString(currentToken) }
-                                    if(results!.isEmpty){
+                                    guard let checkEndpoint = results else {
+                                        completion(nil)
+                                        return
+                                    }
+                                    if(checkEndpoint.isEmpty){
                                         completion(nil)
                                     } else{
                                         UserLoginCredentials.shared.endpointProfile = endpoint
@@ -2622,14 +2631,25 @@ class Institute {
         
     }
     
-    func addContactPointToEndpoint(endpoint: Endpoint, completion: @escaping (()->Void)){
+    func addContactPointToEndpoint(endpoint: Endpoint, create: Bool, completion: @escaping (()->Void)){
         
-        var cp = ContactPoint()
-        cp.system = ContactPointSystem(rawValue: "other")
-        cp.use = ContactPointUse(rawValue: "work")
-        cp.value = FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)
+        if(create){
+            endpoint.contact = [ContactPoint()]
+            var cp = ContactPoint()
+            cp.system = ContactPointSystem(rawValue: "other")
+            cp.use = ContactPointUse(rawValue: "work")
+            cp.value = FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)
+            
+            endpoint.contact![0] = cp
+        }else{
+            var cp = ContactPoint()
+            cp.system = ContactPointSystem(rawValue: "other")
+            cp.use = ContactPointUse(rawValue: "work")
+            cp.value = FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)
+            
+            endpoint.contact?.append(cp)
+        }
         
-        endpoint.contact?.append(cp)
         
         DispatchQueue.global(qos: .background).async {
             endpoint.update() { error in
