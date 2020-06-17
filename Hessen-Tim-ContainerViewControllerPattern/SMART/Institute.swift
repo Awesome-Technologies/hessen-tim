@@ -2668,37 +2668,42 @@ class Institute {
     
     func removeContactPointFromEndpoint(completion: @escaping (()->Void)){
         print("removeContactPointFromEndpoint")
-        
-        var endpoint = UserLoginCredentials.shared.endpointProfile
-        //We remove our pushDeviceToken from the endpoint
-        let filteredContaktPoints = endpoint?.contact!.filter {$0.value != FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)}
-        //We save the deminished list to the endpoint again
-        endpoint?.contact = filteredContaktPoints
-        /**
-         We sometimes encounter an error, where the server instance is not set and the logout process gets in interupred
-         If this error occurs, we manually set the server instance
-         */
-        if(endpoint?._server == nil){
-            print("no server, manually adding")
-            endpoint?._server = self.client?.server
-        }
-        
-        DispatchQueue.global(qos: .background).async {
-            endpoint!.update() { error in
-                if let error = error as? FHIRError {
-                    print("error")
-                    print(error)
-                } else {
-                    print("EndpointUpdateSucceded")
-                    
-                    //Save the Endpoint in the UserLoginCredentials
-                    UserLoginCredentials.shared.endpointProfile = nil
-                    UserLoginCredentials.shared.organizationProfile = nil
-                    UserLoginCredentials.shared.selectedProfile = .NONE
-                    completion()
+        //We get the Endpoint based on the organization profile
+        self.searchEndpointForProfileCustom(organization: UserLoginCredentials.shared.organizationProfile!, completion: { endpoint in
+            if endpoint != nil{
+                
+                //We remove our pushDeviceToken from the endpoint
+                let filteredContaktPoints = endpoint?.contact!.filter {$0.value != FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)}
+                //We save the deminished list to the endpoint again
+                endpoint?.contact = filteredContaktPoints
+                /**
+                 We sometimes encounter an error, where the server instance is not set and the logout process gets in interupred
+                 If this error occurs, we manually set the server instance
+                 */
+                if(endpoint?._server == nil){
+                    print("no server, manually adding")
+                    endpoint?._server = self.client?.server
+                }
+                
+                DispatchQueue.global(qos: .background).async {
+                    endpoint!.update() { error in
+                        if let error = error as? FHIRError {
+                            print("error")
+                            print(error)
+                        } else {
+                            print("EndpointUpdateSucceded")
+                            
+                            //Save the Endpoint in the UserLoginCredentials
+                            UserLoginCredentials.shared.endpointProfile = nil
+                            UserLoginCredentials.shared.organizationProfile = nil
+                            UserLoginCredentials.shared.selectedProfile = .NONE
+                            completion()
+                        }
+                    }
                 }
             }
-        }
+        })
+        
     }
     
     func createProfileOrganization(profile: String, token: String){
