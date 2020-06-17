@@ -406,10 +406,9 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
      */
     @IBAction func `continue`(_ sender: Any) {
         
-        addLoadingView()
-        
         if(Institute.shared.sereviceRequestObject != nil){
             if (!textElementsMissing()) {
+                addLoadingView()
                 Institute.shared.updateExistingPatient(firstName: patientFirstname.text!, familyName: patientSurname.text!, gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,insuranceName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
                     Institute.shared.updateExistingServiceRequest(status: "draft", intent: "proposal", category: "Intensivmedizin", priority: "asap", patientID: "7", organizationID: "51", completion: {
                         DispatchQueue.main.async {
@@ -420,6 +419,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             }
         
         }else if(patientDropdown.text != ""){
+            addLoadingView()
             //Institute.shared.createPatient(firstName: patientName.text!, familyName: "Neuman", gender: "male", birthday: DateTime.now.description)
             Institute.shared.createServiceRequest(category: "Intensivmedizin", completion: {
                 DispatchQueue.main.async {
@@ -428,6 +428,7 @@ class InsertPatientData: UIViewController , UITextFieldDelegate, UIPickerViewDat
             })
             
         }else if (!textElementsMissing()) {
+            addLoadingView()
             Institute.shared.createPatient(firstName: patientFirstname.text!, familyName: patientSurname.text! , gender: patientSex.text!, birthday: patientBirthday.text!, weight: patientWeight.text!, height: patientSize.text!,coverageName: insurance.text!, clinicName: clinicName.text!, doctorName: contactDoctor.text!, contactNumber: contactNumber.text!, completion: {
                 Institute.shared.createServiceRequest(category: "Intensivmedizin",  completion: {
                     DispatchQueue.main.async {
