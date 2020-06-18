@@ -120,24 +120,34 @@ class LoginScreenViewController: UIViewController {
         if(selectedProfile == .NONE){
             highlightAllMissingElements()
         }else{
-            
-            addLoadingView()
-            /**
-             Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
-             and wants to logg in once aggain
-             */
-            if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
-                
-            }else{
-                UIApplication.shared.registerForRemoteNotifications()
-                print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
-            }
-            UserLoginCredentials.shared.selectedProfile = self.selectedProfile
-            Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "mainView", sender: self)
+            Institute.shared.connect { error in
+                if error == nil {
+                    self.addLoadingView()
+                    /**
+                     Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
+                     and wants to logg in once aggain
+                     */
+                    if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
+                        print("We have a token already")
+                    }else{
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                            print("New default Token: \(UserDefaults.standard.string(forKey: "current_device_token"))")
+                        }
+                    }
+                    
+                    UserLoginCredentials.shared.selectedProfile = self.selectedProfile
+                    Institute.shared.registerProfile(profileType: self.selectedProfile, completion: {
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "mainView", sender: self)
+                        }
+                    })
+                } else {
+                    print("We have a connection error")
                 }
-            })
+            }
+            
+            
         }
     }
     
@@ -169,12 +179,14 @@ class LoginScreenViewController: UIViewController {
     */
     
     func addLoadingView(){
-        //var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        self.view.addSubview(loadingView)
-        loadingView.addGrayBackPanel()
-        loadingView.addLayoutConstraints()
-        loadingView.addLoadingText(text: "Lade Profil")
-        view.bringSubviewToFront(loadingView)
+        DispatchQueue.main.async {
+            //var loadingView = LoadingView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+            self.view.addSubview(self.loadingView)
+            self.loadingView.addGrayBackPanel()
+            self.loadingView.addLayoutConstraints()
+            self.loadingView.addLoadingText(text: "Lade Profil")
+            self.view.bringSubviewToFront(self.loadingView)
+        }
     }
 
 }
