@@ -115,7 +115,7 @@ class LoadingView: UIView {
     }
     
     func removeGrayView(){
-        grayPanel.removeFromSuperview()
+        grayPanel?.removeFromSuperview()
     }
 
 }

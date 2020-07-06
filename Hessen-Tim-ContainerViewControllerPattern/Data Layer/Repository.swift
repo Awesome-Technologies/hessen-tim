@@ -20,9 +20,16 @@ class Repository {
     /// The remote data provider. This requests resources from the server.
     private let remoteDataProvider = RemoteDataProvider()
     
+    /// Passthrough observable of remot data provider connection status
+    var connectionStatus: Observable<RemoteDataProvider.ConnectionStatus> {
+        return remoteDataProvider.connectionStatus.asObservable()
+    }
+	
     /// The shared repository instance.
     static let instance = Repository()
     
+    let bag = DisposeBag()
+	
     /// Setup the connection to the remote server.
     /// - Parameter complete: completion block that gets called if the connection was setup successfully.
     func setup(complete: @escaping () -> Void) {
@@ -122,7 +129,7 @@ class Repository {
     /// Update a resource on the server. Since it has changed, the resource will be saved as a local echo again.
     /// One the response from the server comes, the local echo will be removed and saved in cache as before.
     /// - Parameter resource: The updated resource.
-    func update<T: DomainResource>(resource: T) {
+    func update<T: DomainResource>(resource: T, _ success: (() -> ())? = nil) {
         if let id = resource.id?.string {
             cacheProvider.cache(forType: T.self).removeValue(forKey: id as NSString)
         }
@@ -132,6 +139,7 @@ class Repository {
             guard let error = error else {
                 // The resource was successfully update, so we can store it in cache again
                 self.replaceLocalEcho(withResource: resource)
+                success?()
                 return
             }
             print("Error updating resource \(error.asFHIRError.humanized)")
@@ -441,7 +449,7 @@ class Repository {
         }
         
         if array.isEmpty {
-            remoteDataProvider.fetchResourceList(T.self, filter: filter, pageCount: pageCount) { result in
+            remoteDataProvider.fetchResourceList(T.self, filter: filter, pageCount: pageCount, noCache: forceDownload) { result in
                 switch result {
                 case .success(let requestResult):
                     array.append(contentsOf: requestResult.resultValue)
@@ -455,86 +463,111 @@ class Repository {
         }
     }
     
-    // MARK: Profile Registration
+    // MARK: Device Registration
     
-    /// Register a profile on the server. This will take the current push token and stores it.
-    /// - Parameter profileType: The profile type to be registered.
-    func registerProfile(profileType: ProfileType) {
-        let clinicType = profileType.clinic()
-        let performerClinicType = profileType.performer()
+    /// Fetch the given Endpoint from the server to remove all ContactPoint instances for this device
+    /// - Parameters:
+    ///   - endpointId: Id of the Endpoint to alter
+    ///   - completion: Completion block that gets called upon completion. The boolean indicates whether the Endpoint was fetch successfully to check for the device id.
+    func removeDeviceFromEndpoint(_ endpointId: String, completion: @escaping ((Bool) -> Void)) {
+        let filter = DomainResourceQueryFilter()
+        filter.set(filter: .id(endpointId))
+        remoteDataProvider.fetchResourceList(Endpoint.self, filter: filter, pageCount: 1, noCache: true) { result in
+            switch result {
+            case .success(let requestResult):
+                guard let endpoint = requestResult.resultValue.first else { return }
+                var contacts = endpoint.contact ?? [ContactPoint]()
+                let deviceEndpointData = EndpointData.current()
+                var didChange = false
+                
+                contacts.removeAll { contactPoint -> Bool in
+                    guard let json = contactPoint.value?.string.data(using: .utf8), let contactEndpointData = EndpointData.from(json: json) else { return false }
+                    let remove = deviceEndpointData.deviceId == contactEndpointData.deviceId
+                    if remove {
+                        didChange = true
+                    }
+                    return remove
+                }
+                endpoint.contact = contacts
+                if didChange {
+                    self.update(resource: endpoint)
+                }
+                completion(true)
+            case .failure(let error):
+                print("Error fetching Endpoints from the server: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// Register this device on the server given the device is logged in
+    func registerDevice() {
+        guard let loginEndpoint = UserLoginCredentials.shared.loginIds?.endpoint else {
+            return
+        }
+        let deviceEndpointData = EndpointData.current()
         
-        getOrganizationForProfile(clinicType, completion: { organization in
-            guard let organization = organization else { return }
-            UserLoginCredentials.shared.organizationProfile = organization
-            self.getEndpointForProfile(organization) { (endpoint) in
-                guard let endpoint = endpoint, let currentToken = UserDefaults.standard.string(forKey: "current_device_token") else { return }
-                let results = endpoint.contact?.filter { $0.value == FHIRString(currentToken) }
-                if (results!.isEmpty) {
-                    //Our pushDeviceToken is not present and we have to add it to the Endpoint
-                    self.injectPushToken(endpoint)
-                } else {
-                    UserLoginCredentials.shared.endpointProfile = endpoint
+        UserLoginCredentials.shared.cachedOrganizationIds.forEach { (key: ProfileType, value: (organization: String, endpoint: String)) in
+            
+            let filter = DomainResourceQueryFilter()
+            filter.set(filter: .id(value.endpoint))
+            remoteDataProvider.fetchResourceList(Endpoint.self, filter: filter, pageCount: 1, noCache: true) { result in
+                let isLoginEndpoint = value.endpoint == loginEndpoint
+                switch result {
+                case .success(let requestResult):
+                    guard let endpoint = requestResult.resultValue.first else { return }
+                    var didChange = false
+                    var contacts = endpoint.contact ?? [ContactPoint]()
+                    contacts.removeAll { contactPoint -> Bool in
+                        guard let json = contactPoint.value?.string.data(using: .utf8), let contactEndpointData = EndpointData.from(json: json) else { return false }
+                        let remove = deviceEndpointData.deviceId == contactEndpointData.deviceId
+                        if remove {
+                            didChange = true
+                        }
+                        return remove
+                    }
+                    if isLoginEndpoint, let json = deviceEndpointData.toJson() {
+                        let contactPoint = ContactPoint()
+                        contactPoint.value = FHIRString(json)
+                        contactPoint.use = .work
+                        contactPoint.system = .other
+                        contacts.append(contactPoint)
+                        didChange = true
+                    }
+                    endpoint.contact = contacts
+                    if didChange {
+                        self.update(resource: endpoint)
+                    }
+                case .failure(let error):
+                    print("Error fetching Endpoints from the server: \(error.localizedDescription)")
                 }
             }
-            
-        })
-        self.getOrganizationForProfile(performerClinicType, completion: { organization in
-            UserLoginCredentials.shared.performerOrganizationProfile = organization
-        })
-    }
-    
-    /// Get the organization resource for a given profile from the server.
-    /// - Parameters:
-    ///   - profileType: The profile type.
-    ///   - completion: Completion block that gets called once the resource is ready.
-    func getOrganizationForProfile(_ profileType: String, completion: @escaping ((Organization?) -> Void)) {
-        let filter = OrganizationQueryFilter()
-        filter.set(filter: .type(profileType))
-        remoteDataProvider.fetchResourceList(Organization.self, filter: filter, pageCount: 1) { (result) in
-            var org: Organization?
-            switch result {
-            case .success(let requestResult):
-                org = requestResult.resultValue.first
-            case .failure(_): break
-            }
-            completion(org)
         }
     }
     
-    /// Get the endpoint resource for a given organization.
-    /// - Parameters:
-    ///   - organization: The organization that refers the endpoint.
-    ///   - completion: Completion block that gets called once the endpoint resource is ready.
-    func getEndpointForProfile(_ organization: Organization, completion: @escaping ((Endpoint?) -> Void)) {
-        //Get the Endpoint for the Login
-        guard let stringReference = organization.endpoint![0].reference?.string else { return }
-        guard let range = stringReference.range(of: "/") else { return }
-        let newID = String(stringReference[range.upperBound...])
-        
-        getResource(Endpoint.self, withId: newID) { (result) in
-            var endpoint: Endpoint?
+    /// Fetch the organizations from the server and cache them in UserLoginCredetials.cachedOrganizationIds
+    func cacheOrganizationIds() {
+        remoteDataProvider.fetchResourceList(Organization.self , noCache: true) { result in
+            let credentials = UserLoginCredentials.shared
+            var cachedIds:  [ProfileType: (organization: String, endpoint: String)] = [:]
             switch result {
             case .success(let requestResult):
-                endpoint = requestResult.resultValue
-            case .failure(_): break
+                requestResult.resultValue.forEach { org in
+                    guard let id = org.id?.string, let endpointId = org.endpoint?.first?.reference?.string.split(separator: "/")[1] else { return }
+                    let tuple = (id, String(endpointId))
+                    
+                    let profileTypeString = org.type?.first?.text?.string
+                    if profileTypeString == ProfileType.ConsultationClinic.rawValue {
+                        cachedIds[.ConsultationClinic] = tuple
+                    } else if profileTypeString == ProfileType.PeripheralClinic.rawValue {
+                        cachedIds[.PeripheralClinic] = tuple
+                    }
+                }
+                credentials.updateCachedOrganizationIds(newIds: cachedIds)
+            case .failure(let error):
+                print("Error fetching Organizations from the server: \(error.localizedDescription)")
             }
-            completion(endpoint)
         }
     }
     
-    /// Add the current push token to the given endpoint.
-    /// - Parameter endpoint: The endpoint resource.
-    func injectPushToken(_ endpoint: Endpoint) {
-        let cp = ContactPoint()
-        cp.system = ContactPointSystem(rawValue: "other")
-        cp.use = ContactPointUse(rawValue: "work")
-        cp.value = FHIRString(UserDefaults.standard.string(forKey: "current_device_token")!)
-        
-        var contacts = endpoint.contact ?? [ContactPoint]()
-        contacts.append(cp)
-        endpoint.contact = contacts
-        
-        update(resource: endpoint)
-        UserLoginCredentials.shared.endpointProfile = endpoint
-    }
 }

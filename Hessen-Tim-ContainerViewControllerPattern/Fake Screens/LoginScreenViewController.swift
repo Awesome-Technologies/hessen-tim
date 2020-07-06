@@ -9,6 +9,8 @@
 import UIKit
 import SwiftGifOrigin
 import SMART
+import RxSwift
+import RxRelay
 
 class LoginScreenViewController: UIViewController {
     
@@ -34,44 +36,50 @@ class LoginScreenViewController: UIViewController {
     
     @IBOutlet weak var loginButton: UIButton!
     
+    let bag = DisposeBag()
+    
     override func viewDidLoad() {
-    super.viewDidLoad()
+        super.viewDidLoad()
+        UserLoginCredentials.shared.delegate = self
         
-        /**
-         Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
-         and wants to logg in once aggain
-         */
-        if let oldPushDeviceToken = UserDefaults.standard.string(forKey: "current_device_token"){
-            
-            addLoadingView()
-            
-            Institute.shared.connect { error in
-                if error == nil {
-                    //get my Organization Profile
-                    Institute.shared.checkOrganizationsForLogin(completion: { login in
-                        if(login != .NONE){
-                            UserLoginCredentials.shared.selectedProfile = login
-                            print("Login data complete")
-                            //get me to the next screen
-                            DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "mainView", sender: self)
-                            }
-                        }else{
-                            print("We are not registered and should log in")
-                            DispatchQueue.main.async {
-                                self.loadingView.removeGrayView()
-                                self.loadingView.removeFromSuperview()
+        // Enable login button only when the device is connected to the server
+        Repository.instance.connectionStatus
+            .map({ $0 == .connected })
+            .bind(to: loginButton.rx.isEnabled)
+            .disposed(by: bag)
+    }
+    
+    func checkForAutologin() {
+        self.addLoadingView()
+        Repository.instance.getAllResources(ofType: Endpoint.self, true) { result in
+            switch result {
+            case .success(let requestResult):
+                let deviceId = UserLoginCredentials.shared.deviceId
+                requestResult.resultValue.forEach { endpoint in
+                    guard let contacts = endpoint.contact else { return }
+                    let containsDeviceId = contacts.contains(where: { contactPoint -> Bool in
+                        guard let json = contactPoint.value?.string, let jsonData = json.data(using: .utf8), let epData = EndpointData.from(json: jsonData) else { return false }
+                        return epData.deviceId == deviceId
+                    })
+                    if containsDeviceId {
+                        let ids = UserLoginCredentials.shared.cachedOrganizationIds
+                        ids.forEach { (key: ProfileType, value: (organizationId: String, endpointId: String)) in
+                            if endpoint.id?.string == value.endpointId {
+                                self.selectedProfile = key
                             }
                         }
-                    })
-                    
+                        if self.selectedProfile != .NONE {
+                            self.removeLoadingView()
+                            self.performLogin()
+                            return
+                        }
+                    }
                 }
+            case .failure(let error):
+                print("Error fetching Endpoints from the server: \(error.localizedDescription)")
             }
-            
-        }else{
-            print("We are not registered and should log in")
+            self.removeLoadingView()
         }
-    
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,22 +129,17 @@ class LoginScreenViewController: UIViewController {
         if (selectedProfile == .NONE) {
             highlightAllMissingElements()
         } else {
-            Repository.instance.setup {
-                /**
-                 Check if a token is present. If at this point, a token is not present in the user defaults, it means that the user as logged out
-                 and wants to logg in once aggain
-                 */
-                if UserDefaults.standard.string(forKey: "current_device_token") == nil {
-                    callOnMainThread {
-                        UIApplication.shared.registerForRemoteNotifications()
-                    }
-                }
-                UserLoginCredentials.shared.set(profile: self.selectedProfile) { (result) in
-                    Repository.instance.registerProfile(profileType: self.selectedProfile)
-                }
-                callOnMainThread {
-                    self.performSegue(withIdentifier: "mainView", sender: self)
-                }
+            performLogin()
+        }
+    }
+    
+    func performLogin() {
+        Repository.instance.setup {
+            callOnMainThread {
+                self.removeLoadingView()
+                UserLoginCredentials.shared.delegate = nil
+                UserLoginCredentials.shared.selectedProfile = self.selectedProfile
+                self.performSegue(withIdentifier: "mainView", sender: self)
             }
         }
     }
@@ -178,7 +181,22 @@ class LoginScreenViewController: UIViewController {
             self.view.bringSubviewToFront(self.loadingView)
         }
     }
+    
+    func removeLoadingView() {
+        callOnMainThread {
+            self.loadingView.removeGrayView()
+            self.loadingView.removeFromSuperview()
+        }
+    }
 
+}
+
+extension LoginScreenViewController: UserLoginCredentialsDelegate {
+    func didUpdateCachedOrganizationIds(newIds: [ProfileType : (organization: String, endpoint: String)]) {
+        if newIds.count > 0 {
+            checkForAutologin()
+        }
+    }
 }
 
 // https://medium.com/nyc-design/swift-4-add-icon-to-uitextfield-48f5ebf60aa1

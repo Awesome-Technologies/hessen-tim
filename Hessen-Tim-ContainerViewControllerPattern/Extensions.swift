@@ -62,6 +62,13 @@ extension Organization {
             }
         }
     }
+    
+    func getProfileType() -> ProfileType {
+        guard let text = type?.first?.text?.string else {
+            return .NONE
+        }
+        return ProfileType(rawValue: text) ?? ProfileType.NONE
+    }
 }
 
 extension ServiceRequest {

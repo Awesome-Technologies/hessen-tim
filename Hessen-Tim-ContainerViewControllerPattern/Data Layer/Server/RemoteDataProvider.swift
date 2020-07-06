@@ -8,16 +8,26 @@
 
 import UIKit
 import SMART
+import RxSwift
 
 class RemoteDataProvider {
     enum ServerError: Error {
         case runtimeError(String)
     }
+    enum ConnectionStatus {
+        case connecting
+        case connected
+        case disconnected
+    }
+    
     private let serverUrl = "https://tim.amp.institute/hapi-fhir-jpaserver/fhir/"
     private var client: Client?
     
     private var activePagedServerRequests = Dictionary<String, AnyObject>()
     private var activeSimpleServerRequests = Dictionary<String, AnyObject>()
+    
+    /// Observable to stay informed about the connection status to the server
+    let connectionStatus = BehaviorSubject<ConnectionStatus>(value: .disconnected)
     
     // MARK: Handling server connection
     
@@ -32,12 +42,16 @@ class RemoteDataProvider {
         if let url = URL(string: serverUrl) {
             let server = Server(baseURL: url)
             client = Client(server: server)
+            connectionStatus.onNext(.connecting)
             client?.ready(callback: { (error) in
                 if let error = error as? FHIRError {
                     let institureError = ServerError.runtimeError("Error connecting to server. \(error.description)")
                     complete(institureError)
+                    
+                    self.connectionStatus.onNext(.disconnected)
                 } else {
                     print("[RemoteDataProvider] Successful login!")
+                    self.connectionStatus.onNext(.connected)
                     complete(nil)
                 }
             })
@@ -122,13 +136,13 @@ class RemoteDataProvider {
     ///   - filter: Filter to apply to the request.
     ///   - pageCount: Size of each page.
     ///   - complete: Completion block that gets called when the server responses.
-    func fetchResourceList<T: DomainResource>(_ resourceType: T.Type, filter: DomainResourceQueryFilter? = nil, pageCount: Int? = nil, _ complete: ((Result<RequestResult<[T]>, Error>) -> Void)? = nil) {
+    func fetchResourceList<T: DomainResource>(_ resourceType: T.Type, filter: DomainResourceQueryFilter? = nil, pageCount: Int? = nil, noCache: Bool = false, _ complete: ((Result<RequestResult<[T]>, Error>) -> Void)? = nil) {
         print("[RemoteDataProvider] Fetching resource list from server")
         
         guard let serverRequest = createServerRequest(ofType: T.self, withFilter: filter) else {
             return
         }
-        
+        serverRequest.search.noCache = noCache
         serverRequest.search.pageCount = pageCount
         print("Search query: \(serverRequest.search.construct())")
         

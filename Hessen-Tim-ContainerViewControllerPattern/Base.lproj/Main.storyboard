@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tQb-Xs-GmT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tQb-Xs-GmT">
     <device id="ipad10_2" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1481,23 +1481,23 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="uyh-Lj-DWg" customClass="CategoryTableViewCell" customModule="AMP_intensiv" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="320" height="28"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="28.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uyh-Lj-DWg" id="Xkq-bb-FQk">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="28.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K66-dE-WlK">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="28.5"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vQ-78-yiA">
-                                            <rect key="frame" x="284" y="0.0" width="24" height="27"/>
+                                            <rect key="frame" x="284" y="0.0" width="24" height="27.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSY-wd-y3k">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="28.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
@@ -2861,10 +2861,10 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="jmv-j2-Fyf"/>
-        <segue reference="P0c-ED-fSW"/>
+        <segue reference="7yx-zQ-vMn"/>
         <segue reference="EzM-g7-taV"/>
-        <segue reference="x6W-Ib-cDb"/>
-        <segue reference="8Jz-la-XWu"/>
+        <segue reference="Z3I-Kn-Gbj"/>
+        <segue reference="Sa7-Yb-i21"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anruf" width="88" height="83"/>

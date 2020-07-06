@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SMART
 
 class SecondScreenViewController: UIViewController {
     @IBOutlet weak var screen2ImageView: UIImageView!
@@ -141,7 +142,8 @@ class SecondScreenViewController: UIViewController {
     }
     
     @IBAction func openPatientList(_ sender: Any) {
-        performSegue(withIdentifier: "toPatientListView", sender: nil)
+//        performSegue(withIdentifier: "toPatientListView", sender: nil)
+        self.logout(self.logout)
     }
     
     @IBAction func exitViewToRootView(segue:UIStoryboardSegue) {}
@@ -237,19 +239,13 @@ class SecondScreenViewController: UIViewController {
 
     
     @IBAction func logout(_ sender: Any) {
-        UIApplication.shared.unregisterForRemoteNotifications()
-        Institute.shared.removeContactPointFromEndpoint(completion:{
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                
-                //Remove token from user defaults
-                UserDefaults.standard.removeObject(forKey: "current_device_token")
-                
+        UserLoginCredentials.shared.logout {
+            callOnMainThread {
                 let delegate = UIApplication.shared.delegate as! AppDelegate
                 delegate.splitView = false
                 delegate.goToLoginScreen(animated: true)
             }
-        })
-        //toLoginScreen
+        }
     }
         
 

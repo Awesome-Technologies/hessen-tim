@@ -48,6 +48,8 @@
 		9724C7DB2254D75A006A67DF /* CamerPictureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */; };
 		9724C7DD2256E269006A67DF /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */; };
 		9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */; };
+		973E01AB24FFC18C001794FD /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973E01AA24FFC18C001794FD /* NotificationService.swift */; };
+		973E01AF24FFC18C001794FD /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 973E01A824FFC18C001794FD /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		974DC6162460DBFF00EC216F /* CacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC60E2460DBFF00EC216F /* CacheProvider.swift */; };
 		974DC6172460DBFF00EC216F /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC60F2460DBFF00EC216F /* Cache.swift */; };
 		974DC6182460DBFF00EC216F /* RequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6102460DBFF00EC216F /* RequestResult.swift */; };
@@ -56,8 +58,10 @@
 		974DC61B2460DBFF00EC216F /* RemoteDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */; };
 		974DC61C2460DBFF00EC216F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974DC6152460DBFF00EC216F /* Repository.swift */; };
 		97562AB2247E604B00973DB4 /* MediaQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97562AB1247E604B00973DB4 /* MediaQueryFilter.swift */; };
+		976532BB24DAEB7900109D48 /* EndpointData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976532BA24DAEB7900109D48 /* EndpointData.swift */; };
 		976A454B247E666B0075175B /* PatientQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A454A247E666B0075175B /* PatientQueryFilter.swift */; };
 		976A454D247E67A60075175B /* ServiceRequestQueryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A454C247E67A60075175B /* ServiceRequestQueryFilter.swift */; };
+		97A59AB424A60C49003A1A58 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A59AB324A60C49003A1A58 /* PushNotificationService.swift */; };
 		97B5B6EC246E0147003421C3 /* SMART in Frameworks */ = {isa = PBXBuildFile; productRef = 97B5B6EB246E0147003421C3 /* SMART */; };
 		97BA9E6F238EC41A00AF5DDD /* Institute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA9E6E238EC41A00AF5DDD /* Institute.swift */; };
 		97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */; };
@@ -86,7 +90,28 @@
 			remoteGlobalIDString = 8F5233D4223949D50020292F;
 			remoteInfo = "Hessen-Tim-ContainerViewControllerPattern";
 		};
+		973E01AD24FFC18C001794FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8F5233CD223949D50020292F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 973E01A724FFC18C001794FD;
+			remoteInfo = NotificationExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		973E01B024FFC18C001794FD /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				973E01AF24FFC18C001794FD /* NotificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2FDE712AD0FCD45E738A7792 /* Pods-Hessen-Tim-ContainerViewControllerPattern.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hessen-Tim-ContainerViewControllerPattern.release.xcconfig"; path = "Target Support Files/Pods-Hessen-Tim-ContainerViewControllerPattern/Pods-Hessen-Tim-ContainerViewControllerPattern.release.xcconfig"; sourceTree = "<group>"; };
@@ -140,6 +165,9 @@
 		9724C7DA2254D75A006A67DF /* CamerPictureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerPictureDelegate.swift; sourceTree = "<group>"; };
 		9724C7DC2256E269006A67DF /* FirstScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; };
 		9724C7DF2256E4E3006A67DF /* SecondScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondScreenViewController.swift; sourceTree = "<group>"; };
+		973E01A824FFC18C001794FD /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		973E01AA24FFC18C001794FD /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		973E01AC24FFC18C001794FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		974DC60E2460DBFF00EC216F /* CacheProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheProvider.swift; sourceTree = "<group>"; };
 		974DC60F2460DBFF00EC216F /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		974DC6102460DBFF00EC216F /* RequestResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestResult.swift; sourceTree = "<group>"; };
@@ -148,8 +176,10 @@
 		974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDataProvider.swift; sourceTree = "<group>"; };
 		974DC6152460DBFF00EC216F /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		97562AB1247E604B00973DB4 /* MediaQueryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaQueryFilter.swift; sourceTree = "<group>"; };
+		976532BA24DAEB7900109D48 /* EndpointData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointData.swift; sourceTree = "<group>"; };
 		976A454A247E666B0075175B /* PatientQueryFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatientQueryFilter.swift; sourceTree = "<group>"; };
 		976A454C247E67A60075175B /* ServiceRequestQueryFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceRequestQueryFilter.swift; sourceTree = "<group>"; };
+		97A59AB324A60C49003A1A58 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		97BA9E6E238EC41A00AF5DDD /* Institute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Institute.swift; sourceTree = "<group>"; };
 		97BDA8042254C63B0055EBCE /* GalleryDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDelegate.swift; sourceTree = "<group>"; };
 		97BDA8052254C63B0055EBCE /* GalleryPictureCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPictureCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -191,6 +221,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		973E01A524FFC18C001794FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -221,6 +258,7 @@
 				8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */,
 				8F5233EC223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternTests */,
 				8F5233F7223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternUITests */,
+				973E01A924FFC18C001794FD /* NotificationExtension */,
 				8F5233D6223949D50020292F /* Products */,
 				118178D66D482D486529D479 /* Pods */,
 				FF0DA66B16690C4B449937DE /* Frameworks */,
@@ -233,6 +271,7 @@
 				8F5233D5223949D50020292F /* AMP.intensiv.app */,
 				8F5233E9223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternTests.xctest */,
 				8F5233F4223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternUITests.xctest */,
+				973E01A824FFC18C001794FD /* NotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -240,6 +279,7 @@
 		8F5233D7223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */ = {
 			isa = PBXGroup;
 			children = (
+				97A59AB224A60C30003A1A58 /* Push Notifications */,
 				974DC60C2460DBFF00EC216F /* Data Layer */,
 				8F9E81C124486E1800EA8BCE /* AMP.intensiv.entitlements */,
 				8FB51F8124614779004DB903 /* Login */,
@@ -252,6 +292,7 @@
 				8FB1C1D1242F7CB100C07DAD /* HistoryTabelView */,
 				8F4E063D22B1058E002CBC95 /* MasterViewController.swift */,
 				8FA1A381242B934A00049A3F /* Extensions.swift */,
+				976532BA24DAEB7900109D48 /* EndpointData.swift */,
 				8F5233D8223949D50020292F /* AppDelegate.swift */,
 				8F5233DA223949D50020292F /* BaseViewController.swift */,
 				8F4E063F22B10BCE002CBC95 /* SplitViewController.swift */,
@@ -375,6 +416,15 @@
 			path = "Fake Screens";
 			sourceTree = "<group>";
 		};
+		973E01A924FFC18C001794FD /* NotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				973E01AA24FFC18C001794FD /* NotificationService.swift */,
+				973E01AC24FFC18C001794FD /* Info.plist */,
+			);
+			path = NotificationExtension;
+			sourceTree = "<group>";
+		};
 		974DC60C2460DBFF00EC216F /* Data Layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -403,6 +453,14 @@
 				974DC6142460DBFF00EC216F /* RemoteDataProvider.swift */,
 			);
 			path = Server;
+			sourceTree = "<group>";
+		};
+		97A59AB224A60C30003A1A58 /* Push Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				97A59AB324A60C49003A1A58 /* PushNotificationService.swift */,
+			);
+			path = "Push Notifications";
 			sourceTree = "<group>";
 		};
 		97BA9E6D238EC3F800AF5DDD /* SMART */ = {
@@ -468,10 +526,12 @@
 				8F5233D2223949D50020292F /* Frameworks */,
 				8F5233D3223949D50020292F /* Resources */,
 				96A8787DCBDE2A2E7CE33045 /* [CP] Embed Pods Frameworks */,
+				973E01B024FFC18C001794FD /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				973E01AE24FFC18C001794FD /* PBXTargetDependency */,
 			);
 			name = "Hessen-Tim-ContainerViewControllerPattern";
 			packageProductDependencies = (
@@ -521,13 +581,30 @@
 			productReference = 8F5233F4223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		973E01A724FFC18C001794FD /* NotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 973E01B324FFC18C001794FD /* Build configuration list for PBXNativeTarget "NotificationExtension" */;
+			buildPhases = (
+				973E01A424FFC18C001794FD /* Sources */,
+				973E01A524FFC18C001794FD /* Frameworks */,
+				973E01A624FFC18C001794FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationExtension;
+			productName = NotificationExtension;
+			productReference = 973E01A824FFC18C001794FD /* NotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		8F5233CD223949D50020292F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Michael Rojkov";
 				TargetAttributes = {
@@ -541,6 +618,9 @@
 					8F5233F3223949D70020292F = {
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = 8F5233D4223949D50020292F;
+					};
+					973E01A724FFC18C001794FD = {
+						CreatedOnToolsVersion = 11.5;
 					};
 				};
 			};
@@ -564,6 +644,7 @@
 				8F5233D4223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */,
 				8F5233E8223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternTests */,
 				8F5233F3223949D70020292F /* Hessen-Tim-ContainerViewControllerPatternUITests */,
+				973E01A724FFC18C001794FD /* NotificationExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -593,6 +674,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8F5233F2223949D70020292F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		973E01A624FFC18C001794FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -708,6 +796,7 @@
 				8FC39D9723D8410100FBD225 /* MedicalDataNotificationView.swift in Sources */,
 				8FA4B5D823D0538200B5844C /* MedicalDataViewController.swift in Sources */,
 				9724C7E02256E4E3006A67DF /* SecondScreenViewController.swift in Sources */,
+				97A59AB424A60C49003A1A58 /* PushNotificationService.swift in Sources */,
 				97BDA8082254C63C0055EBCE /* GalleryPictureCollectionViewCell.swift in Sources */,
 				97562AB2247E604B00973DB4 /* MediaQueryFilter.swift in Sources */,
 				8FAFC677240CFA12006A9DB1 /* ObservationType.swift in Sources */,
@@ -734,6 +823,7 @@
 				97BDA8072254C63C0055EBCE /* GalleryDelegate.swift in Sources */,
 				8F4E064022B10BCE002CBC95 /* SplitViewController.swift in Sources */,
 				8FA9052824543AE1006CD2C0 /* DiagnosticReportView.swift in Sources */,
+				976532BB24DAEB7900109D48 /* EndpointData.swift in Sources */,
 				8FDE86A822CA181E0034A913 /* OrderListViewController.swift in Sources */,
 				974DC6192460DBFF00EC216F /* SimpleServerRequest.swift in Sources */,
 				974DC6182460DBFF00EC216F /* RequestResult.swift in Sources */,
@@ -756,6 +846,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		973E01A424FFC18C001794FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				973E01AB24FFC18C001794FD /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -768,6 +866,11 @@
 			isa = PBXTargetDependency;
 			target = 8F5233D4223949D50020292F /* Hessen-Tim-ContainerViewControllerPattern */;
 			targetProxy = 8F5233F5223949D70020292F /* PBXContainerItemProxy */;
+		};
+		973E01AE24FFC18C001794FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 973E01A724FFC18C001794FD /* NotificationExtension */;
+			targetProxy = 973E01AD24FFC18C001794FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -911,6 +1014,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4CC4F870BB47D08A7D594D3F /* Pods-Hessen-Tim-ContainerViewControllerPattern.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -936,6 +1040,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2FDE712AD0FCD45E738A7792 /* Pods-Hessen-Tim-ContainerViewControllerPattern.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Hessen-Tim-ContainerViewControllerPattern/AMP.intensiv.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1039,6 +1144,48 @@
 			};
 			name = Release;
 		};
+		973E01B124FFC18C001794FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 98C45TS5UN;
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv.NotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		973E01B224FFC18C001794FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 98C45TS5UN;
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = care.amp.intensiv.NotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1074,6 +1221,15 @@
 			buildConfigurations = (
 				8F523404223949D70020292F /* Debug */,
 				8F523405223949D70020292F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		973E01B324FFC18C001794FD /* Build configuration list for PBXNativeTarget "NotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				973E01B124FFC18C001794FD /* Debug */,
+				973E01B224FFC18C001794FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
